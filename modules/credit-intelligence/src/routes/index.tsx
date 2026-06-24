@@ -16,6 +16,11 @@ import {
   Cake,
   Accessibility,
   TrendingUp,
+  ArrowLeft,
+  Clock,
+  Banknote,
+  Gauge,
+  ChevronRight,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -39,6 +44,54 @@ export const Route = createFileRoute("/")({
 });
 
 const TRUST_SCORE = 82;
+
+type PreCheck = "High Confidence" | "Needs Review";
+
+interface Application {
+  date: string;
+  name: string;
+  nationalId: string;
+  input: string;
+  preCheck: PreCheck;
+}
+
+const APPLICATIONS: Application[] = [
+  {
+    date: "2026-06-24",
+    name: "Wanjiru Kamau",
+    nationalId: "28471936",
+    input: "Seeds & Fertilizer",
+    preCheck: "High Confidence",
+  },
+  {
+    date: "2026-06-23",
+    name: "Otieno Omondi",
+    nationalId: "31902847",
+    input: "Fertilizer",
+    preCheck: "High Confidence",
+  },
+  {
+    date: "2026-06-23",
+    name: "Achieng Nyaga",
+    nationalId: "29483017",
+    input: "Maize Seeds",
+    preCheck: "Needs Review",
+  },
+  {
+    date: "2026-06-22",
+    name: "Kipchoge Rotich",
+    nationalId: "33019284",
+    input: "Pesticides",
+    preCheck: "High Confidence",
+  },
+  {
+    date: "2026-06-22",
+    name: "Mumbi Wairimu",
+    nationalId: "27584012",
+    input: "Dairy Feed",
+    preCheck: "Needs Review",
+  },
+];
 
 function TrustGauge({ score }: { score: number }) {
   const radius = 80;
@@ -98,8 +151,58 @@ function DetailRow({
   );
 }
 
+function SummaryCard({
+  icon: Icon,
+  label,
+  value,
+  hint,
+}: {
+  icon: typeof Clock;
+  label: string;
+  value: string;
+  hint: string;
+}) {
+  return (
+    <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+          {label}
+        </span>
+        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent">
+          <Icon className="h-5 w-5 text-accent-foreground" />
+        </div>
+      </div>
+      <p className="mt-3 text-3xl font-extrabold tracking-tight text-foreground">{value}</p>
+      <p className="mt-1 text-xs text-muted-foreground">{hint}</p>
+    </div>
+  );
+}
+
+function PreCheckBadge({ status }: { status: PreCheck }) {
+  const isHigh = status === "High Confidence";
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
+        isHigh ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"
+      }`}
+    >
+      {isHigh ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Sparkles className="h-3.5 w-3.5" />}
+      {status}
+    </span>
+  );
+}
+
 function Dashboard() {
   const [nationalId, setNationalId] = useState("");
+  const [showDetail, setShowDetail] = useState(false);
+
+  function openDetail() {
+    setShowDetail(true);
+  }
+
+  function backToQueue() {
+    setShowDetail(false);
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -120,7 +223,13 @@ function Dashboard() {
             </div>
           </div>
 
-          <div className="relative ml-auto w-full max-w-md">
+          <form
+            className="relative ml-auto w-full max-w-md"
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (nationalId.trim()) openDetail();
+            }}
+          >
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
               value={nationalId}
@@ -128,138 +237,230 @@ function Dashboard() {
               placeholder="Enter Farmer National ID"
               className="w-full rounded-lg border border-input bg-background py-2 pl-9 pr-3 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/20"
             />
-          </div>
+          </form>
         </div>
       </header>
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          {/* LEFT COLUMN — Data & Score */}
-          <div className="flex flex-col gap-6">
-            {/* Farmer profile */}
-            <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
-              <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent">
-                  <User className="h-6 w-6 text-accent-foreground" />
-                </div>
-                <div>
-                  <h2 className="text-lg font-bold text-foreground">Wanjiru Kamau</h2>
-                  <p className="text-xs text-muted-foreground">National ID • 28471936</p>
-                </div>
-                <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-success/10 px-2.5 py-1 text-xs font-semibold text-success">
-                  <ShieldCheck className="h-3.5 w-3.5" /> Verified
-                </span>
-              </div>
-              <DetailRow icon={User} label="Name" value="Wanjiru Kamau" />
-              <DetailRow icon={Cake} label="Age" value="37 years" />
-              <DetailRow icon={Users} label="Gender" value="Female" />
-              <DetailRow icon={Accessibility} label="Disability Status" value="None" />
-              <DetailRow icon={Ruler} label="Farm Size" value="2.4 acres" />
-            </section>
-
-            {/* Community Trust Score */}
-            <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
-              <div className="mb-2 flex items-center gap-2">
-                <TrendingUp className="h-4 w-4 text-primary" />
-                <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">
-                  Community Trust Score
-                </h3>
-              </div>
-              <div className="flex flex-col items-center py-3">
-                <TrustGauge score={TRUST_SCORE} />
-                <p className="mt-3 text-center text-xs text-muted-foreground">
-                  Strong standing across Chama repayments and cooperative activity.
-                </p>
-              </div>
-            </section>
-
-            {/* Neo4j graph placeholder */}
-            <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
-              <div className="mb-3 flex items-center gap-2">
-                <Network className="h-4 w-4 text-primary" />
-                <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">
-                  Neo4j Community Graph
-                </h3>
-              </div>
-              <div className="flex h-56 items-center justify-center rounded-lg border-2 border-dashed border-border bg-secondary/40">
-                <div className="flex flex-col items-center gap-2 text-muted-foreground">
-                  <Network className="h-10 w-10 opacity-40" />
-                  <span className="text-xs font-medium">
-                    Network graph visualization
-                  </span>
-                </div>
-              </div>
-            </section>
-          </div>
-
-          {/* RIGHT COLUMN — AI Underwriting & Action */}
-          <div className="flex flex-col gap-6">
-            {/* Featherless AI rationale */}
-            <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
-              <div className="mb-3 flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-primary" />
-                <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">
-                  Featherless AI Underwriting Rationale
-                </h3>
-              </div>
-              <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-success/10 px-3 py-1 text-xs font-bold text-success">
-                <CheckCircle2 className="h-3.5 w-3.5" /> RECOMMENDED: APPROVE
-              </span>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                The applicant demonstrates a consistent 24-month repayment record within
-                the <span className="font-semibold text-foreground">Mwihoko Women's Chama</span>,
-                contributing KES 1,200 monthly without default. Cross-referenced cooperative
-                data from the <span className="font-semibold text-foreground">Kiambu Dairy
-                Cooperative</span> confirms steady milk deliveries and reliable income flow.
-                Her central position in the community trust graph — endorsed by 14 high-standing
-                members — significantly de-risks this facility. Combined with a stable 2.4-acre
-                holding, the model assesses a low probability of default and recommends approval
-                of the requested agricultural input voucher.
-              </p>
-            </section>
-
-            {/* Agentic fulfillment */}
-            <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
-              <div className="mb-3 flex items-center gap-2">
-                <Store className="h-4 w-4 text-primary" />
-                <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">
-                  Agentic Fulfillment
-                </h3>
-              </div>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between rounded-lg bg-secondary/50 p-3">
-                  <span className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Store className="h-4 w-4 text-primary" /> Target Agrovet
-                  </span>
-                  <span className="text-sm font-semibold text-foreground">
-                    Githunguri Farm Supplies
-                  </span>
-                </div>
-                <div className="flex items-center justify-between rounded-lg bg-secondary/50 p-3">
-                  <span className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Wallet className="h-4 w-4 text-primary" /> Wallet Address
-                  </span>
-                  <span className="font-mono text-xs font-semibold text-foreground">
-                    0x7Ab…3F9c
-                  </span>
-                </div>
-              </div>
-            </section>
-
-            {/* Action buttons */}
-            <div className="mt-auto flex flex-col gap-3 sm:flex-row">
-              <button className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-5 py-4 text-base font-bold text-primary-foreground shadow-sm transition hover:opacity-90 active:scale-[0.99]">
-                <CheckCircle2 className="h-5 w-5" />
-                Approve &amp; Disburse Voucher (Masumi)
-              </button>
-              <button className="inline-flex items-center justify-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 px-5 py-4 text-base font-bold text-destructive transition hover:bg-destructive/20 active:scale-[0.99] sm:flex-none">
-                <XCircle className="h-5 w-5" />
-                Reject
-              </button>
-            </div>
-          </div>
-        </div>
+        {showDetail ? (
+          <DetailView onBack={backToQueue} />
+        ) : (
+          <OverviewQueue onOpen={openDetail} />
+        )}
       </main>
     </div>
+  );
+}
+
+function OverviewQueue({ onOpen }: { onOpen: () => void }) {
+  return (
+    <div className="flex flex-col gap-6">
+      {/* Summary cards */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <SummaryCard
+          icon={Clock}
+          label="Pending Approvals"
+          value="12"
+          hint="Awaiting officer review"
+        />
+        <SummaryCard
+          icon={Banknote}
+          label="Masumi Vouchers Disbursed (KES)"
+          value="1.84M"
+          hint="Across 214 approved facilities"
+        />
+        <SummaryCard
+          icon={Gauge}
+          label="Avg. Community Trust Score"
+          value="78"
+          hint="Across active applicant pool"
+        />
+      </div>
+
+      {/* Pending applications table */}
+      <section className="rounded-xl border border-border bg-card shadow-sm">
+        <div className="flex items-center gap-2 border-b border-border px-5 py-4">
+          <Users className="h-4 w-4 text-primary" />
+          <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">
+            Pending Loan Applications
+          </h3>
+        </div>
+        <div className="relative w-full overflow-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-left">
+                <th className="px-5 py-3 font-medium text-muted-foreground">Date</th>
+                <th className="px-5 py-3 font-medium text-muted-foreground">Farmer Name</th>
+                <th className="px-5 py-3 font-medium text-muted-foreground">National ID</th>
+                <th className="px-5 py-3 font-medium text-muted-foreground">Requested Input</th>
+                <th className="px-5 py-3 font-medium text-muted-foreground">AI Pre-Check</th>
+                <th className="px-5 py-3"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {APPLICATIONS.map((app) => (
+                <tr
+                  key={app.nationalId}
+                  onClick={onOpen}
+                  className="group cursor-pointer border-b border-border transition-colors last:border-0 hover:bg-secondary/50"
+                >
+                  <td className="px-5 py-3.5 text-muted-foreground">{app.date}</td>
+                  <td className="px-5 py-3.5 font-semibold text-foreground">{app.name}</td>
+                  <td className="px-5 py-3.5 font-mono text-xs text-muted-foreground">
+                    {app.nationalId}
+                  </td>
+                  <td className="px-5 py-3.5 text-foreground">{app.input}</td>
+                  <td className="px-5 py-3.5">
+                    <PreCheckBadge status={app.preCheck} />
+                  </td>
+                  <td className="px-5 py-3.5 text-right">
+                    <ChevronRight className="ml-auto h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function DetailView({ onBack }: { onBack: () => void }) {
+  return (
+    <>
+      <button
+        onClick={onBack}
+        className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition hover:opacity-80"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Queue
+      </button>
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {/* LEFT COLUMN — Data & Score */}
+        <div className="flex flex-col gap-6">
+          {/* Farmer profile */}
+          <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent">
+                <User className="h-6 w-6 text-accent-foreground" />
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-foreground">Wanjiru Kamau</h2>
+                <p className="text-xs text-muted-foreground">National ID • 28471936</p>
+              </div>
+              <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-success/10 px-2.5 py-1 text-xs font-semibold text-success">
+                <ShieldCheck className="h-3.5 w-3.5" /> Verified
+              </span>
+            </div>
+            <DetailRow icon={User} label="Name" value="Wanjiru Kamau" />
+            <DetailRow icon={Cake} label="Age" value="37 years" />
+            <DetailRow icon={Users} label="Gender" value="Female" />
+            <DetailRow icon={Accessibility} label="Disability Status" value="None" />
+            <DetailRow icon={Ruler} label="Farm Size" value="2.4 acres" />
+          </section>
+
+          {/* Community Trust Score */}
+          <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+            <div className="mb-2 flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-primary" />
+              <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">
+                Community Trust Score
+              </h3>
+            </div>
+            <div className="flex flex-col items-center py-3">
+              <TrustGauge score={TRUST_SCORE} />
+              <p className="mt-3 text-center text-xs text-muted-foreground">
+                Strong standing across Chama repayments and cooperative activity.
+              </p>
+            </div>
+          </section>
+
+          {/* Neo4j graph placeholder */}
+          <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+            <div className="mb-3 flex items-center gap-2">
+              <Network className="h-4 w-4 text-primary" />
+              <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">
+                Neo4j Community Graph
+              </h3>
+            </div>
+            <div className="flex h-56 items-center justify-center rounded-lg border-2 border-dashed border-border bg-secondary/40">
+              <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                <Network className="h-10 w-10 opacity-40" />
+                <span className="text-xs font-medium">Network graph visualization</span>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        {/* RIGHT COLUMN — AI Underwriting & Action */}
+        <div className="flex flex-col gap-6">
+          {/* Featherless AI rationale */}
+          <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+            <div className="mb-3 flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-primary" />
+              <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">
+                Featherless AI Underwriting Rationale
+              </h3>
+            </div>
+            <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-success/10 px-3 py-1 text-xs font-bold text-success">
+              <CheckCircle2 className="h-3.5 w-3.5" /> RECOMMENDED: APPROVE
+            </span>
+            <p className="text-sm leading-relaxed text-muted-foreground">
+              The applicant demonstrates a consistent 24-month repayment record within
+              the <span className="font-semibold text-foreground">Mwihoko Women's Chama</span>,
+              contributing KES 1,200 monthly without default. Cross-referenced cooperative
+              data from the <span className="font-semibold text-foreground">Kiambu Dairy
+              Cooperative</span> confirms steady milk deliveries and reliable income flow.
+              Her central position in the community trust graph — endorsed by 14 high-standing
+              members — significantly de-risks this facility. Combined with a stable 2.4-acre
+              holding, the model assesses a low probability of default and recommends approval
+              of the requested agricultural input voucher.
+            </p>
+          </section>
+
+          {/* Agentic fulfillment */}
+          <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+            <div className="mb-3 flex items-center gap-2">
+              <Store className="h-4 w-4 text-primary" />
+              <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">
+                Agentic Fulfillment
+              </h3>
+            </div>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between rounded-lg bg-secondary/50 p-3">
+                <span className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Store className="h-4 w-4 text-primary" /> Target Agrovet
+                </span>
+                <span className="text-sm font-semibold text-foreground">
+                  Githunguri Farm Supplies
+                </span>
+              </div>
+              <div className="flex items-center justify-between rounded-lg bg-secondary/50 p-3">
+                <span className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Wallet className="h-4 w-4 text-primary" /> Wallet Address
+                </span>
+                <span className="font-mono text-xs font-semibold text-foreground">
+                  0x7Ab…3F9c
+                </span>
+              </div>
+            </div>
+          </section>
+
+          {/* Action buttons */}
+          <div className="mt-auto flex flex-col gap-3 sm:flex-row">
+            <button className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-5 py-4 text-base font-bold text-primary-foreground shadow-sm transition hover:opacity-90 active:scale-[0.99]">
+              <CheckCircle2 className="h-5 w-5" />
+              Approve &amp; Disburse Voucher (Masumi)
+            </button>
+            <button className="inline-flex items-center justify-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 px-5 py-4 text-base font-bold text-destructive transition hover:bg-destructive/20 active:scale-[0.99] sm:flex-none">
+              <XCircle className="h-5 w-5" />
+              Reject
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
