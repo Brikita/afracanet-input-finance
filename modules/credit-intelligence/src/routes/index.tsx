@@ -115,7 +115,7 @@ function TrustGauge({ score }: { score: number }) {
           cy={radius}
         />
         <circle
-          stroke="var(--success)"
+          stroke={color}
           fill="transparent"
           strokeWidth={stroke}
           strokeLinecap="round"
