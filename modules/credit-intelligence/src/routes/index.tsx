@@ -21,7 +21,26 @@ import {
   Banknote,
   Gauge,
   ChevronRight,
+  Loader2,
+  AlertTriangle,
 } from "lucide-react";
+
+interface FarmerScore {
+  farmerId: string;
+  name: string;
+  creditScore: number;
+  metrics: {
+    simCardAgeDays: number;
+    transactionCount: number;
+    totalCashFlowKES: number;
+    cooperativeRepaymentScore: number;
+    guaranteedAmountKES: number;
+  };
+  environmentalRisk: {
+    status: string | null;
+    penaltyScore: number;
+  };
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({
