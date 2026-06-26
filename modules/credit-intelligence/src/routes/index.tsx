@@ -99,6 +99,9 @@ function TrustGauge({ score }: { score: number }) {
   const normalizedRadius = radius - stroke / 2;
   const circumference = normalizedRadius * 2 * Math.PI;
   const offset = circumference - (score / 100) * circumference;
+  const color =
+    score > 70 ? "var(--success)" : score >= 50 ? "#d97706" : "var(--destructive)";
+
 
   return (
     <div className="relative flex items-center justify-center">
