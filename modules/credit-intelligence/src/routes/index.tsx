@@ -217,13 +217,35 @@ function PreCheckBadge({ status }: { status: PreCheck }) {
 function Dashboard() {
   const [nationalId, setNationalId] = useState("");
   const [showDetail, setShowDetail] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [farmer, setFarmer] = useState<FarmerScore | null>(null);
 
-  function openDetail() {
+  async function fetchFarmer(id: string) {
+    const query = id.trim();
+    if (!query) return;
+    setLoading(true);
+    setError(null);
     setShowDetail(true);
+    setFarmer(null);
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/farmer/${encodeURIComponent(query)}/score`,
+      );
+      if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+      const data: FarmerScore = await res.json();
+      setFarmer(data);
+    } catch {
+      setError("Farmer record not found. Try F-101, F-102, or F-103.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   function backToQueue() {
     setShowDetail(false);
+    setError(null);
+    setFarmer(null);
   }
 
   return (
@@ -249,7 +271,7 @@ function Dashboard() {
             className="relative ml-auto w-full max-w-md"
             onSubmit={(e) => {
               e.preventDefault();
-              if (nationalId.trim()) openDetail();
+              fetchFarmer(nationalId);
             }}
           >
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -265,14 +287,20 @@ function Dashboard() {
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
         {showDetail ? (
-          <DetailView onBack={backToQueue} />
+          <DetailView
+            onBack={backToQueue}
+            loading={loading}
+            error={error}
+            farmer={farmer}
+          />
         ) : (
-          <OverviewQueue onOpen={openDetail} />
+          <OverviewQueue onOpen={() => fetchFarmer("F-101")} />
         )}
       </main>
     </div>
   );
 }
+
 
 function OverviewQueue({ onOpen }: { onOpen: () => void }) {
   return (
