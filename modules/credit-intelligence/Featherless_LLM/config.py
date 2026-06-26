@@ -24,11 +24,11 @@ NEO4J_URI = os.getenv("NEO4J_URI")
 NEO4J_USERNAME = os.getenv("NEO4J_USERNAME")
 NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD")
 
-""" 
+ 
 # Masumi Protocol Setup
 MASUMI_NETWORK = os.getenv("MASUMI_NETWORK", "preprod")
 MASUMI_WALLET_MNEUMONIC = os.getenv("MASUMI_WALLET_MNEUMONIC")
 
 # Server Configurations
 PORT = int(os.getenv("PORT", 8000))
-CORS_ORIGINS = os.getenv("ALLOWED_CORS_ORIGINS", "*").split(",") """
+CORS_ORIGINS = os.getenv("ALLOWED_CORS_ORIGINS", "*").split(",")
