@@ -62,7 +62,7 @@ export const Route = createFileRoute("/")({
   component: Dashboard,
 });
 
-const TRUST_SCORE = 82;
+
 
 type PreCheck = "High Confidence" | "Needs Review";
 
