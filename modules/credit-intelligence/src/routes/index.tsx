@@ -376,16 +376,62 @@ function OverviewQueue({ onOpen }: { onOpen: () => void }) {
   );
 }
 
-function DetailView({ onBack }: { onBack: () => void }) {
+function DetailView({
+  onBack,
+  loading,
+  error,
+  farmer,
+}: {
+  onBack: () => void;
+  loading: boolean;
+  error: string | null;
+  farmer: FarmerScore | null;
+}) {
+  const backButton = (
+    <button
+      onClick={onBack}
+      className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition hover:opacity-80"
+    >
+      <ArrowLeft className="h-4 w-4" />
+      Back to Queue
+    </button>
+  );
+
+  if (loading) {
+    return (
+      <>
+        {backButton}
+        <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4 rounded-xl border border-border bg-card p-10 shadow-sm">
+          <Loader2 className="h-10 w-10 animate-spin text-primary" />
+          <p className="text-sm font-medium text-muted-foreground">
+            Fetching farmer record from community graph…
+          </p>
+        </div>
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        {backButton}
+        <div className="flex min-h-[40vh] flex-col items-center justify-center gap-3 rounded-xl border border-destructive/30 bg-destructive/5 p-10 text-center">
+          <AlertTriangle className="h-10 w-10 text-destructive" />
+          <p className="text-sm font-semibold text-destructive">{error}</p>
+        </div>
+      </>
+    );
+  }
+
+  if (!farmer) return <>{backButton}</>;
+
+  const m = farmer.metrics;
+  const env = farmer.environmentalRisk;
+  const rationale = `The applicant, ${farmer.name}, demonstrates a cooperative repayment score of ${m.cooperativeRepaymentScore} and a total cash flow of KES ${m.totalCashFlowKES}. The model factored in their SIM card age of ${m.simCardAgeDays} days and guaranteed Chama amount of KES ${m.guaranteedAmountKES}. Environmental overlay notes: ${env.status ?? "None"} (Penalty: ${env.penaltyScore}). Based on these graph metrics, the requested agricultural input voucher is conditionally recommended.`;
+
   return (
     <>
-      <button
-        onClick={onBack}
-        className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition hover:opacity-80"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back to Queue
-      </button>
+      {backButton}
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* LEFT COLUMN — Data & Score */}
@@ -397,14 +443,16 @@ function DetailView({ onBack }: { onBack: () => void }) {
                 <User className="h-6 w-6 text-accent-foreground" />
               </div>
               <div>
-                <h2 className="text-lg font-bold text-foreground">Wanjiru Kamau</h2>
-                <p className="text-xs text-muted-foreground">National ID • 28471936</p>
+                <h2 className="text-lg font-bold text-foreground">{farmer.name}</h2>
+                <p className="text-xs text-muted-foreground">
+                  National ID • {farmer.farmerId}
+                </p>
               </div>
               <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-success/10 px-2.5 py-1 text-xs font-semibold text-success">
                 <ShieldCheck className="h-3.5 w-3.5" /> Verified
               </span>
             </div>
-            <DetailRow icon={User} label="Name" value="Wanjiru Kamau" />
+            <DetailRow icon={User} label="Name" value={farmer.name} />
             <DetailRow icon={Cake} label="Age" value="37 years" />
             <DetailRow icon={Users} label="Gender" value="Female" />
             <DetailRow icon={Accessibility} label="Disability Status" value="None" />
@@ -420,7 +468,7 @@ function DetailView({ onBack }: { onBack: () => void }) {
               </h3>
             </div>
             <div className="flex flex-col items-center py-3">
-              <TrustGauge score={TRUST_SCORE} />
+              <TrustGauge score={farmer.creditScore} />
               <p className="mt-3 text-center text-xs text-muted-foreground">
                 Strong standing across Chama repayments and cooperative activity.
               </p>
@@ -457,17 +505,7 @@ function DetailView({ onBack }: { onBack: () => void }) {
             <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-success/10 px-3 py-1 text-xs font-bold text-success">
               <CheckCircle2 className="h-3.5 w-3.5" /> RECOMMENDED: APPROVE
             </span>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              The applicant demonstrates a consistent 24-month repayment record within
-              the <span className="font-semibold text-foreground">Mwihoko Women's Chama</span>,
-              contributing KES 1,200 monthly without default. Cross-referenced cooperative
-              data from the <span className="font-semibold text-foreground">Kiambu Dairy
-              Cooperative</span> confirms steady milk deliveries and reliable income flow.
-              Her central position in the community trust graph — endorsed by 14 high-standing
-              members — significantly de-risks this facility. Combined with a stable 2.4-acre
-              holding, the model assesses a low probability of default and recommends approval
-              of the requested agricultural input voucher.
-            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground">{rationale}</p>
           </section>
 
           {/* Agentic fulfillment */}
@@ -514,3 +552,4 @@ function DetailView({ onBack }: { onBack: () => void }) {
     </>
   );
 }
+
