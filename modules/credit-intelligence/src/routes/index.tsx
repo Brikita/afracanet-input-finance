@@ -70,15 +70,12 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "AFRACANet AI — SACCO Underwriting" },
       {
         property: "og:description",
-        content:
-          "Community trust scoring and AI underwriting for rural agricultural lending.",
+        content: "Community trust scoring and AI underwriting for rural agricultural lending.",
       },
     ],
   }),
   component: Dashboard,
 });
-
-
 
 type PreCheck = "High Confidence" | "Needs Review";
 
@@ -134,9 +131,7 @@ function TrustGauge({ score }: { score: number }) {
   const normalizedRadius = radius - stroke / 2;
   const circumference = normalizedRadius * 2 * Math.PI;
   const offset = circumference - (score / 100) * circumference;
-  const color =
-    score > 70 ? "var(--success)" : score >= 50 ? "#d97706" : "var(--destructive)";
-
+  const color = score > 70 ? "var(--success)" : score >= 50 ? "#d97706" : "var(--destructive)";
 
   return (
     <div className="relative flex items-center justify-center">
@@ -322,7 +317,6 @@ function Dashboard() {
   );
 }
 
-
 function OverviewQueue({ onOpen }: { onOpen: (id: string) => void }) {
   const [pendingApps, setPendingApps] = useState<PendingApp[]>([]);
 
@@ -473,6 +467,12 @@ function DetailView({
 }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
+  const [isRejected, setIsRejected] = useState(false);
+
+  useEffect(() => {
+    setIsApproved(false);
+    setIsRejected(false);
+  }, [selectedFarmerId]);
 
   async function handleApprove() {
     if (!selectedFarmerId) return;
@@ -485,9 +485,30 @@ function DetailView({
       });
       if (!res.ok) throw new Error(`Request failed: ${res.status}`);
       setIsApproved(true);
+      setIsRejected(false);
       toast.success("Loan Approved & SMS Dispatched!");
     } catch {
       toast.error("Approval failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  async function handleReject() {
+    if (!selectedFarmerId) return;
+    setIsSubmitting(true);
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/reject`, {
+        method: "POST",
+        headers: NGROK_HEADERS,
+        body: JSON.stringify({ farmer_id: selectedFarmerId }),
+      });
+      if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+      setIsRejected(true);
+      setIsApproved(false);
+      toast.success("Loan Rejected & SMS Sent!");
+    } catch {
+      toast.error("Rejection failed. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -533,7 +554,8 @@ function DetailView({
 
   const decision = (farmer.evaluation?.decision ?? "").toUpperCase();
   const isApprove = decision === "APPROVE";
-  const rationale = farmer.evaluation?.rationale ?? "No rationale provided by the underwriting model.";
+  const rationale =
+    farmer.evaluation?.rationale ?? "No rationale provided by the underwriting model.";
 
   return (
     <>
@@ -550,9 +572,7 @@ function DetailView({
               </div>
               <div>
                 <h2 className="text-lg font-bold text-foreground">{farmer.name}</h2>
-                <p className="text-xs text-muted-foreground">
-                  National ID • {farmer.farmerId}
-                </p>
+                <p className="text-xs text-muted-foreground">National ID • {farmer.farmerId}</p>
               </div>
               <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-success/10 px-2.5 py-1 text-xs font-semibold text-success">
                 <ShieldCheck className="h-3.5 w-3.5" /> Verified
@@ -610,9 +630,7 @@ function DetailView({
             </div>
             <span
               className={`mb-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold ${
-                isApprove
-                  ? "bg-success/10 text-success"
-                  : "bg-destructive/10 text-destructive"
+                isApprove ? "bg-success/10 text-success" : "bg-destructive/10 text-destructive"
               }`}
             >
               {isApprove ? (
@@ -646,9 +664,7 @@ function DetailView({
                 <span className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Wallet className="h-4 w-4 text-primary" /> Wallet Address
                 </span>
-                <span className="font-mono text-xs font-semibold text-foreground">
-                  0x7Ab…3F9c
-                </span>
+                <span className="font-mono text-xs font-semibold text-foreground">0x7Ab…3F9c</span>
               </div>
             </div>
           </section>
@@ -672,11 +688,12 @@ function DetailView({
                   : "Approve & Disburse Voucher (Masumi)"}
             </button>
             <button
-              disabled={isSubmitting || isApproved}
+              onClick={handleReject}
+              disabled={isSubmitting || isApproved || isRejected}
               className="inline-flex items-center justify-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 px-5 py-4 text-base font-bold text-destructive transition hover:bg-destructive/20 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 sm:flex-none"
             >
               <XCircle className="h-5 w-5" />
-              Reject
+              {isRejected ? "Rejected" : "Reject"}
             </button>
           </div>
         </div>
@@ -684,4 +701,3 @@ function DetailView({
     </>
   );
 }
-
