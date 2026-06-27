@@ -29,7 +29,12 @@ AT_API_KEY = "REMOVED_HISTORICAL_CREDENTIAL"
 
 # Initialize external clients
 client = OpenAI(base_url=FEATHERLESS_BASE_URL, api_key=FEATHERLESS_API_KEY)
-neo4j_driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
+# The DB is now provided by the DB Lead's microservice over HTTP (Ngrok).
+# We no longer create a local Neo4j driver in this service.
+# neo4j_driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
+
+# Remote DB Lead Flask API (update if their ngrok URL changes)
+FLASK_DATA_API_URL = "https://sternum-detract-startup.ngrok-free.dev"
 
 # --- HACKATHON IN-MEMORY QUEUE ---
 # Stores incoming USSD applications for the Lovable UI to fetch
@@ -38,7 +43,9 @@ pending_applications = []
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     yield
-    neo4j_driver.close()
+    driver = globals().get("neo4j_driver")
+    if driver is not None:
+        driver.close()
     print("🔌 Database connections safely closed.")
 
 app = FastAPI(
@@ -64,11 +71,38 @@ class ApprovalRequest(BaseModel):
 
 # --- 1. GRAPH DATA RETRIEVAL ---
 def fetch_graph_context(farmer_id: str) -> dict:
-    """Pulls real GDS metrics and relationships from Neo4j."""
-    
-    #  HACKATHON BYPASS: DB Lead is offline.
-    # We return Amina's data directly so you can build the UI.
-    if farmer_id.upper() in ["F-101", "F101"]:
+    """
+    Pulls real GDS metrics from the DB Lead's remote Flask API.
+    Falls back to local demo data if the microservice is unreachable.
+    """
+    try:
+        # 1. Ping the DB Lead's Ngrok URL (allow insecure to avoid local SSL handshake issues)
+        response = requests.get(
+            f"{FLASK_DATA_API_URL}/api/farmer/{farmer_id.upper()}/score",
+            timeout=5,
+            verify=False,
+        )
+        response.raise_for_status()
+        data = response.json()
+
+        # 2. Map remote payload to our expected shape
+        return {
+            "name": data.get("name", "Unknown Farmer"),
+            "cooperative_name": data.get("cooperative_name", "Meru Dairy Cooperative"),
+            "chama_name": data.get("chama_name", "Bidii Women Table Banking"),
+            "agrovet_name": data.get("agrovet_name", "Mavuno Fertilizer & Seeds"),
+            "trust_pagerank": data["aiMetrics"]["pageRankTrustScore"],
+            "transaction_degree": data["aiMetrics"]["degreeCentralityFootprint"],
+            "louvain_repayment_cluster": str(data["aiMetrics"].get("louvainRiskCommunityId", "-1")),
+            "environmental_risk": f"{data.get('environmentalRisk', {}).get('status', 'Unknown')} (Penalty: {data.get('environmentalRisk', {}).get('penaltyScore', 0)})",
+            "creditScore": data.get("creditScore", 0),
+            "similarPeers": data["aiMetrics"].get("knnSimilarEstablishedPeers", 0),
+            "simAgeDays": data.get("traditionalMetrics", {}).get("simCardAgeDays", 0),
+        }
+
+    except Exception as e:
+        print(f"⚠️ Warning: DB Lead's API is unreachable ({e}). Using Hackathon Fallback Data.")
+        # Fallback demo data for hackathon reliability
         return {
             "name": "Amina Wanjiku",
             "cooperative_name": "Meru Dairy Cooperative",
@@ -80,50 +114,7 @@ def fetch_graph_context(farmer_id: str) -> dict:
             "environmental_risk": "Mild Drought (Penalty: 10)",
             "creditScore": 85,
             "similarPeers": 3,
-            "simAgeDays": 1200
-        }
-    
-    #  LIVE DB QUERY (Runs when DB is turned back on)
-    query = """
-    MATCH (f:Farmer {id: $farmer_id})
-    OPTIONAL MATCH (f)-[:LOCATED_IN]->(reg:Region)-[:EXPOSED_TO]->(risk:EnvironmentalRisk)
-    OPTIONAL MATCH (f)-[sim:SIMILAR_TO]->(peer:Farmer)
-    OPTIONAL MATCH (f)-[:MEMBER_OF]->(c:Chama)
-    OPTIONAL MATCH (f)-[:DELIVERS_TO]->(coop:AgriCooperative)
-    OPTIONAL MATCH (f)-[:PERFORMED_TX]->(m:MpesaTransaction)-[:PAID_TO]->(dealer:AgriDealer)
-    RETURN 
-        f.name AS Applicant,
-        COALESCE(f.mobileMoneySimCardAgeDays, f.simAge, 0) AS SimAgeDays,
-        COALESCE(f.trust_pagerank, 0.0) AS CommunityTrustScore,
-        COALESCE(f.economic_footprint, 0.0) AS EconomicFootprint,
-        COALESCE(f.community_id, -1) AS LouvainCommunityId,
-        count(sim) AS SimilarPeersCount,
-        COALESCE(risk.intensityScore, 0.0) AS ClimateRiskPenalty,
-        COALESCE(risk.type, 'Unknown') AS LiveClimateStatus,
-        c.name AS ChamaName,
-        coop.name AS CoopName,
-        dealer.businessName AS AgrovetName
-    """
-    with neo4j_driver.session() as session:
-        result = session.run(query, farmer_id=farmer_id.upper())
-        record = result.single()
-        
-        if not record:
-            raise HTTPException(status_code=404, detail=f"Farmer {farmer_id} not found in database.")
-            
-        data = dict(record)
-        return {
-            "name": data["Applicant"],
-            "cooperative_name": data["CoopName"] or "None",
-            "chama_name": data["ChamaName"] or "None",
-            "agrovet_name": data["AgrovetName"] or "your local supplier",
-            "trust_pagerank": round(data["CommunityTrustScore"], 3),
-            "transaction_degree": data["EconomicFootprint"],
-            "louvain_repayment_cluster": str(data["LouvainCommunityId"]),
-            "environmental_risk": f"{data['LiveClimateStatus']} (Penalty: {data['ClimateRiskPenalty']})",
-            "creditScore": min(max(30 + (data["CommunityTrustScore"] * 50) + data["EconomicFootprint"], 0), 100), # Simplified DB score
-            "similarPeers": data["SimilarPeersCount"],
-            "simAgeDays": data["SimAgeDays"]
+            "simAgeDays": 1200,
         }
 
 # --- 2. FEATHERLESS LLM LOGIC ---
@@ -147,23 +138,26 @@ def flatten_graph_context(raw_data: dict) -> str:
     )
     return flattened_text
 
-def request_llm_verdict(flattened_context: str) -> dict:
+def request_llm_verdict(flattened_context: str, language: str = "en") -> dict:
     chosen_model = MODEL_MAPPING["credit_evaluation_agent"]
-    
+
+    tip_language = "Swahili" if language == "sw" else "English"
+
     system_instruction = (
         "You are an expert Agricultural Credit Underwriter for a Kenyan SACCO. "
         "Your job is to analyze alternative graph-data metrics and provide a 3-to-4 sentence rationale "
-        "for approving or rejecting an agricultural input voucher.\n\n"
+        "for approving or rejecting an agricultural input voucher. The rationale should be in English.\n\n"
         "RULES OF EXECUTION:\n"
         "1. You MUST explicitly name the specific Chama, Cooperative, or Agrovet the farmer is connected to.\n"
         "2. You MUST cite the environmental risk provided in the context.\n"
-        "3. Do not invent data. Assess based only on available social collateral.\n"
-        "4. Conclude with a definitive 'RECOMMENDATION: APPROVE' or 'RECOMMENDATION: REJECT'.\n\n"
+        "3. Conclude with a definitive 'RECOMMENDATION: APPROVE' or 'RECOMMENDATION: REJECT'.\n"
+        f"4. CREATE A SAFE SMS: You must generate an actionable, encouraging tip for the farmer (max 140 characters). "
+        f"CRITICAL: This safe_tip MUST be written in {tip_language}. Do NOT mention AI, algorithms, PageRank, footprints, or scores. Give practical community advice.\n\n"
         "OUTPUT FORMAT:\n"
-        "You must return your response as a raw JSON object with exactly two keys. DO NOT wrap the output in Markdown blocks.\n"
-        '{"decision": "APPROVE" | "REJECT", "rationale": "Your explanation here."}'
+        "You must return your response as a raw JSON object with exactly three keys. DO NOT wrap the output in Markdown blocks.\n"
+        '{"decision": "APPROVE" | "REJECT", "rationale": "Your explanation here.", "safe_tip": "Your 140-char SMS tip here."}'
     )
-    
+
     response = client.chat.completions.create(
         model=chosen_model,
         messages=[
@@ -172,17 +166,21 @@ def request_llm_verdict(flattened_context: str) -> dict:
         ],
         temperature=0.0
     )
-    
+
     raw_output = response.choices[0].message.content.strip()
     if raw_output.startswith("```json"):
         raw_output = raw_output[7:-3].strip()
     elif raw_output.startswith("```"):
         raw_output = raw_output[3:-3].strip()
-        
+
     try:
         return json.loads(raw_output)
     except json.JSONDecodeError:
-        return {"decision": "ERROR", "rationale": "The Underwriting AI failed to format its response correctly."}
+        return {
+            "decision": "ERROR",
+            "rationale": "The Underwriting AI failed.",
+            "safe_tip": "Tafadhali wasiliana na ofisi." if language == "sw" else "Please contact the office."
+        }
 
 # --- 3. AFRICA'S TALKING SMS EXECUTOR ---
 def execute_approval_sms(phone_number: str, national_id: str, lang: str, agrovet_name: str):
@@ -209,6 +207,32 @@ def execute_approval_sms(phone_number: str, national_id: str, lang: str, agrovet
         print(f"SMS API Response: {response.status_code} - {response.text}")
     except Exception as e:
         print(f"Encountered an error while sending SMS: {e}")
+
+
+def execute_rejection_sms(phone_number: str, national_id: str, lang: str, safe_tip: str):
+    """Sends a rejection SMS with a safe, actionable tip to avoid system gaming."""
+    if lang == "sw":
+        message = f"Vocha ya AfracaNet (ID {national_id}) haijaidhinishwa. Ushauri: {safe_tip}"
+    else:
+        message = f"Your AfracaNet voucher (ID {national_id}) was not approved. Tip: {safe_tip}"
+
+    url = "https://api.sandbox.africastalking.com/version1/messaging"
+    headers = {
+        "ApiKey": AT_API_KEY,
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Accept": "application/json"
+    }
+    payload = {
+        "username": AT_USERNAME,
+        "to": phone_number,
+        "message": message
+    }
+
+    try:
+        response = requests.post(url, headers=headers, data=payload, verify=False)
+        print(f"Rejection SMS API Response: {response.status_code} - {response.text}")
+    except Exception as e:
+        print(f"Encountered an error while sending rejection SMS: {e}")
 
 # ==========================================
 # --- API ENDPOINTS (THE ORCHESTRATION) ---
@@ -268,8 +292,12 @@ async def evaluate_farmer(payload: EvaluationRequest):
     """Triggered when the Loan Officer clicks a pending application in Lovable."""
     raw_graph_data = fetch_graph_context(payload.farmer_id)
     flattened_text = flatten_graph_context(raw_graph_data)
-    llm_verdict = request_llm_verdict(flattened_text)
-    
+
+    app_record = next((app for app in pending_applications if app["farmer_id"] == payload.farmer_id.upper()), None)
+    lang = app_record["language"] if app_record else "en"
+
+    llm_verdict = request_llm_verdict(flattened_text, lang)
+
     return {
         "farmerId": payload.farmer_id,
         "name": raw_graph_data["name"],
@@ -312,6 +340,33 @@ async def approve_loan(payload: ApprovalRequest, background_tasks: BackgroundTas
     )
     
     return {"status": "success", "message": f"Loan for {payload.farmer_id} approved. Dispatching SMS."}
+
+@app.post("/api/reject")
+async def reject_loan(payload: EvaluationRequest, background_tasks: BackgroundTasks):
+    """Triggered when the Loan Officer clicks 'Reject' in the Lovable UI."""
+    app_record = next((app for app in pending_applications if app["farmer_id"] == payload.farmer_id.upper()), None)
+
+    if not app_record:
+        raise HTTPException(status_code=404, detail="Farmer not found in queue.")
+
+    app_record["status"] = "Rejected"
+
+    raw_graph_data = fetch_graph_context(payload.farmer_id)
+    flattened_text = flatten_graph_context(raw_graph_data)
+    llm_verdict = request_llm_verdict(flattened_text, app_record["language"])
+
+    fallback_tip = "Endelea kushirikiana na ushirika wako." if app_record["language"] == "sw" else "Keep collaborating with your cooperative."
+    safe_tip = llm_verdict.get("safe_tip", fallback_tip)
+
+    background_tasks.add_task(
+        execute_rejection_sms,
+        app_record["phone"],
+        payload.farmer_id,
+        app_record["language"],
+        safe_tip,
+    )
+
+    return {"status": "success", "message": f"Loan for {payload.farmer_id} rejected. Dispatching SMS."}
 
 if __name__ == "__main__":
     import uvicorn
