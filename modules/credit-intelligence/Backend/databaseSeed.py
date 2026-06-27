@@ -3,9 +3,12 @@ import requests
 from neo4j import GraphDatabase
 from datetime import datetime, timedelta
 
-NEO4J_URL= os.getenv("NEO4J_URL","neo4j://localhost:7687")
-NEO4J_USER= os.getenv("NEO4J_USER","neo4j")
-NEO4J_PASSWORD= os.getenv("NEO4J_PASSWORD","15SaM373")
+# Import configurations
+from config import (
+    NEO4J_PASSWORD,
+    NEO4J_URI,
+    NEO4J_USERNAME
+)
 
 class GraphSeeder:
     def __init__(self, uri, user, password):
@@ -238,7 +241,7 @@ class GraphSeeder:
 
 if __name__=="__main__":
     print("Initializing GraphSeeder...")
-    seeder = GraphSeeder(NEO4J_URL, NEO4J_USER, NEO4J_PASSWORD)
+    seeder = GraphSeeder(NEO4J_URI, NEO4J_USERNAME, NEO4J_PASSWORD)
     try:
         seeder.prepare_database()
         seeder.seed_data()
