@@ -26,21 +26,36 @@ import {
   AlertTriangle,
 } from "lucide-react";
 
+const BACKEND_URL = "YOUR_NGROK_URL_HERE"; // I will update this string myself later.
+const NGROK_HEADERS = {
+  "Content-Type": "application/json",
+  "ngrok-skip-browser-warning": "69420",
+};
+
 interface FarmerScore {
   farmerId: string;
   name: string;
   creditScore: number;
-  metrics: {
+  aiMetrics: {
+    pageRankTrustScore: number;
+    degreeCentralityFootprint: number;
+    louvainRiskCommunityId: number | string;
+    knnSimilarEstablishedPeers: number;
+  };
+  traditionalMetrics: {
     simCardAgeDays: number;
-    transactionCount: number;
-    totalCashFlowKES: number;
-    cooperativeRepaymentScore: number;
-    guaranteedAmountKES: number;
   };
-  environmentalRisk: {
-    status: string | null;
-    penaltyScore: number;
+  environmentalRisk: string;
+  evaluation: {
+    decision: string;
+    rationale: string;
   };
+}
+
+interface PendingApp {
+  farmer_id: string;
+  status: string;
+  time: string;
 }
 
 export const Route = createFileRoute("/")({
