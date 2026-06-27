@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { toast } from "sonner";
 import {
   Sprout,
   Search,
@@ -25,21 +26,36 @@ import {
   AlertTriangle,
 } from "lucide-react";
 
+const BACKEND_URL = "YOUR_NGROK_URL_HERE"; // I will update this string myself later.
+const NGROK_HEADERS = {
+  "Content-Type": "application/json",
+  "ngrok-skip-browser-warning": "69420",
+};
+
 interface FarmerScore {
   farmerId: string;
   name: string;
   creditScore: number;
-  metrics: {
+  aiMetrics: {
+    pageRankTrustScore: number;
+    degreeCentralityFootprint: number;
+    louvainRiskCommunityId: number | string;
+    knnSimilarEstablishedPeers: number;
+  };
+  traditionalMetrics: {
     simCardAgeDays: number;
-    transactionCount: number;
-    totalCashFlowKES: number;
-    cooperativeRepaymentScore: number;
-    guaranteedAmountKES: number;
   };
-  environmentalRisk: {
-    status: string | null;
-    penaltyScore: number;
+  environmentalRisk: string;
+  evaluation: {
+    decision: string;
+    rationale: string;
   };
+}
+
+interface PendingApp {
+  farmer_id: string;
+  status: string;
+  time: string;
 }
 
 export const Route = createFileRoute("/")({
@@ -220,18 +236,22 @@ function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [farmer, setFarmer] = useState<FarmerScore | null>(null);
+  const [selectedFarmerId, setSelectedFarmerId] = useState("");
 
   async function fetchFarmer(id: string) {
-    const query = id.trim();
+    const query = id.trim().toUpperCase();
     if (!query) return;
+    setSelectedFarmerId(query);
     setLoading(true);
     setError(null);
     setShowDetail(true);
     setFarmer(null);
     try {
-      const res = await fetch(
-        `http://localhost:5000/api/farmer/${encodeURIComponent(query)}/score`,
-      );
+      const res = await fetch(`${BACKEND_URL}/api/evaluate`, {
+        method: "POST",
+        headers: NGROK_HEADERS,
+        body: JSON.stringify({ farmer_id: query }),
+      });
       if (!res.ok) throw new Error(`Request failed: ${res.status}`);
       const data: FarmerScore = await res.json();
       setFarmer(data);
@@ -292,9 +312,10 @@ function Dashboard() {
             loading={loading}
             error={error}
             farmer={farmer}
+            selectedFarmerId={selectedFarmerId}
           />
         ) : (
-          <OverviewQueue onOpen={() => fetchFarmer("F-101")} />
+          <OverviewQueue onOpen={(id) => fetchFarmer(id)} />
         )}
       </main>
     </div>
@@ -302,7 +323,31 @@ function Dashboard() {
 }
 
 
-function OverviewQueue({ onOpen }: { onOpen: () => void }) {
+function OverviewQueue({ onOpen }: { onOpen: (id: string) => void }) {
+  const [pendingApps, setPendingApps] = useState<PendingApp[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    async function poll() {
+      try {
+        const res = await fetch(`${BACKEND_URL}/api/pending_loans`, {
+          headers: NGROK_HEADERS,
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (active) setPendingApps(data.pending ?? []);
+      } catch {
+        /* backend offline — keep last known queue */
+      }
+    }
+    poll();
+    const interval = setInterval(poll, 3000);
+    return () => {
+      active = false;
+      clearInterval(interval);
+    };
+  }, []);
+
   return (
     <div className="flex flex-col gap-6">
       {/* Summary cards */}
@@ -310,7 +355,7 @@ function OverviewQueue({ onOpen }: { onOpen: () => void }) {
         <SummaryCard
           icon={Clock}
           label="Pending Approvals"
-          value="12"
+          value={String(pendingApps.length || 12)}
           hint="Awaiting officer review"
         />
         <SummaryCard
@@ -326,6 +371,43 @@ function OverviewQueue({ onOpen }: { onOpen: () => void }) {
           hint="Across active applicant pool"
         />
       </div>
+
+      {/* Live USSD queue */}
+      {pendingApps.length > 0 && (
+        <section className="rounded-xl border border-border bg-card shadow-sm">
+          <div className="flex items-center gap-2 border-b border-border px-5 py-4">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <h3 className="text-sm font-bold uppercase tracking-wide text-foreground">
+              Live USSD Applications
+            </h3>
+            <span className="ml-auto inline-flex items-center gap-1.5 rounded-full bg-success/10 px-2.5 py-1 text-xs font-semibold text-success">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-success" /> Live
+            </span>
+          </div>
+          <div className="flex flex-col">
+            {pendingApps.map((app, i) => (
+              <button
+                key={`${app.farmer_id}-${i}`}
+                onClick={() => onOpen(app.farmer_id)}
+                className="group flex items-center gap-3 border-b border-border px-5 py-3.5 text-left transition-colors last:border-0 hover:bg-secondary/50"
+              >
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent">
+                  <User className="h-4 w-4 text-accent-foreground" />
+                </div>
+                <div className="leading-tight">
+                  <span className="block font-mono text-sm font-semibold text-foreground">
+                    {app.farmer_id}
+                  </span>
+                  <span className="block text-xs text-muted-foreground">
+                    {app.status} • {app.time}
+                  </span>
+                </div>
+                <ChevronRight className="ml-auto h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-primary" />
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Pending applications table */}
       <section className="rounded-xl border border-border bg-card shadow-sm">
@@ -351,7 +433,7 @@ function OverviewQueue({ onOpen }: { onOpen: () => void }) {
               {APPLICATIONS.map((app) => (
                 <tr
                   key={app.nationalId}
-                  onClick={onOpen}
+                  onClick={() => onOpen("F-101")}
                   className="group cursor-pointer border-b border-border transition-colors last:border-0 hover:bg-secondary/50"
                 >
                   <td className="px-5 py-3.5 text-muted-foreground">{app.date}</td>
@@ -381,12 +463,36 @@ function DetailView({
   loading,
   error,
   farmer,
+  selectedFarmerId,
 }: {
   onBack: () => void;
   loading: boolean;
   error: string | null;
   farmer: FarmerScore | null;
+  selectedFarmerId: string;
 }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
+
+  async function handleApprove() {
+    if (!selectedFarmerId) return;
+    setIsSubmitting(true);
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/approve`, {
+        method: "POST",
+        headers: NGROK_HEADERS,
+        body: JSON.stringify({ farmer_id: selectedFarmerId }),
+      });
+      if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+      setIsApproved(true);
+      toast.success("Loan Approved & SMS Dispatched!");
+    } catch {
+      toast.error("Approval failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   const backButton = (
     <button
       onClick={onBack}
@@ -425,9 +531,9 @@ function DetailView({
 
   if (!farmer) return <>{backButton}</>;
 
-  const m = farmer.metrics;
-  const env = farmer.environmentalRisk;
-  const rationale = `The applicant, ${farmer.name}, demonstrates a cooperative repayment score of ${m.cooperativeRepaymentScore} and a total cash flow of KES ${m.totalCashFlowKES}. The model factored in their SIM card age of ${m.simCardAgeDays} days and guaranteed Chama amount of KES ${m.guaranteedAmountKES}. Environmental overlay notes: ${env.status ?? "None"} (Penalty: ${env.penaltyScore}). Based on these graph metrics, the requested agricultural input voucher is conditionally recommended.`;
+  const decision = (farmer.evaluation?.decision ?? "").toUpperCase();
+  const isApprove = decision === "APPROVE";
+  const rationale = farmer.evaluation?.rationale ?? "No rationale provided by the underwriting model.";
 
   return (
     <>
@@ -502,8 +608,19 @@ function DetailView({
                 Featherless AI Underwriting Rationale
               </h3>
             </div>
-            <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-success/10 px-3 py-1 text-xs font-bold text-success">
-              <CheckCircle2 className="h-3.5 w-3.5" /> RECOMMENDED: APPROVE
+            <span
+              className={`mb-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold ${
+                isApprove
+                  ? "bg-success/10 text-success"
+                  : "bg-destructive/10 text-destructive"
+              }`}
+            >
+              {isApprove ? (
+                <CheckCircle2 className="h-3.5 w-3.5" />
+              ) : (
+                <XCircle className="h-3.5 w-3.5" />
+              )}
+              RECOMMENDED: {decision || "PENDING"}
             </span>
             <p className="text-sm leading-relaxed text-muted-foreground">{rationale}</p>
           </section>
@@ -538,11 +655,26 @@ function DetailView({
 
           {/* Action buttons */}
           <div className="mt-auto flex flex-col gap-3 sm:flex-row">
-            <button className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-5 py-4 text-base font-bold text-primary-foreground shadow-sm transition hover:opacity-90 active:scale-[0.99]">
-              <CheckCircle2 className="h-5 w-5" />
-              Approve &amp; Disburse Voucher (Masumi)
+            <button
+              onClick={handleApprove}
+              disabled={isSubmitting || isApproved}
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-5 py-4 text-base font-bold text-primary-foreground shadow-sm transition hover:opacity-90 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isSubmitting ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <CheckCircle2 className="h-5 w-5" />
+              )}
+              {isApproved
+                ? "Approved & Disbursed"
+                : isSubmitting
+                  ? "Disbursing…"
+                  : "Approve & Disburse Voucher (Masumi)"}
             </button>
-            <button className="inline-flex items-center justify-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 px-5 py-4 text-base font-bold text-destructive transition hover:bg-destructive/20 active:scale-[0.99] sm:flex-none">
+            <button
+              disabled={isSubmitting || isApproved}
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 px-5 py-4 text-base font-bold text-destructive transition hover:bg-destructive/20 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 sm:flex-none"
+            >
               <XCircle className="h-5 w-5" />
               Reject
             </button>
