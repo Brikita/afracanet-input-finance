@@ -3,14 +3,19 @@ from flask import Flask, jsonify
 from flask_cors import CORS
 from neo4j import GraphDatabase
 
+# Import configurations
+from config import (
+    NEO4J_PASSWORD,
+    NEO4J_URI,
+    NEO4J_USERNAME
+)
+
 app = Flask(__name__)
 CORS(app)
 
-NEO4J_URI="neo4j://localhost:7687"
-NEO4J_USER="neo4j"
-NEO4J_PASSWORD="15SaM373"
 
-driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USER, NEO4J_PASSWORD))
+
+driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
 
 def calculate_credit_score(data):
     if not data:
