@@ -30,13 +30,13 @@ MASUMI_WALLET_MNEUMONIC = os.getenv("MASUMI_WALLET_MNEUMONIC")
 # Server Configurations
 PORT = int(os.getenv("PORT", 8000))
 
-_default_origins = (
-    "http://localhost:8080,"
-    "http://localhost:3000,"
-    "http://localhost:5173,"
-    "https://afracanet-ai.vercel.app,"
-    "https://crepuscular-elvis-tumulous.ngrok-free.dev"
-)
+DEFAULT_CORS_ORIGINS = [
+    "http://localhost:8080",
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "https://afracanet-ai.vercel.app",
+    "https://crepuscular-elvis-tumulous.ngrok-free.dev",
+]
 
-# Split and trim; allow overriding with ALLOWED_CORS_ORIGINS env var (comma-separated)
-CORS_ORIGINS = [o.strip() for o in os.getenv("ALLOWED_CORS_ORIGINS", _default_origins).split(",") if o.strip()]
+env_origins = [o.strip() for o in os.getenv("ALLOWED_CORS_ORIGINS", "").split(",") if o.strip()]
+CORS_ORIGINS = list(dict.fromkeys(DEFAULT_CORS_ORIGINS + env_origins))
