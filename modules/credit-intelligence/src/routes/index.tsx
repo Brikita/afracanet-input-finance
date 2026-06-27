@@ -26,7 +26,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 
-const BACKEND_URL = "YOUR_NGROK_URL_HERE"; // I will update this string myself later.
+const BACKEND_URL = "https://crepuscular-elvis-tumulous.ngrok-free.dev"; // I will update this string myself later.
 const NGROK_HEADERS = {
   "Content-Type": "application/json",
   "ngrok-skip-browser-warning": "69420",
