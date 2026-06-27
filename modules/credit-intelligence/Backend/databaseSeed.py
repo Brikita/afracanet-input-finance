@@ -148,6 +148,93 @@ class GraphSeeder:
                         MERGE (f)-[:PERFORMED_TX]->(m)
                         MERGE (m)-[:CONTRIBUTED_TO]->(tgt)
                     """, farmer=tx["farmer"], target=tx["target"], receipt=tx["receipt"], type=tx["type"], amt=tx["amt"])
+    def run_gds_algorithms(self):
+        with self.driver.session() as session:
+            print("Running GDS PageRank for Trust Network...")
+
+            session.run("CALL gds.graph.drop('trustGraph', false)")
+            session.run("""
+                 CALL gds.graph.project(
+                        'trustGraph',
+                        'Farmer',
+                        'GUARANTEES'
+                        )
+                    """)
+            
+            session.run("""
+                        CALL gds.pageRank.write('trustGraph', {
+    
+                            maxIterations: 20,
+                            dampingFactor: 0.85,
+                            writeProperty: 'trust_pagerank'
+                        })""")
+            
+            session.run("CALL gds.graph.drop('trustGraph')")
+            print("Trust scores written to Farmer nodes.")
+
+            #Louvain Algorithm
+            print("Running GDS Louvain algorithm for community detection ...")
+
+            session.run("CALL gds.graph.drop('communityGraph', false)")
+
+            session.run("""
+                        CALL gds.graph.project(
+                            'communityGraph',
+                            ['Farmer', 'Chama', 'AgriCooperative'],
+                            ['MEMBER_OF', 'DELIVERS_TO']
+                        )
+                        """)
+            
+            session.run("""
+                        CALL gds.louvain.write('communityGraph',{
+                            writeProperty: 'community_id'
+                        })""")
+            
+            session.run("CALL gds.graph.drop('communityGraph')")
+            print("Community IDs successfully written to nodes.")
+
+            #Degree Centrality
+            print("Running GDS Degree Centrality for economic footprint...")
+            session.run("CALL gds.graph.drop('economicGraph', false)")
+
+            session.run("""
+                        CALL gds.graph.project(
+                            'economicGraph',
+                            ['Farmer', 'MPesaTransaction'],
+                            ['PERFORMED_TX']
+                        )
+                        """)
+            session.run("""
+                        CALL gds.degree.write('economicGraph', {
+                            writeProperty: 'economic_footprint'
+                        })""")
+            
+            session.run("CALL gds.graph.drop('economicGraph')")
+            print("Economic footprints successfully written to Farmer nodes.")
+
+            # Similarity/ KNN
+            print("Running GDS Similarity Algorithm to find Look A-like Borrowers...")
+            session.run("CALL gds.graph.drop('similarityGraph', false)")
+
+            session.run("""
+                        CALL gds.graph.project(
+                            'similarityGraph',
+                            ['Farmer', 'Chama', 'AgriCooperative', 'Region'],
+                            ['MEMBER_OF', 'DELIVERS_TO', 'LOCATED_IN']
+                        )
+                        """)
+            session.run("""
+                        CALL gds.nodeSimilarity.write('similarityGraph', {
+                            writeRelationshipType: 'SIMILAR_TO',
+                            writeProperty: 'score',
+                            similarityCutoff: 0.1,
+                            topK: 5}
+                        )
+                    """)
+            
+            session.run("CALL gds.graph.drop('similarityGraph')")
+            print("Similarity relationships successfully written to the graph.")
+
 
 if __name__=="__main__":
     print("Initializing GraphSeeder...")
@@ -155,6 +242,7 @@ if __name__=="__main__":
     try:
         seeder.prepare_database()
         seeder.seed_data()
+        seeder.run_gds_algorithms()
         print("Database seeding completed successfully.")
     except Exception as e:
         print(f"An error occurred during database seeding: {e}")
