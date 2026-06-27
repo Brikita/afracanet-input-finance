@@ -531,9 +531,9 @@ function DetailView({
 
   if (!farmer) return <>{backButton}</>;
 
-  const m = farmer.metrics;
-  const env = farmer.environmentalRisk;
-  const rationale = `The applicant, ${farmer.name}, demonstrates a cooperative repayment score of ${m.cooperativeRepaymentScore} and a total cash flow of KES ${m.totalCashFlowKES}. The model factored in their SIM card age of ${m.simCardAgeDays} days and guaranteed Chama amount of KES ${m.guaranteedAmountKES}. Environmental overlay notes: ${env.status ?? "None"} (Penalty: ${env.penaltyScore}). Based on these graph metrics, the requested agricultural input voucher is conditionally recommended.`;
+  const decision = (farmer.evaluation?.decision ?? "").toUpperCase();
+  const isApprove = decision === "APPROVE";
+  const rationale = farmer.evaluation?.rationale ?? "No rationale provided by the underwriting model.";
 
   return (
     <>
