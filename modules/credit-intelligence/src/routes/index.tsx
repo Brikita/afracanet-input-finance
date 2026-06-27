@@ -236,18 +236,22 @@ function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [farmer, setFarmer] = useState<FarmerScore | null>(null);
+  const [selectedFarmerId, setSelectedFarmerId] = useState("");
 
   async function fetchFarmer(id: string) {
-    const query = id.trim();
+    const query = id.trim().toUpperCase();
     if (!query) return;
+    setSelectedFarmerId(query);
     setLoading(true);
     setError(null);
     setShowDetail(true);
     setFarmer(null);
     try {
-      const res = await fetch(
-        `http://localhost:5000/api/farmer/${encodeURIComponent(query)}/score`,
-      );
+      const res = await fetch(`${BACKEND_URL}/api/evaluate`, {
+        method: "POST",
+        headers: NGROK_HEADERS,
+        body: JSON.stringify({ farmer_id: query }),
+      });
       if (!res.ok) throw new Error(`Request failed: ${res.status}`);
       const data: FarmerScore = await res.json();
       setFarmer(data);
