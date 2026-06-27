@@ -608,8 +608,19 @@ function DetailView({
                 Featherless AI Underwriting Rationale
               </h3>
             </div>
-            <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-success/10 px-3 py-1 text-xs font-bold text-success">
-              <CheckCircle2 className="h-3.5 w-3.5" /> RECOMMENDED: APPROVE
+            <span
+              className={`mb-3 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold ${
+                isApprove
+                  ? "bg-success/10 text-success"
+                  : "bg-destructive/10 text-destructive"
+              }`}
+            >
+              {isApprove ? (
+                <CheckCircle2 className="h-3.5 w-3.5" />
+              ) : (
+                <XCircle className="h-3.5 w-3.5" />
+              )}
+              RECOMMENDED: {decision || "PENDING"}
             </span>
             <p className="text-sm leading-relaxed text-muted-foreground">{rationale}</p>
           </section>
