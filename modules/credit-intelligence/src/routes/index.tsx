@@ -312,9 +312,10 @@ function Dashboard() {
             loading={loading}
             error={error}
             farmer={farmer}
+            selectedFarmerId={selectedFarmerId}
           />
         ) : (
-          <OverviewQueue onOpen={() => fetchFarmer("F-101")} />
+          <OverviewQueue onOpen={(id) => fetchFarmer(id)} />
         )}
       </main>
     </div>
