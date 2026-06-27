@@ -21,7 +21,26 @@ import {
   Banknote,
   Gauge,
   ChevronRight,
+  Loader2,
+  AlertTriangle,
 } from "lucide-react";
+
+interface FarmerScore {
+  farmerId: string;
+  name: string;
+  creditScore: number;
+  metrics: {
+    simCardAgeDays: number;
+    transactionCount: number;
+    totalCashFlowKES: number;
+    cooperativeRepaymentScore: number;
+    guaranteedAmountKES: number;
+  };
+  environmentalRisk: {
+    status: string | null;
+    penaltyScore: number;
+  };
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -43,7 +62,7 @@ export const Route = createFileRoute("/")({
   component: Dashboard,
 });
 
-const TRUST_SCORE = 82;
+
 
 type PreCheck = "High Confidence" | "Needs Review";
 
@@ -99,6 +118,9 @@ function TrustGauge({ score }: { score: number }) {
   const normalizedRadius = radius - stroke / 2;
   const circumference = normalizedRadius * 2 * Math.PI;
   const offset = circumference - (score / 100) * circumference;
+  const color =
+    score > 70 ? "var(--success)" : score >= 50 ? "#d97706" : "var(--destructive)";
+
 
   return (
     <div className="relative flex items-center justify-center">
@@ -112,7 +134,7 @@ function TrustGauge({ score }: { score: number }) {
           cy={radius}
         />
         <circle
-          stroke="var(--success)"
+          stroke={color}
           fill="transparent"
           strokeWidth={stroke}
           strokeLinecap="round"
@@ -195,13 +217,35 @@ function PreCheckBadge({ status }: { status: PreCheck }) {
 function Dashboard() {
   const [nationalId, setNationalId] = useState("");
   const [showDetail, setShowDetail] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [farmer, setFarmer] = useState<FarmerScore | null>(null);
 
-  function openDetail() {
+  async function fetchFarmer(id: string) {
+    const query = id.trim();
+    if (!query) return;
+    setLoading(true);
+    setError(null);
     setShowDetail(true);
+    setFarmer(null);
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/farmer/${encodeURIComponent(query)}/score`,
+      );
+      if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+      const data: FarmerScore = await res.json();
+      setFarmer(data);
+    } catch {
+      setError("Farmer record not found. Try F-101, F-102, or F-103.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   function backToQueue() {
     setShowDetail(false);
+    setError(null);
+    setFarmer(null);
   }
 
   return (
@@ -227,7 +271,7 @@ function Dashboard() {
             className="relative ml-auto w-full max-w-md"
             onSubmit={(e) => {
               e.preventDefault();
-              if (nationalId.trim()) openDetail();
+              fetchFarmer(nationalId);
             }}
           >
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -243,14 +287,20 @@ function Dashboard() {
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6">
         {showDetail ? (
-          <DetailView onBack={backToQueue} />
+          <DetailView
+            onBack={backToQueue}
+            loading={loading}
+            error={error}
+            farmer={farmer}
+          />
         ) : (
-          <OverviewQueue onOpen={openDetail} />
+          <OverviewQueue onOpen={() => fetchFarmer("F-101")} />
         )}
       </main>
     </div>
   );
 }
+
 
 function OverviewQueue({ onOpen }: { onOpen: () => void }) {
   return (
@@ -326,16 +376,62 @@ function OverviewQueue({ onOpen }: { onOpen: () => void }) {
   );
 }
 
-function DetailView({ onBack }: { onBack: () => void }) {
+function DetailView({
+  onBack,
+  loading,
+  error,
+  farmer,
+}: {
+  onBack: () => void;
+  loading: boolean;
+  error: string | null;
+  farmer: FarmerScore | null;
+}) {
+  const backButton = (
+    <button
+      onClick={onBack}
+      className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition hover:opacity-80"
+    >
+      <ArrowLeft className="h-4 w-4" />
+      Back to Queue
+    </button>
+  );
+
+  if (loading) {
+    return (
+      <>
+        {backButton}
+        <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4 rounded-xl border border-border bg-card p-10 shadow-sm">
+          <Loader2 className="h-10 w-10 animate-spin text-primary" />
+          <p className="text-sm font-medium text-muted-foreground">
+            Fetching farmer record from community graph…
+          </p>
+        </div>
+      </>
+    );
+  }
+
+  if (error) {
+    return (
+      <>
+        {backButton}
+        <div className="flex min-h-[40vh] flex-col items-center justify-center gap-3 rounded-xl border border-destructive/30 bg-destructive/5 p-10 text-center">
+          <AlertTriangle className="h-10 w-10 text-destructive" />
+          <p className="text-sm font-semibold text-destructive">{error}</p>
+        </div>
+      </>
+    );
+  }
+
+  if (!farmer) return <>{backButton}</>;
+
+  const m = farmer.metrics;
+  const env = farmer.environmentalRisk;
+  const rationale = `The applicant, ${farmer.name}, demonstrates a cooperative repayment score of ${m.cooperativeRepaymentScore} and a total cash flow of KES ${m.totalCashFlowKES}. The model factored in their SIM card age of ${m.simCardAgeDays} days and guaranteed Chama amount of KES ${m.guaranteedAmountKES}. Environmental overlay notes: ${env.status ?? "None"} (Penalty: ${env.penaltyScore}). Based on these graph metrics, the requested agricultural input voucher is conditionally recommended.`;
+
   return (
     <>
-      <button
-        onClick={onBack}
-        className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition hover:opacity-80"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back to Queue
-      </button>
+      {backButton}
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* LEFT COLUMN — Data & Score */}
@@ -347,14 +443,16 @@ function DetailView({ onBack }: { onBack: () => void }) {
                 <User className="h-6 w-6 text-accent-foreground" />
               </div>
               <div>
-                <h2 className="text-lg font-bold text-foreground">Wanjiru Kamau</h2>
-                <p className="text-xs text-muted-foreground">National ID • 28471936</p>
+                <h2 className="text-lg font-bold text-foreground">{farmer.name}</h2>
+                <p className="text-xs text-muted-foreground">
+                  National ID • {farmer.farmerId}
+                </p>
               </div>
               <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-success/10 px-2.5 py-1 text-xs font-semibold text-success">
                 <ShieldCheck className="h-3.5 w-3.5" /> Verified
               </span>
             </div>
-            <DetailRow icon={User} label="Name" value="Wanjiru Kamau" />
+            <DetailRow icon={User} label="Name" value={farmer.name} />
             <DetailRow icon={Cake} label="Age" value="37 years" />
             <DetailRow icon={Users} label="Gender" value="Female" />
             <DetailRow icon={Accessibility} label="Disability Status" value="None" />
@@ -370,7 +468,7 @@ function DetailView({ onBack }: { onBack: () => void }) {
               </h3>
             </div>
             <div className="flex flex-col items-center py-3">
-              <TrustGauge score={TRUST_SCORE} />
+              <TrustGauge score={farmer.creditScore} />
               <p className="mt-3 text-center text-xs text-muted-foreground">
                 Strong standing across Chama repayments and cooperative activity.
               </p>
@@ -407,17 +505,7 @@ function DetailView({ onBack }: { onBack: () => void }) {
             <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-success/10 px-3 py-1 text-xs font-bold text-success">
               <CheckCircle2 className="h-3.5 w-3.5" /> RECOMMENDED: APPROVE
             </span>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              The applicant demonstrates a consistent 24-month repayment record within
-              the <span className="font-semibold text-foreground">Mwihoko Women's Chama</span>,
-              contributing KES 1,200 monthly without default. Cross-referenced cooperative
-              data from the <span className="font-semibold text-foreground">Kiambu Dairy
-              Cooperative</span> confirms steady milk deliveries and reliable income flow.
-              Her central position in the community trust graph — endorsed by 14 high-standing
-              members — significantly de-risks this facility. Combined with a stable 2.4-acre
-              holding, the model assesses a low probability of default and recommends approval
-              of the requested agricultural input voucher.
-            </p>
+            <p className="text-sm leading-relaxed text-muted-foreground">{rationale}</p>
           </section>
 
           {/* Agentic fulfillment */}
@@ -464,3 +552,4 @@ function DetailView({ onBack }: { onBack: () => void }) {
     </>
   );
 }
+
