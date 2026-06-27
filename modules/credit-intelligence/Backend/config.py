@@ -31,4 +31,6 @@ MASUMI_WALLET_MNEUMONIC = os.getenv("MASUMI_WALLET_MNEUMONIC")
 
 # Server Configurations
 PORT = int(os.getenv("PORT", 8000))
-CORS_ORIGINS = os.getenv("ALLOWED_CORS_ORIGINS", "*").split(",")
+_default_origins = "http://localhost:8080,https://crepuscular-elvis-tumulous.ngrok-free.dev"
+# Split and trim; allow overriding with ALLOWED_CORS_ORIGINS env var (comma-separated)
+CORS_ORIGINS = [o.strip() for o in os.getenv("ALLOWED_CORS_ORIGINS", _default_origins).split(",") if o.strip()]
