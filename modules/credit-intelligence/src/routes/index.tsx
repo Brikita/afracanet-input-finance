@@ -433,7 +433,7 @@ function OverviewQueue({ onOpen }: { onOpen: (id: string) => void }) {
               {APPLICATIONS.map((app) => (
                 <tr
                   key={app.nationalId}
-                  onClick={onOpen}
+                  onClick={() => onOpen("F-101")}
                   className="group cursor-pointer border-b border-border transition-colors last:border-0 hover:bg-secondary/50"
                 >
                   <td className="px-5 py-3.5 text-muted-foreground">{app.date}</td>
