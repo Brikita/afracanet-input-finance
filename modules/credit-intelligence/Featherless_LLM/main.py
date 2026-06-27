@@ -1,12 +1,13 @@
 import os
+import json
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from openai import OpenAI
 from neo4j import GraphDatabase
-from contextlib import asynccontextmanager
 
-# Import our configurations
+# Import configurations
 from config import (
     FEATHERLESS_BASE_URL,
     FEATHERLESS_API_KEY,
@@ -17,126 +18,142 @@ from config import (
     CORS_ORIGINS
 )
 
-# Create the lifespan context manager for safe startup/shutdown
+# Initialize external clients
+client = OpenAI(base_url=FEATHERLESS_BASE_URL, api_key=FEATHERLESS_API_KEY)
+neo4j_driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: We don't have anything specific to start right now
     yield
-    # Shutdown: Safely close the Neo4j driver when the server stops
     neo4j_driver.close()
     print("🔌 Database connections safely closed.")
 
-# Update your FastAPI initialization to include the lifespan
 app = FastAPI(
     title="AFRACA Credit Risk Intelligence API",
-    description="GraphRAG Backend powering rural loan officer credit assessments.",
+    description="Cognitive Underwriter API utilizing Neo4j GDS and Featherless LLM.",
     lifespan=lifespan
 )
 
-# ... [The rest of your endpoints remain exactly the same] ...
-
-# Crucial for Lovable integration: Allow cross-origin requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=CORS_ORIGINS,  # Pulls from config/env (e.g., https://*.lovable.app)
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Initialize Featherless and Neo4j
-client = OpenAI(base_url=FEATHERLESS_BASE_URL, api_key=FEATHERLESS_API_KEY)
-neo4j_driver = GraphDatabase.driver(NEO4J_URI, auth=(NEO4J_USERNAME, NEO4J_PASSWORD))
-
-# Define the expected JSON incoming request structure from Lovable
 class EvaluationRequest(BaseModel):
     farmer_id: str
 
-# --- GraphRAG Helper Functions ---
+# --- GRAPH DATA RETRIEVAL ---
 def fetch_graph_context(farmer_id: str) -> dict:
-    cypher_query = """
-    MATCH (f:Farmer {id: $farmer_id})
-    OPTIONAL MATCH (f)-[:MEMBER_OF]->(c:Cooperative)
-    OPTIONAL MATCH (f)-[:TRANSACTS_WITH]->(m:MobileMoneyWallet)
-    RETURN f.name AS name,
-           f.demographic_category AS demographic, 
-           c.repayment_history AS coop_history,
-           m.transaction_consistency AS mobile_consistency
     """
-    try:
-        with neo4j_driver.session() as session:
-            result = session.run(cypher_query, farmer_id=farmer_id)
-            record = result.single()
-            if record:
-                return dict(record)
-            
-            # Safe Fallback fallback if your teammate's DB doesn't have the node yet
-            return {
-                "name": "Grace Omwamba",
-                "demographic": "Female / Youth",
-                "coop_history": "Consistent 12-month on-time repayment for seed inputs",
-                "mobile_consistency": 0.88
-            }
-    except Exception as e:
-        # DB connection error fallback so the frontend teammate isn't blocked
-        return {
-            "name": f"Mock Farmer ({farmer_id})",
-            "demographic": "Undefined",
-            "coop_history": "No historical database connection found. Simulating data.",
-            "mobile_consistency": 0.50
-        }
+    Simulates pulling the GDS metrics. Once the DB lead finishes the schema, 
+    we will drop the actual Cypher query here.
+    """
+    return {
+        "name": "Grace Omwamba",
+        "cooperative_name": "Machakos Seed Cooperative",
+        "chama_name": "Tumaini Women's Group",
+        "trust_pagerank": 0.85,
+        "transaction_degree": 12,
+        "louvain_repayment_cluster": "High-Performing",
+        "environmental_risk": "Mild Drought in Machakos"
+    }
 
-def request_llm_verdict(context: dict) -> str:
+# --- ACTION 1: THE CONTEXT INJECTOR ---
+def flatten_graph_context(raw_data: dict) -> str:
+    """
+    Translates raw JSON math scores into a deterministic, human-readable narrative 
+    for the LLM so it doesn't get confused by nested data structures.
+    """
+    name = raw_data.get("name", "The applicant")
+    pagerank = raw_data.get("trust_pagerank", 0)
+    degree = raw_data.get("transaction_degree", 0)
+    cluster = raw_data.get("louvain_repayment_cluster", "Unknown")
+    coop = raw_data.get("cooperative_name", "None")
+    chama = raw_data.get("chama_name", "None")
+    env_risk = raw_data.get("environmental_risk", "None reported")
+
+    # Dynamic baseline logic
+    pr_percentile = "top 15% of community trust" if pagerank > 0.8 else "average community trust" if pagerank > 0.5 else "low community trust"
+
+    flattened_text = (
+        f"Applicant Name: {name}\n"
+        f"Network Topology & Financial Velocity: The farmer is in the {pr_percentile} (PageRank {pagerank}), "
+        f"has completed {degree} local transactions (Degree Centrality), and belongs to a '{cluster}' repayment cluster (Louvain).\n"
+        f"Social Affiliations: Connects to Cooperative '{coop}' and Chama '{chama}'.\n"
+        f"Environmental Risk: {env_risk}."
+    )
+    return flattened_text
+
+# --- ACTION 2 & 3: MASTER PROMPT & STRICT JSON OUTPUT ---
+def request_llm_verdict(flattened_context: str) -> dict:
+    """
+    Enforces the Kenyan SACCO Underwriter persona and parses the result safely into JSON.
+    """
     chosen_model = MODEL_MAPPING["credit_evaluation_agent"]
     
     system_instruction = (
-        "You are an expert microfinance credit risk intelligence engine specializing "
-        "in sub-Saharan African agriculture. Evaluate alternative data to empower marginalized farmers."
+        "You are an expert Agricultural Credit Underwriter for a Kenyan SACCO. "
+        "Your job is to analyze alternative graph-data metrics and provide a 3-to-4 sentence rationale "
+        "for approving or rejecting an agricultural input voucher.\n\n"
+        "RULES OF EXECUTION:\n"
+        "1. You MUST explicitly name the specific Chama, Cooperative, or Agrovet the farmer is connected to.\n"
+        "2. You MUST cite the environmental risk provided in the context.\n"
+        "3. Do not invent data. Assess based only on available social collateral.\n"
+        "4. Conclude with a definitive 'RECOMMENDATION: APPROVE' or 'RECOMMENDATION: REJECT' based on whether the overall metrics skew positive.\n\n"
+        "OUTPUT FORMAT:\n"
+        "You must return your response as a raw JSON object with exactly two keys. DO NOT wrap the output in Markdown blocks (like ```json). Just the raw object.\n"
+        '{"decision": "APPROVE" | "REJECT", "rationale": "Your explanation here."}'
     )
-    
-    prompt = f"""
-    Analyze the following data:
-    - Name: {context.get('name')}
-    - Demographic: {context.get('demographic')}
-    - Mobile consistency: {context.get('mobile_consistency')}
-    - Coop history: {context.get('coop_history')}
-    
-    Provide a decision layout:
-    ### [CREDITWORTHY / NOT CREDITWORTHY]
-    **Risk Profile Overview:** (2 sentences)
-    **Key Strengths:** (Bullet points)
-    """
     
     response = client.chat.completions.create(
         model=chosen_model,
         messages=[
             {"role": "system", "content": system_instruction},
-            {"role": "user", "content": prompt}
+            {"role": "user", "content": flattened_context}
         ],
-        temperature=0.1
+        temperature=0.0  # Zero temperature for maximum deterministic rigidity
     )
-    return response.choices[0].message.content
+    
+    raw_output = response.choices[0].message.content.strip()
+    
+    # Failsafe: Strip markdown blocks if the LLM stubbornly includes them anyway
+    if raw_output.startswith("```json"):
+        raw_output = raw_output[7:-3].strip()
+    elif raw_output.startswith("```"):
+        raw_output = raw_output[3:-3].strip()
+        
+    try:
+        # Action 3: Convert the text string into an actual Python dictionary
+        return json.loads(raw_output)
+    except json.JSONDecodeError:
+        # Fallback safeguard so the Lovable UI doesn't crash on a bad LLM generation
+        print(f"⚠️ JSON Decode Error. Raw LLM Output: {raw_output}")
+        return {
+            "decision": "ERROR", 
+            "rationale": "The Underwriting AI failed to format its response correctly."
+        }
 
-# --- API Endpoints ---
-@app.get("/health")
-def health_check():
-    return {"status": "healthy", "database_connected": True}
-
+# --- API ENDPOINTS ---
 @app.post("/api/evaluate")
 async def evaluate_farmer(payload: EvaluationRequest):
     if not payload.farmer_id:
         raise HTTPException(status_code=400, detail="Missing farmer_id parameter")
     
-    # 1. Execute GraphRAG data pull
-    graph_context = fetch_graph_context(payload.farmer_id)
+    # 1. Fetch raw graph metrics
+    raw_graph_data = fetch_graph_context(payload.farmer_id)
     
-    # 2. Process data context via Featherless LLM
-    try:
-        verdict_report = request_llm_verdict(graph_context)
-        return {
-            "farmer_id": payload.farmer_id,
-            "raw_graph_data": graph_context,
-            "evaluation_report": verdict_report
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Featherless inference failed: {str(e)}")
+    # 2. Inject context via flattening
+    flattened_text = flatten_graph_context(raw_graph_data)
+    
+    # 3. Request deterministic JSON response from LLM
+    llm_json_response = request_llm_verdict(flattened_text)
+    
+    # 4. Return unified payload to Lovable UI
+    return {
+        "farmer_id": payload.farmer_id,
+        "raw_graph_data": raw_graph_data,
+        "evaluation": llm_json_response
+    }
