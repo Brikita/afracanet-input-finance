@@ -655,11 +655,26 @@ function DetailView({
 
           {/* Action buttons */}
           <div className="mt-auto flex flex-col gap-3 sm:flex-row">
-            <button className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-5 py-4 text-base font-bold text-primary-foreground shadow-sm transition hover:opacity-90 active:scale-[0.99]">
-              <CheckCircle2 className="h-5 w-5" />
-              Approve &amp; Disburse Voucher (Masumi)
+            <button
+              onClick={handleApprove}
+              disabled={isSubmitting || isApproved}
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-5 py-4 text-base font-bold text-primary-foreground shadow-sm transition hover:opacity-90 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isSubmitting ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <CheckCircle2 className="h-5 w-5" />
+              )}
+              {isApproved
+                ? "Approved & Disbursed"
+                : isSubmitting
+                  ? "Disbursing…"
+                  : "Approve & Disburse Voucher (Masumi)"}
             </button>
-            <button className="inline-flex items-center justify-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 px-5 py-4 text-base font-bold text-destructive transition hover:bg-destructive/20 active:scale-[0.99] sm:flex-none">
+            <button
+              disabled={isSubmitting || isApproved}
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-destructive/30 bg-destructive/10 px-5 py-4 text-base font-bold text-destructive transition hover:bg-destructive/20 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 sm:flex-none"
+            >
               <XCircle className="h-5 w-5" />
               Reject
             </button>
