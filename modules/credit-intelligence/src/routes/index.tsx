@@ -463,12 +463,36 @@ function DetailView({
   loading,
   error,
   farmer,
+  selectedFarmerId,
 }: {
   onBack: () => void;
   loading: boolean;
   error: string | null;
   farmer: FarmerScore | null;
+  selectedFarmerId: string;
 }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isApproved, setIsApproved] = useState(false);
+
+  async function handleApprove() {
+    if (!selectedFarmerId) return;
+    setIsSubmitting(true);
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/approve`, {
+        method: "POST",
+        headers: NGROK_HEADERS,
+        body: JSON.stringify({ farmer_id: selectedFarmerId }),
+      });
+      if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+      setIsApproved(true);
+      toast.success("Loan Approved & SMS Dispatched!");
+    } catch {
+      toast.error("Approval failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   const backButton = (
     <button
       onClick={onBack}
