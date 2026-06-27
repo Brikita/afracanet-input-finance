@@ -32,16 +32,16 @@ The backend establishes a seamless, asynchronous communication channel between t
        ▼ (Sends: Farmer ID)
 [FastAPI Backend Router]
        │
-       ├─► [Neo4j Database] ✨ Pulls PageRank, Louvain Cluster, Centrality Metrics
+       ├─► [Neo4j Database] Pulls PageRank, Louvain Cluster, Centrality Metrics
        │         │
        │         ▼ (Returns raw math scores)
-       ├─► [Context Injector] ✨ Translates math into narrative text block
+       ├─► [Context Injector] Translates math into narrative text block
        │         │
        │         ▼ (Sends flattened context)
-       └─► [Featherless LLM API] ✨ Processes via DeepSeek Cognitive Underwriter
+       └─► [Featherless LLM API] Processes via DeepSeek Cognitive Underwriter
                  │
                  ▼ (Returns structured raw JSON object)
-[Lovable Frontend UI] ✨ Renders Approval/Rejection & Rationale instantly
+[Lovable Frontend UI] Renders Approval/Rejection & Rationale instantly
 
 ```
 
