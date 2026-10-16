@@ -1,6 +1,77 @@
 .mobile-signout {
   display: none;
 }
+.notifications-panel .management-panel {
+  border-bottom: 0;
+}
+.notifications-panel .management-fields {
+  max-width: 700px;
+}
+.notifications-panel .management-fields select {
+  display: block;
+  padding: 12px;
+  border: 1px solid #dfe5dc;
+  border-radius: 8px;
+  background: white;
+  width: 100%;
+  margin-top: 7px;
+}
+.consent-label {
+  display: flex;
+  gap: 10px;
+  max-width: 700px;
+  margin: 18px 0;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.consent-label input {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  accent-color: #173e32;
+}
+.contact-status {
+  padding: 14px;
+  border: 1px solid #e5e9e2;
+  border-radius: 8px;
+  margin: 18px 0;
+  font-size: 12px;
+}
+.verification-form {
+  margin: 20px 0;
+  max-width: 500px;
+  padding: 18px;
+  background: #f7f8f4;
+  border-radius: 12px;
+}
+.notifications-panel .fine-print {
+  margin: 12px 0;
+}
+.message-list {
+  margin-top: 20px;
+}
+.message-list article {
+  border-top: 1px solid #e5e9e2;
+  padding: 18px 0;
+}
+.message-list article > div {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  font-size: 12px;
+}
+.sms-preview {
+  margin: 12px 0;
+  padding: 14px;
+  background: #edf3e7;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
 .issues-panel {
   margin: 22px 0;
   padding: 16px;

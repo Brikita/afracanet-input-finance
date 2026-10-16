@@ -220,3 +220,64 @@ test('lender imports an approval and dealer maintains catalogue on mobile', asyn
     page.getByRole('dialog').getByText('Ready to invoice', { exact: true }),
   ).toBeVisible()
 })
+
+test('farmer verifies an SMS number and previews a Swahili order update', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Farmer experience' }).click()
+  await page.getByRole('button', { name: 'Open workspace' }).click()
+  await page.getByLabel('View as').selectOption('farmer-kiptoo')
+  await page.getByRole('button', { name: 'SMS updates', exact: true }).click()
+  await page
+    .getByLabel('Kenyan mobile number', { exact: true })
+    .fill('+254700000002')
+  await page.getByLabel('Message language', { exact: true }).selectOption('sw')
+  await page.getByRole('checkbox', { name: /I control this number/ }).check()
+  await page
+    .getByRole('button', { name: 'Save SMS preferences', exact: true })
+    .click()
+  await page
+    .getByRole('button', { name: 'Preview next queued SMS', exact: true })
+    .click()
+  const preview = await page.locator('.sms-preview').first().innerText()
+  const code = preview.match(/\b([0-9]{6})\b/)?.[1]
+  expect(code).toBeTruthy()
+  await page.getByLabel('Phone verification code', { exact: true }).fill(code!)
+  await page
+    .getByRole('button', { name: 'Verify mobile number', exact: true })
+    .click()
+  await expect(
+    page.getByText('Verified · updates enabled', { exact: false }),
+  ).toBeVisible()
+  await page.getByRole('button', { name: 'My inputs', exact: true }).click()
+  await page
+    .getByRole('button', { name: 'Add Maize seed 2 kg pack', exact: true })
+    .click()
+  await page
+    .getByRole('button', { name: 'Confirm input request', exact: true })
+    .click()
+  await expect(page.getByRole('dialog')).toBeVisible()
+  await page.getByRole('button', { name: 'Close transaction' }).click()
+  await page.getByRole('button', { name: 'SMS updates', exact: true }).click()
+  await page
+    .getByRole('button', { name: 'Preview next queued SMS', exact: true })
+    .click()
+  await expect(
+    page.locator('.sms-preview').filter({ hasText: 'ombi limepokelewa' }),
+  ).toContainText('[DEMO]')
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true)
+  await page.screenshot({
+    path: 'data/screenshots/farmer-sms-mobile.png',
+    fullPage: true,
+  })
+  await page.getByLabel('View as').selectOption('lender-demo')
+  await expect(
+    page.getByRole('button', { name: 'SMS updates', exact: true }),
+  ).toHaveCount(0)
+})

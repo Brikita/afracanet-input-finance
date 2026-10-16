@@ -14,6 +14,7 @@ export default defineConfig({
   expect: { timeout: 15000 },
   reporter: 'list',
   use: {
+    actionTimeout: 15000,
     baseURL: 'http://127.0.0.1:5174',
     channel:
       process.env.PLAYWRIGHT_CHANNEL ??

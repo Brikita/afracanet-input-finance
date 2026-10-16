@@ -20,6 +20,7 @@ import {
   CreditCard,
   Leaf,
   LogOut,
+  MessageSquare,
   Package,
   Plus,
   Search,
@@ -35,6 +36,7 @@ import {
 import './styles.css'
 import { ApprovalImport, CatalogueEditor } from './Management'
 import { Issues, type Issue } from './Issues'
+import { Notifications } from './Notifications'
 
 type Role = 'farmer' | 'lender' | 'supplier'
 type Session = { token: string; role: Role; subject: string; name: string }
@@ -564,6 +566,7 @@ function App() {
       ? [
           { id: 'overview', label: 'My inputs', icon: ShoppingBasket },
           { id: 'orders', label: 'My requests', icon: Clock3 },
+          { id: 'sms', label: 'SMS updates', icon: MessageSquare },
         ]
       : [
           { id: 'overview', label: 'Overview', icon: Leaf },
@@ -678,15 +681,17 @@ function App() {
                   : 'AGRICULTURAL INPUT FINANCE'}
               </span>
               <h1>
-                {role === 'farmer'
-                  ? 'From your credit to your farm.'
-                  : tab === 'people'
-                    ? role === 'lender'
-                      ? 'Approved credit allocations'
-                      : 'Your input inventory'
-                    : tab === 'orders'
-                      ? 'Every transaction, in view.'
-                      : 'A clearer path to the field.'}
+                {tab === 'sms'
+                  ? 'Updates that reach your phone.'
+                  : role === 'farmer'
+                    ? 'From your credit to your farm.'
+                    : tab === 'people'
+                      ? role === 'lender'
+                        ? 'Approved credit allocations'
+                        : 'Your input inventory'
+                      : tab === 'orders'
+                        ? 'Every transaction, in view.'
+                        : 'A clearer path to the field.'}
               </h1>
               <p>
                 {role === 'farmer'
@@ -932,7 +937,15 @@ function App() {
               </section>
             </div>
           )}
-          {tab !== 'people' && (
+          {role === 'farmer' && tab === 'sms' && (
+            <Notifications
+              key={session.token}
+              request={(path, body, method) =>
+                api(path, session.token, body, method)
+              }
+            />
+          )}
+          {tab !== 'people' && tab !== 'sms' && (
             <section className="panel transaction-panel">
               <div className="section-title">
                 <div>
