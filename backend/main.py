@@ -16,7 +16,7 @@ from sqlalchemy import insert, select, update
 from sqlalchemy.exc import IntegrityError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-from . import assistant, db
+from . import assistant, db, management
 from .config import ROOT, settings
 from .paypal import PayPal, PaymentError, verified_payment
 
@@ -134,15 +134,35 @@ def health():
 
 @app.get("/api/personas")
 def personas():
+    # Public demo choices are limited to seeded examples; imported people need a session.
     return [{"id": key, "role": value[0], "name": value[1]} for key, value in PERSONAS.items()]
+
+
+def participant(persona):
+    if persona in PERSONAS and PERSONAS[persona][0] != "farmer":
+        return PERSONAS[persona]
+    with db.engine.connect() as conn:
+        name = conn.execute(select(db.farmers.c.name).where(db.farmers.c.id == persona)).scalar_one_or_none()
+    return ("farmer", name) if name else None
+
+
+@app.get("/api/participants")
+def participant_choices(user=Depends(actor)):
+    # Demonstration switching uses a shared code, not separate production identities.
+    with db.engine.connect() as conn:
+        farmers = conn.execute(select(db.farmers.c.id, db.farmers.c.name).order_by(db.farmers.c.name)).mappings().all()
+    return [{"id": key, "name": value[1]} for key, value in PERSONAS.items() if value[0] != "farmer"] + [dict(row) for row in farmers]
 
 
 @app.post("/api/session")
 def login(body: Login):
-    if body.persona not in PERSONAS or not secrets.compare_digest(body.access_code, settings.access_code):
+    if not secrets.compare_digest(body.access_code, settings.access_code):
+        raise HTTPException(401, "Invalid participant or access code.")
+    identity = participant(body.persona)
+    if not identity:
         raise HTTPException(401, "Invalid participant or access code.")
     token = secrets.token_urlsafe(32)
-    role, name = PERSONAS[body.persona]
+    role, name = identity
     with db.engine.begin() as conn:
         conn.execute(insert(db.sessions).values(
             token_hash=hashlib.sha256(token.encode()).hexdigest(), role=role, subject=body.persona,
@@ -172,15 +192,33 @@ def state(user=Depends(actor)):
             people = conn.execute(select(db.farmers.c.id, db.farmers.c.name, db.farmers.c.location).where(
                 db.farmers.c.id.in_(ids),
             )).mappings().all()
-        catalogue = conn.execute(select(db.products).order_by(db.products.c.id)).mappings().all()
+        catalogue_query = select(db.products).order_by(db.products.c.id)
+        if user["role"] == "supplier":
+            catalogue_query = catalogue_query.where(db.products.c.supplier_id == user["subject"])
+        catalogue = conn.execute(catalogue_query).mappings().all()
         order_rows = conn.execute(select(db.orders).where(scoped_orders(user)).order_by(db.orders.c.id.desc())).mappings().all()
     return {
-        "user": {"role": user["role"], "subject": user["subject"], "name": PERSONAS[user["subject"]][1]},
+        "user": {"role": user["role"], "subject": user["subject"], "name": participant(user["subject"])[1]},
         "farmers": [dict(row) for row in people],
-        "products": [dict(row) for row in catalogue],
+        "products": [{**dict(row), "revision": management.product_revision(row)} for row in catalogue],
         "orders": [serialize_order(row, user) for row in order_rows],
         "payment_mode": settings.payment_mode, "ai_mode": settings.ai_mode,
     }
+
+
+@app.post("/api/approvals/import")
+def approval_import(body: management.ApprovalImport, user=Depends(actor)):
+    require(user, "lender")
+    return management.import_approvals(body, user)
+
+
+@app.put("/api/products/{product_id}")
+def product_save(product_id: str, body: management.ProductEdit, user=Depends(actor)):
+    require(user, "supplier")
+    import re
+    if not re.fullmatch(r"[a-z0-9][a-z0-9-]{0,79}", product_id):
+        raise HTTPException(422, "Use a product ID with lowercase letters, numbers, and hyphens (up to 80 characters).")
+    return management.save_product(product_id, body, user)
 
 
 @app.post("/api/assistant")

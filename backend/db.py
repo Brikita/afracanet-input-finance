@@ -76,6 +76,14 @@ webhook_events = Table(
     Column("id", String, primary_key=True),
     Column("received_at", String, nullable=False),
 )
+management_events = Table(
+    "management_events", metadata,
+    Column("id", Integer, Identity(), primary_key=True),
+    Column("actor", String, nullable=False, index=True),
+    Column("action", String, nullable=False),
+    Column("detail", JSON, nullable=False),
+    Column("created_at", String, nullable=False),
+)
 
 
 def now():
