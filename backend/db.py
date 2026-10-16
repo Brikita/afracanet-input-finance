@@ -84,6 +84,20 @@ management_events = Table(
     Column("detail", JSON, nullable=False),
     Column("created_at", String, nullable=False),
 )
+issues = Table(
+    "order_issues", metadata,
+    Column("id", Integer, Identity(), primary_key=True),
+    Column("order_id", ForeignKey("orders.id"), nullable=False, index=True),
+    Column("client_request_id", String, nullable=False),
+    Column("category", String, nullable=False),
+    Column("detail", Text, nullable=False),
+    Column("reported_by", String, nullable=False),
+    Column("created_at", String, nullable=False),
+    Column("resolved_by", String),
+    Column("resolved_at", String),
+    Column("resolution", Text),
+    UniqueConstraint("order_id", "client_request_id"),
+)
 
 
 def now():

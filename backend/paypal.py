@@ -11,6 +11,68 @@ class PaymentError(Exception):
     pass
 
 
+def payment_link(invoice):
+    from urllib.parse import urlparse
+    detail = invoice.get("detail") if isinstance(invoice, dict) else None
+    metadata = detail.get("metadata") if isinstance(detail, dict) else None
+    url = metadata.get("recipient_view_url") if isinstance(metadata, dict) else None
+    if not isinstance(url, str):
+        raise PaymentError("PayPal did not return a recipient payment link. Review the invoice.")
+    try:
+        parsed = urlparse(url)
+        valid = parsed.scheme == "https" and parsed.hostname in {"www.sandbox.paypal.com", "sandbox.paypal.com"} and not parsed.username and not parsed.password and parsed.port in {None, 443}
+    except ValueError:
+        valid = False
+    if not valid:
+        raise PaymentError("PayPal returned a non-sandbox payment link. Review the invoice.")
+    return url
+
+
+def matching_invoice(invoice, order):
+    """Verify correlation before attaching a manually recovered remote invoice."""
+    if not isinstance(invoice, dict):
+        return False
+    detail = invoice.get("detail", {})
+    amount = invoice.get("amount", {})
+    recipients = invoice.get("primary_recipients", [])
+    invoicer = invoice.get("invoicer", {})
+    if (not isinstance(detail, dict) or not isinstance(amount, dict)
+            or not isinstance(invoicer, dict) or not isinstance(recipients, list)
+            or len(recipients) != 1 or not isinstance(recipients[0], dict)
+            or not isinstance(recipients[0].get("billing_info"), dict)):
+        return False
+    merchant = invoicer.get("email_address")
+    lender = recipients[0]["billing_info"].get("email_address")
+    if not isinstance(merchant, str) or not isinstance(lender, str):
+        return False
+    return (
+        invoice.get("id") == order["invoice_id"]
+        and detail.get("invoice_number") == f"AFC-{order['id']:06d}"
+        and detail.get("reference") == f"AFRACANet order {order['id']}"
+        and amount.get("currency_code") == order["currency"]
+        and cents(amount.get("value")) == order["amount_cents"]
+        and bool(settings.paypal_merchant) and bool(settings.paypal_lender)
+        and merchant.casefold() == settings.paypal_merchant.casefold()
+        and lender.casefold() == settings.paypal_lender.casefold()
+    )
+
+
+def cancelled_without_payment(invoice, order):
+    # Never release on a cancelled status alone: a partial payment may still exist.
+    payments = invoice.get("payments", {})
+    due = invoice.get("due_amount", {})
+    refunds = invoice.get("refunds", {})
+    if not all(isinstance(value, dict) for value in [payments, due, refunds]):
+        return False
+    if not isinstance(payments.get("paid_amount", {}), dict):
+        return False
+    return (invoice.get("status") == "CANCELLED" and not payments.get("transactions")
+            and not refunds.get("transactions")
+            and cents(payments.get("paid_amount", {}).get("value", "0")) == 0
+            and due.get("currency_code") == order["currency"]
+            and cents(due.get("value")) == order["amount_cents"])
+
+
 class PayPal:
     """Sandbox only. The server never accepts a caller-supplied API base or merchant."""
 
@@ -74,14 +136,7 @@ class PayPal:
             "send_to_recipient": True, "send_to_invoicer": False,
         })
         details = self.get(invoice_id)
-        url = details.get("detail", {}).get("metadata", {}).get("recipient_view_url")
-        if not url:
-            raise PaymentError("PayPal did not return a recipient payment link. Review the invoice.")
-        from urllib.parse import urlparse
-        parsed = urlparse(url)
-        if parsed.scheme != "https" or parsed.hostname not in {"www.sandbox.paypal.com", "sandbox.paypal.com"}:
-            raise PaymentError("PayPal returned a non-sandbox payment link. Review the invoice.")
-        return url
+        return payment_link(details)
 
     def get(self, invoice_id):
         return self.request("GET", f"/v2/invoicing/invoices/{invoice_id}")
@@ -116,19 +171,27 @@ def cents(amount):
 
 def verified_payment(invoice, order):
     """A PAID status alone can include manual/external payments; require PayPal records."""
+    if not isinstance(invoice, dict):
+        return None
     amount = invoice.get("amount", {})
     if invoice.get("id") != order["invoice_id"] or invoice.get("status") != "PAID":
         return None
-    if amount.get("currency_code") != order["currency"] or cents(amount.get("value")) != order["amount_cents"]:
+    if not isinstance(amount, dict) or amount.get("currency_code") != order["currency"] or cents(amount.get("value")) != order["amount_cents"]:
         return None
-    transactions = invoice.get("payments", {}).get("transactions", [])
+    payments, refunds = invoice.get("payments", {}), invoice.get("refunds", {})
+    if not isinstance(payments, dict) or not isinstance(refunds, dict) or refunds.get("transactions"):
+        return None
+    transactions = payments.get("transactions", [])
+    if not isinstance(transactions, list) or any(not isinstance(tx, dict) for tx in transactions):
+        return None
     legitimate = [
         tx for tx in transactions
-        if tx.get("type") == "PAYPAL" and tx.get("payment_id")
+        if tx.get("type") == "PAYPAL" and isinstance(tx.get("payment_id"), str) and tx["payment_id"]
+        and isinstance(tx.get("amount"), dict)
         and tx.get("amount", {}).get("currency_code") == order["currency"]
         and cents(tx.get("amount", {}).get("value")) is not None
     ]
     # Refunded invoices and partially paid invoices fail the status check above.
-    if sum(cents(tx["amount"]["value"]) for tx in legitimate) != order["amount_cents"]:
+    if len({tx["payment_id"] for tx in legitimate}) != len(legitimate) or sum(cents(tx["amount"]["value"]) for tx in legitimate) != order["amount_cents"]:
         return None
     return ",".join(sorted({tx["payment_id"] for tx in legitimate}))

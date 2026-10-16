@@ -18,7 +18,7 @@ from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from . import assistant, db, management
 from .config import ROOT, settings
-from .paypal import PayPal, PaymentError, verified_payment
+from .paypal import PayPal, PaymentError, cancelled_without_payment, matching_invoice, payment_link, verified_payment
 
 PERSONAS = {
     "farmer-amina": ("farmer", "Amina Wanjiku"),
@@ -74,6 +74,20 @@ class CollectionRequest(BaseModel):
     code: str = Field(min_length=6, max_length=12)
 
 
+class RecoveryRequest(BaseModel):
+    invoice_id: str | None = Field(default=None, pattern=r"^INV2-[A-Z0-9-]{4,100}$")
+
+
+class IssueRequest(BaseModel):
+    client_request_id: str = Field(min_length=8, max_length=100)
+    category: Literal["stock", "payment", "collection", "other"]
+    detail: str = Field(min_length=5, max_length=1000)
+
+
+class IssueResolution(BaseModel):
+    resolution: str = Field(min_length=5, max_length=1000)
+
+
 def actor(authorization: str = Header(default="")):
     if not authorization.startswith("Bearer "):
         raise HTTPException(401, "Choose a demo participant to sign in.")
@@ -99,7 +113,10 @@ def scoped_orders(user):
     return column == user["subject"]
 
 
-def get_order(conn, order_id, user):
+def get_order(conn, order_id, user, lock=False):
+    if lock:
+        # A real row write serializes issue/collection decisions on SQLite and PostgreSQL.
+        conn.execute(update(db.orders).where(db.orders.c.id == order_id, scoped_orders(user)).values(updated_at=db.now()))
     row = conn.execute(select(db.orders).where(
         db.orders.c.id == order_id, scoped_orders(user),
     )).mappings().first()
@@ -108,14 +125,23 @@ def get_order(conn, order_id, user):
     return dict(row)
 
 
-def serialize_order(row, user):
+def serialize_order(row, user, issues=None):
     result = dict(row)
+    result["issues"] = issues or []
     if user["role"] != "farmer":
         result.pop("pickup_code", None)
     if user["role"] != "lender":
         result.pop("payment_url", None)
+    if any(issue["resolved_at"] is None for issue in result["issues"]):
+        result.pop("pickup_code", None)
+        result.pop("payment_url", None)
     result["reference"] = f"AFC-{row['id']:06d}"
     return result
+
+
+def require_no_issues(conn, order_id):
+    if conn.execute(select(db.issues.c.id).where(db.issues.c.order_id == order_id, db.issues.c.resolved_at.is_(None)).limit(1)).first():
+        raise HTTPException(409, "An open issue needs lender resolution before this action.")
 
 
 def transition(conn, order, from_status, to_status):
@@ -124,6 +150,16 @@ def transition(conn, order, from_status, to_status):
     ).values(status=to_status, updated_at=db.now()))
     if changed.rowcount != 1:
         raise HTTPException(409, "The order has changed. Refresh before continuing.")
+
+
+def release_reservations(conn, order):
+    conn.execute(update(db.farmers).where(db.farmers.c.id == order["farmer_id"]).values(
+        reserved_cents=db.farmers.c.reserved_cents - order["amount_cents"],
+    ))
+    for item in sorted(order["items"], key=lambda item: item["product_id"]):
+        conn.execute(update(db.products).where(db.products.c.id == item["product_id"]).values(
+            reserved=db.products.c.reserved - item["quantity"],
+        ))
 
 
 @app.get("/api/health")
@@ -197,11 +233,17 @@ def state(user=Depends(actor)):
             catalogue_query = catalogue_query.where(db.products.c.supplier_id == user["subject"])
         catalogue = conn.execute(catalogue_query).mappings().all()
         order_rows = conn.execute(select(db.orders).where(scoped_orders(user)).order_by(db.orders.c.id.desc())).mappings().all()
+        issue_rows = conn.execute(select(db.issues).where(
+            db.issues.c.order_id.in_(select(db.orders.c.id).where(scoped_orders(user))),
+        ).order_by(db.issues.c.id)).mappings().all()
+        by_order = {}
+        for issue in issue_rows:
+            by_order.setdefault(issue["order_id"], []).append(dict(issue))
     return {
         "user": {"role": user["role"], "subject": user["subject"], "name": participant(user["subject"])[1]},
         "farmers": [dict(row) for row in people],
         "products": [{**dict(row), "revision": management.product_revision(row)} for row in catalogue],
-        "orders": [serialize_order(row, user) for row in order_rows],
+        "orders": [serialize_order(row, user, by_order.get(row["id"], [])) for row in order_rows],
         "payment_mode": settings.payment_mode, "ai_mode": settings.ai_mode,
     }
 
@@ -246,7 +288,8 @@ def create_order(body: OrderRequest, user=Depends(actor)):
             original = {item["product_id"]: item["quantity"] for item in existing["items"]}
             if original != {item.product_id: item.quantity for item in body.items}:
                 raise HTTPException(409, "This request reference belongs to a different order.")
-            return serialize_order(existing, user)
+            issues = [dict(row) for row in conn.execute(select(db.issues).where(db.issues.c.order_id == existing["id"])).mappings()]
+            return serialize_order(existing, user, issues)
         farmer = conn.execute(select(db.farmers).where(db.farmers.c.id == user["subject"])).mappings().one()
         items = []
         suppliers = set()
@@ -289,11 +332,12 @@ def create_order(body: OrderRequest, user=Depends(actor)):
 def approve(order_id: int, user=Depends(actor)):
     require(user, "lender")
     with db.engine.begin() as conn:
-        order = get_order(conn, order_id, user)
+        order = get_order(conn, order_id, user, lock=True)
         if order["status"] == "APPROVED":
             return {"ok": True}
         if order["status"] != "REQUESTED":
             raise HTTPException(409, "Only a requested order can be approved.")
+        require_no_issues(conn, order_id)
         approval = conn.execute(select(db.farmers).where(db.farmers.c.id == order["farmer_id"])).mappings().one()
         if approval["expires_at"] <= db.now():
             raise HTTPException(409, "The farmer's credit approval has expired.")
@@ -313,13 +357,7 @@ def cancel(order_id: int, user=Depends(actor)):
         if order["status"] not in {"REQUESTED", "APPROVED"}:
             raise HTTPException(409, "An invoiced or paid order needs operator review before cancellation.")
         transition(conn, order, order["status"], "CANCELLED")
-        conn.execute(update(db.farmers).where(db.farmers.c.id == order["farmer_id"]).values(
-            reserved_cents=db.farmers.c.reserved_cents - order["amount_cents"],
-        ))
-        for item in order["items"]:
-            conn.execute(update(db.products).where(db.products.c.id == item["product_id"]).values(
-                reserved=db.products.c.reserved - item["quantity"],
-            ))
+        release_reservations(conn, order)
         db.record(conn, order_id, user["subject"], "CANCELLED", "Order cancelled; credit and inventory reservations released.")
     return {"ok": True}
 
@@ -328,11 +366,12 @@ def cancel(order_id: int, user=Depends(actor)):
 def invoice(order_id: int, user=Depends(actor)):
     require(user, "supplier")
     with db.engine.begin() as conn:
-        order = get_order(conn, order_id, user)
+        order = get_order(conn, order_id, user, lock=True)
         if order["status"] == "AWAITING_PAYMENT":
             return {"ok": True}
         if order["status"] != "APPROVED":
             raise HTTPException(409, "The lender must approve this order before invoicing.")
+        require_no_issues(conn, order_id)
         if order["payment_mode"] != settings.payment_mode:
             raise HTTPException(409, "This order uses a different payment mode. Create a new order.")
         approval = conn.execute(select(db.farmers.c.expires_at).where(
@@ -360,9 +399,12 @@ def invoice(order_id: int, user=Depends(actor)):
                       else "Supplier confirmed stock and price; simulated invoice created. No PayPal API call.")
     except PaymentError:
         with db.engine.begin() as conn:
-            conn.execute(update(db.orders).where(db.orders.c.id == order_id).values(status="PAYMENT_REVIEW", updated_at=db.now()))
-            db.record(conn, order_id, "system", "PAYMENT_REVIEW",
-                      "Invoice creation or sending could not be confirmed. Review provider records before retrying.")
+            changed = conn.execute(update(db.orders).where(
+                db.orders.c.id == order_id, db.orders.c.status == "INVOICING",
+            ).values(status="PAYMENT_REVIEW", updated_at=db.now()))
+            if changed.rowcount == 1:
+                db.record(conn, order_id, "system", "PAYMENT_REVIEW",
+                          "Invoice creation or sending could not be confirmed. Review provider records before retrying.")
         raise
     return {"ok": True}
 
@@ -385,19 +427,78 @@ def fund(conn, order, reference, who):
     return True
 
 
+@app.post("/api/orders/{order_id}/recover-invoice")
+def recover_invoice(order_id: int, body: RecoveryRequest, user=Depends(actor)):
+    require(user, "supplier")
+    with db.engine.connect() as conn:
+        order = get_order(conn, order_id, user)
+    if settings.payment_mode != "sandbox" or order["payment_mode"] != "sandbox":
+        raise HTTPException(409, "Recovery requires the matching PayPal sandbox configuration.")
+    if order["status"] not in {"PAYMENT_REVIEW", "INVOICING", "AWAITING_PAYMENT"}:
+        raise HTTPException(409, "Only an unresolved invoice can be recovered.")
+    if order["status"] == "INVOICING" and datetime.fromisoformat(order["updated_at"]) > datetime.now(timezone.utc) - timedelta(minutes=2):
+        raise HTTPException(409, "Invoice preparation may still be running. Wait two minutes before recovery.")
+    if order["invoice_id"] and body.invoice_id and body.invoice_id != order["invoice_id"]:
+        raise HTTPException(409, "Use the invoice already linked to this order.")
+    invoice_id = order["invoice_id"] or body.invoice_id
+    if not invoice_id:
+        raise HTTPException(422, "Find the existing invoice in the supplier's PayPal records and enter its INV2 reference.")
+    candidate = {**order, "invoice_id": invoice_id}
+    remote = PayPal().get(invoice_id)
+    if not matching_invoice(remote, candidate):
+        raise HTTPException(409, "The invoice does not match this order's reference, supplier, lender, amount, and currency.")
+    reference = verified_payment(remote, candidate)
+    cancelled = cancelled_without_payment(remote, candidate)
+    awaiting = remote.get("status") in {"SENT", "UNPAID"}
+    url = payment_link(remote) if awaiting else None
+    with db.engine.begin() as conn:
+        current = get_order(conn, order_id, user)
+        if current["status"] in {"READY_FOR_COLLECTION", "COLLECTED"}:
+            return {"message": "Payment was already confirmed."}
+        if current["status"] == "CANCELLED":
+            return {"message": "Cancellation was already confirmed."}
+        if current["status"] != order["status"] or current["invoice_id"] != order["invoice_id"] or current["updated_at"] != order["updated_at"]:
+            raise HTTPException(409, "The order changed during recovery. Refresh and retry.")
+        target = "CANCELLED" if cancelled else "AWAITING_PAYMENT" if awaiting else "PAYMENT_REVIEW"
+        changed = conn.execute(update(db.orders).where(
+            db.orders.c.id == order_id, db.orders.c.status == order["status"],
+            db.orders.c.updated_at == order["updated_at"],
+        ).values(invoice_id=invoice_id, payment_url=url, status=target, updated_at=db.now()))
+        if changed.rowcount != 1:
+            raise HTTPException(409, "The order changed during recovery. Refresh and retry.")
+        if cancelled:
+            release_reservations(conn, order)
+        elif reference:
+            fund(conn, candidate, reference, user["subject"])
+        db.record(conn, order_id, user["subject"], "INVOICE_RECOVERED",
+                  f"Existing PayPal invoice {invoice_id} verified; provider status {remote.get('status')}. No new invoice created.")
+    if cancelled:
+        message = "PayPal cancellation and zero payment verified. Reservations released."
+    elif reference:
+        message = "Full PayPal payment verified. Inputs are ready for collection."
+    elif awaiting:
+        message = "Existing invoice restored. The lender can open its PayPal payment link."
+    elif remote.get("status") == "DRAFT":
+        message = "Existing draft linked. Send this invoice from the supplier's PayPal dashboard, then check recovery again."
+    else:
+        message = "Invoice linked, but its payment state requires review. Reservations remain held."
+    return {"message": message}
+
+
 @app.post("/api/orders/{order_id}/demo-pay")
 def demo_pay(order_id: int, user=Depends(actor)):
     require(user, "lender")
     if settings.payment_mode != "mock":
         raise HTTPException(403, "Simulated payment is disabled in PayPal sandbox mode.")
     with db.engine.begin() as conn:
-        order = get_order(conn, order_id, user)
+        order = get_order(conn, order_id, user, lock=True)
         if order["payment_mode"] != "mock":
             raise HTTPException(403, "This is not a simulated order.")
         if order["status"] in {"READY_FOR_COLLECTION", "COLLECTED"}:
             return {"ok": True}
         if order["status"] != "AWAITING_PAYMENT":
             raise HTTPException(409, "An invoice must exist before payment.")
+        require_no_issues(conn, order_id)
         fund(conn, order, f"DEMO-PAY-{order_id:06d}", user["subject"])
     return {"ok": True}
 
@@ -415,16 +516,19 @@ def reconcile(order_id: int, user=Depends(actor)):
         return {"confirmed": False, "message": "A full PayPal payment has not yet been verified."}
     with db.engine.begin() as conn:
         fund(conn, order, reference, user["subject"])
-    return {"confirmed": True}
+    return {"confirmed": True, "message": "Full PayPal payment verified."}
 
 
 @app.post("/api/orders/{order_id}/collect")
 def collect(order_id: int, body: CollectionRequest, user=Depends(actor)):
     require(user, "supplier")
     with db.engine.begin() as conn:
-        order = get_order(conn, order_id, user)
+        order = get_order(conn, order_id, user, lock=True)
+        if order["status"] == "COLLECTED":
+            return {"ok": True, "message": "Collection was already recorded."}
         if order["status"] != "READY_FOR_COLLECTION":
             raise HTTPException(409, "Collection requires a confirmed full payment.")
+        require_no_issues(conn, order_id)
         if not secrets.compare_digest(body.code, order["pickup_code"] or ""):
             raise HTTPException(422, "The collection code does not match.")
         transition(conn, order, "READY_FOR_COLLECTION", "COLLECTED")
@@ -435,6 +539,50 @@ def collect(order_id: int, body: CollectionRequest, user=Depends(actor)):
         db.record(conn, order_id, user["subject"], "COLLECTED",
                   "Dealer recorded handover with the farmer's collection code. This does not certify product quality.")
     return {"ok": True}
+
+
+@app.post("/api/orders/{order_id}/issues", status_code=201)
+def report_issue(order_id: int, body: IssueRequest, user=Depends(actor)):
+    detail = body.detail.strip()
+    if len(detail) < 5:
+        raise HTTPException(422, "Describe the issue in at least five characters.")
+    with db.engine.begin() as conn:
+        get_order(conn, order_id, user, lock=True)
+        existing = conn.execute(select(db.issues).where(
+            db.issues.c.order_id == order_id, db.issues.c.client_request_id == body.client_request_id,
+        )).mappings().first()
+        if existing:
+            if existing["detail"] != detail or existing["category"] != body.category or existing["reported_by"] != user["subject"]:
+                raise HTTPException(409, "This issue reference belongs to a different report.")
+            return {"id": existing["id"], "message": "Issue already recorded."}
+        issue_id = conn.execute(insert(db.issues).values(
+            order_id=order_id, client_request_id=body.client_request_id, category=body.category,
+            detail=detail, reported_by=user["subject"], created_at=db.now(),
+        )).inserted_primary_key[0]
+        db.record(conn, order_id, user["subject"], "ISSUE_REPORTED", f"{body.category}: {detail}")
+    return {"id": issue_id, "message": "Issue recorded. The lender must resolve it before further approval, invoicing, payment initiation, or collection."}
+
+
+@app.post("/api/orders/{order_id}/issues/{issue_id}/resolve")
+def resolve_issue(order_id: int, issue_id: int, body: IssueResolution, user=Depends(actor)):
+    require(user, "lender")
+    resolution = body.resolution.strip()
+    if len(resolution) < 5:
+        raise HTTPException(422, "Record the resolution in at least five characters.")
+    with db.engine.begin() as conn:
+        get_order(conn, order_id, user, lock=True)
+        issue = conn.execute(select(db.issues).where(db.issues.c.id == issue_id, db.issues.c.order_id == order_id)).mappings().first()
+        if not issue:
+            raise HTTPException(404, "Issue not found.")
+        if issue["resolved_at"]:
+            if issue["resolution"] != resolution:
+                raise HTTPException(409, "This issue already has a recorded resolution.")
+            return {"message": "Issue already resolved."}
+        conn.execute(update(db.issues).where(db.issues.c.id == issue_id).values(
+            resolved_by=user["subject"], resolved_at=db.now(), resolution=resolution,
+        ))
+        db.record(conn, order_id, user["subject"], "ISSUE_RESOLVED", f"Issue {issue_id}: {resolution}")
+    return {"message": "Resolution recorded. Financial and collection status still follow their verified transaction records."}
 
 
 @app.get("/api/orders/{order_id}/timeline")
