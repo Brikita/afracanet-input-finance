@@ -105,6 +105,8 @@ def test_uncertain_send_is_not_retried_and_cannot_rollback_payment(client, monke
     farmer = auth(client, "farmer-amina")
     verified(client, farmer)
     monkeypatch.setattr(settings, "sms_mode", "sandbox")
+    with db.engine.begin() as conn:
+        conn.execute(update(db.contacts).values(verification_mode="sandbox"))
     order_id, farmer, lender, supplier = prepared(client)
     assert client.post(f"/api/orders/{order_id}/demo-pay", headers=lender).status_code == 200
     calls = []
@@ -124,6 +126,8 @@ def test_concurrent_dispatch_claims_a_message_once(client, monkeypatch):
     farmer = auth(client, "farmer-amina")
     verified(client, farmer)
     monkeypatch.setattr(settings, "sms_mode", "sandbox")
+    with db.engine.begin() as conn:
+        conn.execute(update(db.contacts).values(verification_mode="sandbox"))
     assert request(client, farmer).status_code == 201
     with db.engine.connect() as conn:
         message_id = conn.execute(select(db.sms_outbox.c.id).where(db.sms_outbox.c.action == "REQUESTED")).scalar_one()
@@ -148,3 +152,27 @@ def test_sandbox_adapter_uses_fixed_host_and_distinguishes_acceptance(client, mo
     assert status == "ACCEPTED" and reference == "AT-TEST-01"
     assert calls[0][0] == "https://api.sandbox.africastalking.com/version1/messaging"
     assert calls[0][1]["data"]["username"] == "sandbox"
+
+
+def test_demo_verification_cannot_be_reused_after_switching_to_sandbox(client, monkeypatch):
+    farmer = auth(client, "farmer-amina")
+    verified(client, farmer)
+    monkeypatch.setattr(settings, "sms_mode", "sandbox")
+    state = client.get("/api/sms", headers=farmer).json()
+    assert not state["contact"]["verified_at"]
+    assert request(client, farmer).status_code == 201
+    assert not any(row["action"] == "REQUESTED" for row in client.get("/api/sms", headers=farmer).json()["messages"])
+
+
+def test_recovered_unpaid_cancellation_queues_a_farmer_update(client, monkeypatch):
+    from test_recovery import remote_invoice, stranded
+    farmer = auth(client, "farmer-amina")
+    verified(client, farmer)
+    order_id, farmer, lender, supplier = stranded(client, monkeypatch)
+    remote = remote_invoice(order_id, "CANCELLED")
+    remote["due_amount"] = {"currency_code": "USD", "value": "90.00"}
+    monkeypatch.setattr("backend.main.PayPal.get", lambda *args: remote)
+    assert client.post(f"/api/orders/{order_id}/recover-invoice", headers=supplier, json={}).status_code == 200
+    notifications.dispatch_pending()
+    messages = client.get("/api/sms", headers=farmer).json()["messages"]
+    assert next(row for row in messages if row["action"] == "CANCELLED")["status"] == "SIMULATED"

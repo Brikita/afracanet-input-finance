@@ -108,6 +108,7 @@ contacts = Table(
     Column("verification_hash", String),
     Column("verification_expires_at", String),
     Column("verification_attempts", Integer, nullable=False, default=0),
+    Column("verification_mode", String, nullable=False),
     Column("updated_at", String, nullable=False),
 )
 sms_outbox = Table(

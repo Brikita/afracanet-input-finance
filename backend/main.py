@@ -493,6 +493,7 @@ def recover_invoice(order_id: int, body: RecoveryRequest, user=Depends(actor)):
             raise HTTPException(409, "The order changed during recovery. Refresh and retry.")
         if cancelled:
             release_reservations(conn, order)
+            db.record(conn, order_id, user["subject"], "CANCELLED", "PayPal cancellation and zero payment verified; credit and inventory reservations released.")
         elif reference:
             fund(conn, candidate, reference, user["subject"])
         db.record(conn, order_id, user["subject"], "INVOICE_RECOVERED",

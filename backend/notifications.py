@@ -35,12 +35,13 @@ def save_contact(user, body):
     farmer_id = user["subject"]
     with db.engine.begin() as conn:
         existing = conn.execute(select(db.contacts).where(db.contacts.c.farmer_id == farmer_id)).mappings().first()
-        verified = existing and existing["phone"] == body.phone and existing["verified_at"] and existing["consented_at"]
+        verified = existing and existing["phone"] == body.phone and existing["verified_at"] and existing["consented_at"] and existing["verification_mode"] == settings.sms_mode
         if body.consent and not verified and existing and existing["updated_at"] > (datetime.now(timezone.utc) - timedelta(seconds=60)).isoformat():
             raise HTTPException(429, "Wait one minute before requesting another verification code.")
         values = {"phone": body.phone, "language": body.language, "consented_at": db.now() if body.consent else None,
                   "verified_at": existing["verified_at"] if verified and body.consent else None,
-                  "verification_hash": None, "verification_expires_at": None, "verification_attempts": 0, "updated_at": db.now()}
+                  "verification_hash": None, "verification_expires_at": None, "verification_attempts": 0,
+                  "verification_mode": settings.sms_mode, "updated_at": db.now()}
         code = None
         if body.consent and not verified:
             code = str(secrets.randbelow(900000) + 100000)
@@ -69,7 +70,7 @@ def verify_contact(user, body):
             verification_attempts=db.contacts.c.verification_attempts + 1,
         ))
         contact = conn.execute(select(db.contacts).where(db.contacts.c.farmer_id == user["subject"])).mappings().first()
-        if not contact or not contact["consented_at"] or not contact["verification_hash"] or not contact["verification_expires_at"] or contact["verification_expires_at"] <= db.now():
+        if not contact or contact["verification_mode"] != settings.sms_mode or not contact["consented_at"] or not contact["verification_hash"] or not contact["verification_expires_at"] or contact["verification_expires_at"] <= db.now():
             error = "Request a new, unexpired verification code."
         elif contact["verification_attempts"] > 5:
             error = "Too many attempts. Request a new verification code."
@@ -111,7 +112,7 @@ def render_event(conn, order, action, language):
 def enqueue_event(conn, order_id, event_id, action):
     order = conn.execute(select(db.orders).where(db.orders.c.id == order_id)).mappings().one()
     contact = conn.execute(select(db.contacts).where(db.contacts.c.farmer_id == order["farmer_id"])).mappings().first()
-    if not contact or not contact["consented_at"] or not contact["verified_at"]:
+    if not contact or not contact["consented_at"] or not contact["verified_at"] or contact["verification_mode"] != settings.sms_mode:
         return
     body = render_event(conn, order, action, contact["language"])
     if body:
@@ -157,7 +158,7 @@ def dispatch_one(message_id, farmer_id=None):
         elif message["action"] == "VERIFY_CONTACT":
             if not contact["verification_hash"] or contact["verification_expires_at"] <= db.now():
                 reason = "Verification expired or is no longer needed."
-        elif not contact["verified_at"]:
+        elif not contact["verified_at"] or contact["verification_mode"] != settings.sms_mode:
             reason = "Phone has not been verified."
         else:
             order = conn.execute(select(db.orders).where(db.orders.c.id == message["order_id"])).mappings().one()
@@ -200,6 +201,8 @@ def preferences(user):
         contact = conn.execute(select(db.contacts).where(db.contacts.c.farmer_id == user["subject"])).mappings().first()
         rows = conn.execute(select(db.sms_outbox).where(db.sms_outbox.c.farmer_id == user["subject"]).order_by(db.sms_outbox.c.id.desc()).limit(30)).mappings().all()
     public = {key: contact[key] for key in ["phone", "language", "consented_at", "verified_at"]} if contact else None
+    if public and contact["verification_mode"] != settings.sms_mode:
+        public["verified_at"] = None
     messages = []
     for row in rows:
         item = dict(row)
