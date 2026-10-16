@@ -24,6 +24,11 @@ Before invoicing, REQUESTED or APPROVED may transition to CANCELLED.
 An uncertain remote invoice outcome transitions to PAYMENT_REVIEW. A crash
 mid-invoicing can leave INVOICING; an operator must inspect provider records.
 There is deliberately no automatic repeat of uncertain invoice creation.
+The dealer can recover an existing invoice after verifying provider correlation:
+order number, reference, supplier, lender, amount, and currency. Interrupted
+INVOICING requests require a two-minute wait. A draft remains held for sending
+from PayPal's dashboard; verified unpaid cancellation releases reservations once.
+Paid or partially paid refunds are never treated as a simple credit release.
 
 ## Data rules
 
@@ -37,6 +42,16 @@ There is deliberately no automatic repeat of uncertain invoice creation.
 - Catalogue prices are snapshotted in the order.
 - Foreign keys and indexes cover order and audit relationships.
 - Provider network calls occur outside database transactions.
+- Approval imports validate a batch before applying it atomically; existing
+  reserved/spent amounts are retained and constrain any new total limit.
+- Catalogue edits compare a revision derived from the current product record.
+  Concurrent changes invalidate stale forms; existing orders retain their quote.
+- Issue reports have unique (order, request ID) keys. Open issues pause forward
+  actions; incoming verified payments are still recorded. Only the lender can
+  resolve issues. Resolution never changes financial or collection status itself.
+- Issue reporting, resolution, and collection acquire the order row through a
+  transactional update so their decisions serialize on SQLite and PostgreSQL.
+- A late invoice-send error cannot overwrite an already confirmed payment.
 
 ## Payment confirmation
 
@@ -55,21 +70,25 @@ action provides a reconciliation path when notifications are delayed.
 
 ## Access model
 
-The current prototype uses a shared demo access code and selectable seeded
-personas. Session tokens are random, stored hashed server-side, and expire in
+The current prototype uses a shared demo access code and selectable seeded or
+imported farmer personas. Imported names are listed only after demo login;
+the public choices endpoint lists seeded examples. Session tokens are random,
+stored hashed server-side, and expire in
 eight hours. Server checks enforce role and subject scope. This is demonstration
 access, not identity proof or production authentication.
 
-Collection codes appear only in the farmer's order response. Dealers must obtain
+Collection codes appear only in the farmer's order response and are hidden while
+an issue is open. Dealers must obtain
 the code from the farmer. Code verification records handover; it does not
 independently prove delivery quality or prevent collusion.
 
 ## Limitations and next gates
 
 - PostgreSQL connection support exists but is not yet integration-tested.
-- No live SMS/USSD gateway, lender import, or editable dealer catalogue yet.
+- No live SMS/USSD gateway yet.
 - One illustrative lender/dealer; no merchant onboarding for multiple suppliers.
-- No automated reservation expiry, refund processing, or post-invoice cancellation.
+- No automated reservation expiry or refund processing. Post-invoice cancellation
+  is verified from PayPal records; ambiguous or partially paid states stay held.
 - Synchronous provider requests; durable background processing remains future work.
 - No production identity, rate limits, or independent audit-log immutability.
 - Sandbox and Gemini adapters require live credential-based verification.

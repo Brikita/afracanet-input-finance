@@ -40,6 +40,8 @@ repayment servicing remain with the lender. The platform coordinates execution.
 - Backend financial integrity tests and browser journey checks.
 - CSV approval preview/import, including new farmer demo participants.
 - Dealer catalogue editing with reservation protection and stale-edit checks.
+- Existing invoice recovery with correlation checks and unpaid-cancellation safeguards.
+- Participant issue reporting, lender resolutions, and collection holds.
 
 External-service adapters require credentials and real end-to-end verification.
 Their existence in the code does not mean those integrations have been demonstrated.
@@ -51,9 +53,8 @@ Their existence in the code does not mean those integrations have been demonstra
 - Configure Gemini and evaluate English, Swahili, code-switching, and ambiguity.
 - Add SMS channel through Africa's Talking; document any simulator honestly.
 - Improve demo access controls for a hosted demonstration and add abuse limits.
-- Add issue reporting and recovery UI.
 - Verify PostgreSQL execution before recommending it for hosted use.
-- Document invoice failure recovery, refund/cancellation handling, and restart recovery.
+- Validate documented invoice recovery and unpaid cancellation against real PayPal sandbox records; paid refunds remain an operator workflow.
 - Prepare hosted deployment, judge instructions, public YouTube video, and submission.
 
 ## Discovery and commercial evidence

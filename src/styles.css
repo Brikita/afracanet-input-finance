@@ -1,6 +1,81 @@
 .mobile-signout {
   display: none;
 }
+.issues-panel {
+  margin: 22px 0;
+  padding: 16px;
+  border: 1px solid #e5e9e2;
+  border-radius: 12px;
+}
+.issues-panel .management-heading {
+  flex-wrap: wrap;
+  margin: 0 0 12px;
+  gap: 8px;
+}
+.issue-hold {
+  background: #fff4df;
+  color: #795a28;
+  padding: 12px;
+  font-size: 12px;
+  line-height: 1.7;
+  border-radius: 8px;
+}
+.issue-record {
+  border-top: 1px solid #e5e9e2;
+  padding: 16px 0;
+  overflow-wrap: anywhere;
+}
+.issue-record strong {
+  font-size: 12px;
+}
+.issue-record p {
+  font-size: 12px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  margin: 7px 0;
+}
+.issue-record small {
+  font-size: 10px;
+  color: #7c8781;
+}
+.issue-resolution {
+  display: flex;
+  gap: 8px;
+  background: #edf3e7;
+  padding: 10px;
+  margin-top: 12px;
+  border-radius: 8px;
+}
+.issue-resolution svg {
+  flex-shrink: 0;
+  margin-top: 7px;
+}
+.issues-panel .input-label {
+  display: block;
+  margin: 12px 0 7px;
+}
+.issue-report select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #dfe5dc;
+  background: white;
+  border-radius: 8px;
+}
+.issue-flag {
+  color: #946b29 !important;
+}
+.recovery-panel {
+  border: 1px solid #e5e9e2;
+  border-radius: 12px;
+  padding: 16px;
+  background: #f7f8f4;
+}
+.recovery-panel h3 {
+  font-size: 14px;
+}
+.recovery-panel .button {
+  margin-top: 12px;
+}
 .management-panel {
   padding: 0 28px 28px;
   border-bottom: 1px solid #e5e9e2;

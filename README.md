@@ -116,8 +116,21 @@ payments. It verifies full PayPal transaction records before unlocking collectio
 Simulated payment endpoints are disabled in sandbox mode.
 
 If invoice creation/sending is uncertain, the order stays under operator review
-and its credit remains reserved. Inspect PayPal records before retrying; the
-prototype deliberately prevents repeated uncertain invoice creation.
+and its credit remains reserved. In the dealer's transaction drawer, use
+**Recover an existing invoice** with the saved reference or the `INV2-…` ID
+found in the supplier's PayPal sandbox dashboard. Recovery fetches provider
+records and checks the order number, reference, supplier, lender, amount, and
+currency. It never creates another invoice or sends one automatically.
+For an interrupted `INVOICING` request, wait at least two minutes.
+
+A sent/unpaid invoice restores the lender's payment link. A full, verified PayPal
+payment unlocks collection. A draft remains under review: send that same invoice
+from PayPal's dashboard, then recover again. A cancelled invoice releases
+reservations only when its provider records also establish zero payment and the
+full original amount still due. Partial payments, refunds, uncertain or missing
+records remain held for operator review; automated refunds are not implemented.
+The recovery adapter is covered by controlled-response tests and still needs
+live sandbox validation. See PayPal's [invoice details reference](https://developer.paypal.com/api/invoicing/v2/invoices-get).
 
 ## Connect Gemini
 
@@ -157,8 +170,9 @@ On Linux/macOS install Chromium with npx playwright install chromium first.
 PLAYWRIGHT_CHANNEL may override the browser channel.
 
 The checks cover financial limits, concurrency, role isolation, cancellation,
-idempotent payment effects, unsafe payment records, webhook verification/replay,
-the three-role browser journey, and a mobile overspending scenario.
+idempotent payment/collection effects, unsafe payment records, webhook verification/replay,
+approval imports, stale catalogue edits, invoice recovery, issue holds/resolutions,
+the three-role browser journey, and mobile management and overspending scenarios.
 They use controlled provider responses and do **not** replace real sandbox testing.
 
 ## Project structure
@@ -178,7 +192,7 @@ docs/SUBMISSION.md    Demo outline and submission checklist
 Internal submission target: **30 October 2026**.
 
 1. Verify real PayPal sandbox payment and Gemini interpretation.
-2. Add SMS access, issue reporting, and invoice recovery.
+2. Add SMS access and evaluate the workflow with real users.
 3. Validate PostgreSQL, improve hosted access, and prepare a hosted demonstration.
 4. Record the public demonstration, finalize evidence, and submit through Devpost.
 
@@ -204,6 +218,22 @@ and total on-hand stock. Existing orders retain their quoted prices. Stock canno
 fall below reservations. An edit opened before stock or catalogue changes must
 be reopened before saving, so stale forms cannot overwrite newer changes.
 Management changes are recorded in the `management_events` database table.
+
+## Handle issues
+
+Any participant can report a stock, payment, collection, or other issue from the
+transaction drawer. The report is visible to the participants on that order.
+Open issues pause further approval, invoice creation, payment initiation through
+the app, and collection. Existing external payments can still arrive; verified
+payments are reconciled and recorded while collection remains on hold.
+Previously opened PayPal links cannot be revoked by an application issue hold.
+
+The lender records a resolution after checking with the participants. Resolving
+an issue never refunds money, releases credit, or marks collection by itself.
+Those actions continue to use their transaction rules and provider evidence.
+Pre-invoice cancellation remains available and releases reservations once.
+Issue reports and resolutions remain in the transaction timeline. Retrying an
+identical issue report or a completed collection does not repeat its effects.
 
 ## License
 

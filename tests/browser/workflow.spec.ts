@@ -162,6 +162,10 @@ test('lender imports an approval and dealer maintains catalogue on mobile', asyn
   await expect(
     page.getByText('Catalogue saved. Existing order prices remain unchanged.'),
   ).toBeVisible()
+  await page.screenshot({
+    path: 'data/screenshots/inventory-management-mobile.png',
+    fullPage: true,
+  })
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -175,5 +179,44 @@ test('lender imports an approval and dealer maintains catalogue on mobile', asyn
   await page.getByRole('button', { name: 'Confirm input request' }).click()
   await expect(
     page.getByRole('dialog').getByText('$8.50', { exact: false }).first(),
+  ).toBeVisible()
+  const reference = await page
+    .getByRole('dialog')
+    .getByRole('heading', { name: /^AFC-/ })
+    .innerText()
+  await page
+    .getByRole('button', { name: 'Report an issue', exact: true })
+    .click()
+  await page
+    .getByLabel('Describe the issue')
+    .fill('Please confirm the seed batch before paying.')
+  await page
+    .getByRole('button', { name: 'Submit issue report', exact: true })
+    .click()
+  await expect(page.getByText('1 open issue.', { exact: false })).toBeVisible()
+  await page.getByRole('button', { name: 'Close transaction' }).click()
+  await page.getByLabel('View as').selectOption('lender-demo')
+  await page
+    .getByRole('button', { name: 'Open ' + reference, exact: true })
+    .click()
+  await expect(
+    page.getByRole('button', { name: 'Approve input order' }),
+  ).toHaveCount(0)
+  await page
+    .getByLabel(/^Resolution for issue/)
+    .fill('Supplier confirmed the batch with the farmer.')
+  await page
+    .getByRole('button', { name: 'Record issue resolution', exact: true })
+    .click()
+  await expect(
+    page.getByRole('button', { name: 'Approve input order' }),
+  ).toBeVisible()
+  await page.screenshot({
+    path: 'data/screenshots/issue-resolution-mobile.png',
+    fullPage: true,
+  })
+  await page.getByRole('button', { name: 'Approve input order' }).click()
+  await expect(
+    page.getByRole('dialog').getByText('Ready to invoice', { exact: true }),
   ).toBeVisible()
 })

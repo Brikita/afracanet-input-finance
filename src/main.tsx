@@ -34,6 +34,7 @@ import {
 } from 'lucide-react'
 import './styles.css'
 import { ApprovalImport, CatalogueEditor } from './Management'
+import { Issues, type Issue } from './Issues'
 
 type Role = 'farmer' | 'lender' | 'supplier'
 type Session = { token: string; role: Role; subject: string; name: string }
@@ -78,6 +79,7 @@ type Order = {
   payment_url?: string
   payment_mode: string
   created_at: string
+  issues: Issue[]
 }
 type State = {
   user: Omit<Session, 'token'>
@@ -197,6 +199,7 @@ function App() {
   const [selected, setSelected] = useState<number | null>(null)
   const [events, setEvents] = useState<Event[]>([])
   const [collectionCode, setCollectionCode] = useState('')
+  const [recoveryInvoice, setRecoveryInvoice] = useState('')
   const [query, setQuery] = useState('')
   const [text, setText] = useState('')
   const [clarification, setClarification] = useState('')
@@ -253,6 +256,7 @@ function App() {
     setState(null)
     setSelected(null)
     setEvents([])
+    setRecoveryInvoice('')
     try {
       const next = await api<Session>('/session', undefined, {
         persona: id,
@@ -537,6 +541,8 @@ function App() {
   )
   const collected = state.orders.filter((o) => o.status === 'COLLECTED')
   const current = state.orders.find((o) => o.id === selected)
+  const openIssues =
+    current?.issues?.some((issue) => !issue.resolved_at) ?? false
   const cartLines = state.products.filter((p) => (cart[p.id] ?? 0) > 0)
   const cartTotal = cartLines.reduce(
     (sum, p) => sum + p.price_cents * cart[p.id],
@@ -1016,6 +1022,11 @@ function App() {
                           </td>
                           <td>
                             <Status status={o.status} />
+                            {o.issues?.some((issue) => !issue.resolved_at) && (
+                              <small className="issue-flag">
+                                Issue requires review
+                              </small>
+                            )}
                           </td>
                           <td>
                             <button
@@ -1024,6 +1035,7 @@ function App() {
                               onClick={() => {
                                 setSelected(o.id)
                                 setCollectionCode('')
+                                setRecoveryInvoice(o.invoice_id ?? '')
                               }}
                             >
                               View
@@ -1252,38 +1264,51 @@ function App() {
                 </div>
               )}
             {banner}
+            <Issues
+              key={session.token + ':' + current.id}
+              orderId={current.id}
+              issues={current.issues ?? []}
+              role={role}
+              request={(path, body) => api(path, session.token, body)}
+              onSaved={refresh}
+            />
             <div className="drawer-actions">
-              {role === 'lender' && current.status === 'REQUESTED' && (
-                <button
-                  className="button primary full"
-                  disabled={busy}
-                  onClick={() =>
-                    void action('/orders/' + current.id + '/approve')
-                  }
-                >
-                  Approve input order
-                  <Check size={17} />
-                </button>
-              )}
-              {role === 'supplier' && current.status === 'APPROVED' && (
-                <>
-                  <p className="fine-print">
-                    Confirm you can supply the listed quantities at the quoted
-                    prices before issuing the invoice.
-                  </p>
+              {role === 'lender' &&
+                !openIssues &&
+                current.status === 'REQUESTED' && (
                   <button
                     className="button primary full"
                     disabled={busy}
                     onClick={() =>
-                      void action('/orders/' + current.id + '/invoice')
+                      void action('/orders/' + current.id + '/approve')
                     }
                   >
-                    Confirm stock & issue invoice
-                    <ArrowRight size={17} />
+                    Approve input order
+                    <Check size={17} />
                   </button>
-                </>
-              )}
+                )}
+              {role === 'supplier' &&
+                !openIssues &&
+                current.status === 'APPROVED' && (
+                  <>
+                    <p className="fine-print">
+                      Confirm you can supply the listed quantities at the quoted
+                      prices before issuing the invoice.
+                    </p>
+                    <button
+                      className="button primary full"
+                      disabled={busy}
+                      onClick={() =>
+                        void action('/orders/' + current.id + '/invoice')
+                      }
+                    >
+                      Confirm stock & issue invoice
+                      <ArrowRight size={17} />
+                    </button>
+                  </>
+                )}
               {role === 'lender' &&
+                !openIssues &&
                 current.status === 'AWAITING_PAYMENT' &&
                 (current.payment_mode === 'mock' ? (
                   <button
@@ -1326,6 +1351,7 @@ function App() {
                   </button>
                 )}
               {role === 'supplier' &&
+                !openIssues &&
                 current.status === 'READY_FOR_COLLECTION' && (
                   <>
                     <label className="input-label" htmlFor="collection-code">
@@ -1373,6 +1399,54 @@ function App() {
                   records before any retry. Credit remains reserved.
                 </p>
               )}
+              {role === 'supplier' &&
+                current.payment_mode === 'sandbox' &&
+                ['PAYMENT_REVIEW', 'INVOICING', 'AWAITING_PAYMENT'].includes(
+                  current.status,
+                ) && (
+                  <div className="recovery-panel">
+                    <h3>Recover an existing invoice</h3>
+                    <p className="fine-print">
+                      Check the supplier's PayPal sandbox records for this
+                      order. Recovery verifies an existing invoice and its
+                      payment records. Allow two minutes after interrupted
+                      preparation. Credit remains reserved until payment or an
+                      unpaid cancellation is verified.
+                    </p>
+                    <label className="input-label" htmlFor="recovery-invoice">
+                      Existing PayPal invoice ID
+                    </label>
+                    <input
+                      id="recovery-invoice"
+                      value={current.invoice_id ?? recoveryInvoice}
+                      readOnly={Boolean(current.invoice_id)}
+                      placeholder="INV2-…"
+                      maxLength={106}
+                      onChange={(e) =>
+                        setRecoveryInvoice(e.target.value.trim().toUpperCase())
+                      }
+                    />
+                    <button
+                      className="button secondary full"
+                      disabled={
+                        busy || !(current.invoice_id ?? recoveryInvoice)
+                      }
+                      onClick={() =>
+                        void action(
+                          '/orders/' + current.id + '/recover-invoice',
+                          { invoice_id: current.invoice_id ?? recoveryInvoice },
+                        )
+                      }
+                    >
+                      Verify & recover existing invoice
+                    </button>
+                    <p className="fine-print">
+                      If PayPal still shows a draft, send that same invoice in
+                      its dashboard, then verify again here. Partial payments
+                      and refunds require operator review.
+                    </p>
+                  </div>
+                )}
             </div>
             <h3 className="timeline-title">Transaction timeline</h3>
             <ol className="timeline">
