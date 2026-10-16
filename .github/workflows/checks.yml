@@ -5,6 +5,33 @@ on:
 permissions:
   contents: read
 jobs:
+  postgres:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: afracanet_test
+          POSTGRES_PASSWORD: ci-only-password
+          POSTGRES_DB: afracanet_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U afracanet_test -d afracanet_test"
+          --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      TEST_POSTGRES_URL: postgresql+psycopg://afracanet_test:ci-only-password@localhost:5432/afracanet_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install backend
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install -r backend/requirements.lock.txt
+      - name: Check PostgreSQL transaction integrity
+        run: .venv/bin/python -m pytest -q
   application:
     runs-on: ubuntu-latest
     steps:

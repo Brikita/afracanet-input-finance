@@ -1,9 +1,12 @@
 from concurrent.futures import ThreadPoolExecutor
 from copy import deepcopy
+import os
+import uuid
 
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import select, update
+from sqlalchemy.schema import CreateSchema, DropSchema
 
 from backend import db
 from backend.config import settings
@@ -13,14 +16,28 @@ from backend.paypal import PaymentError, verified_payment
 
 @pytest.fixture
 def client(tmp_path, monkeypatch):
-    engine = db.build_engine(f"sqlite:///{tmp_path / 'test.db'}")
+    postgres_url = os.getenv("TEST_POSTGRES_URL")
+    base = db.build_engine(postgres_url or f"sqlite:///{tmp_path / 'test.db'}")
+    schema = "test_afracanet_" + uuid.uuid4().hex if postgres_url else None
+    if schema:
+        with base.begin() as conn:
+            conn.execute(CreateSchema(schema))
+        engine = base.execution_options(schema_translate_map={None: schema})
+    else:
+        engine = base
     monkeypatch.setattr(db, "engine", engine)
     monkeypatch.setattr(settings, "payment_mode", "mock")
     monkeypatch.setattr(settings, "ai_mode", "demo")
     monkeypatch.setattr(settings, "access_code", "afracanet-demo")
-    with TestClient(app) as result:
-        yield result
-    engine.dispose()
+    try:
+        with TestClient(app) as result:
+            yield result
+    finally:
+        if schema:
+            # Only this fixture's randomly named test schema is removed, never public.
+            with base.begin() as conn:
+                conn.execute(DropSchema(schema, cascade=True))
+        base.dispose()
 
 
 def auth(client, persona):
