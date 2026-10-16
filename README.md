@@ -178,13 +178,32 @@ docs/SUBMISSION.md    Demo outline and submission checklist
 Internal submission target: **30 October 2026**.
 
 1. Verify real PayPal sandbox payment and Gemini interpretation.
-2. Add SMS access, lender approval import, dealer catalogue maintenance, and issues.
+2. Add SMS access, issue reporting, and invoice recovery.
 3. Validate PostgreSQL, improve hosted access, and prepare a hosted demonstration.
 4. Record the public demonstration, finalize evidence, and submit through Devpost.
 
 See [the build plan](docs/BUILD_PLAN.md) and
 [submission checklist](docs/SUBMISSION.md). The project must not be presented as
 ready for judging until its PayPal and AI functionality has actually been verified.
+
+## Manage approvals and catalogue
+
+In the lender's **Credit allocations** tab, download the CSV template, then upload
+or paste externally approved allocations. Preview validates the complete batch;
+Import revalidates and saves all rows in one transaction. Columns, in order:
+`farmer_id,name,location,limit_cents,expires_at,approval_reference`.
+IDs start with `farmer-`; limits use whole USD cents; expiry includes a timezone.
+The limit is a total allocation, including already reserved and paid credit.
+Imports preserve these balances and cannot transfer a farmer between lenders.
+Repeated imports update the allocation; they do not replenish spent credit.
+New farmers appear in the authenticated demo **View as** switcher. This remains
+a shared-code demonstration identity model, not individual farmer authentication.
+
+In the dealer's **Inventory** tab, add products or edit names, packs, prices,
+and total on-hand stock. Existing orders retain their quoted prices. Stock cannot
+fall below reservations. An edit opened before stock or catalogue changes must
+be reopened before saving, so stale forms cannot overwrite newer changes.
+Management changes are recorded in the `management_events` database table.
 
 ## License
 

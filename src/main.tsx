@@ -33,6 +33,7 @@ import {
   X,
 } from 'lucide-react'
 import './styles.css'
+import { ApprovalImport, CatalogueEditor } from './Management'
 
 type Role = 'farmer' | 'lender' | 'supplier'
 type Session = { token: string; role: Role; subject: string; name: string }
@@ -44,6 +45,7 @@ type Farmer = {
   reserved_cents?: number
   spent_cents?: number
   approval_reference?: string
+  expires_at?: string
 }
 type Product = {
   id: string
@@ -53,6 +55,7 @@ type Product = {
   stock: number
   reserved: number
   category: string
+  revision: string
 }
 type Line = {
   product_id: string
@@ -199,6 +202,8 @@ function App() {
   const [clarification, setClarification] = useState('')
   const [cart, setCart] = useState<Record<string, number>>({})
   const [requestId, setRequestId] = useState(() => crypto.randomUUID())
+  const [choices, setChoices] =
+    useState<{ id: string; name: string }[]>(participants)
 
   const refresh = useCallback(async () => {
     if (!session) return
@@ -218,6 +223,17 @@ function App() {
     }, 6000)
     return () => clearInterval(timer)
   }, [refresh, session])
+  const refreshChoices = useCallback(async () => {
+    if (!session) return
+    const next = await api<{ id: string; name: string }[]>(
+      '/participants',
+      session.token,
+    )
+    if (activeToken.current === session.token) setChoices(next)
+  }, [session])
+  useEffect(() => {
+    void refreshChoices().catch(() => {})
+  }, [refreshChoices])
   useEffect(() => {
     if (!selected || !session) return
     void api<Event[]>('/orders/' + selected + '/timeline', session.token)
@@ -609,7 +625,7 @@ function App() {
                 disabled={busy}
                 onChange={(e) => void signIn(e.target.value)}
               >
-                {participants.map((p) => (
+                {choices.map((p) => (
                   <option key={p.id} value={p.id}>
                     {p.name}
                   </option>
@@ -1033,11 +1049,32 @@ function App() {
                   </h2>
                   <p className="muted">
                     {role === 'lender'
-                      ? 'Illustrative approvals supplied by the lender. Credit scoring is external.'
+                      ? 'Approvals supplied by the lender. Credit scoring is external.'
                       : 'Illustrative inventory and prices. Reservations prevent concurrent over-ordering.'}
                   </p>
                 </div>
               </div>
+              {role === 'lender' ? (
+                <ApprovalImport
+                  key={session.token}
+                  request={(path, body, method) =>
+                    api(path, session.token, body, method)
+                  }
+                  onSaved={async () => {
+                    await refresh()
+                    await refreshChoices()
+                  }}
+                />
+              ) : (
+                <CatalogueEditor
+                  key={session.token}
+                  products={state.products}
+                  request={(path, body, method) =>
+                    api(path, session.token, body, method)
+                  }
+                  onSaved={refresh}
+                />
+              )}
               <div className="table-scroll">
                 <table>
                   {role === 'lender' ? (
@@ -1059,7 +1096,15 @@ function App() {
                               <strong>{f.name}</strong>
                               <small>{f.location}</small>
                             </td>
-                            <td>{f.approval_reference}</td>
+                            <td>
+                              {f.approval_reference}
+                              <small>
+                                Expires{' '}
+                                {f.expires_at
+                                  ? new Date(f.expires_at).toLocaleDateString()
+                                  : '—'}
+                              </small>
+                            </td>
                             <td>{money(f.limit_cents ?? 0)}</td>
                             <td>{money(f.reserved_cents ?? 0)}</td>
                             <td>{money(f.spent_cents ?? 0)}</td>

@@ -127,3 +127,53 @@ test('mobile farmer experience fits without page overflow and prevents overspend
     fullPage: true,
   })
 })
+
+test('lender imports an approval and dealer maintains catalogue on mobile', async ({
+  page,
+}) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Open workspace' }).click()
+  await page.getByRole('button', { name: 'Credit allocations' }).click()
+  const expiry = new Date(Date.now() + 60 * 86400000).toISOString()
+  await page
+    .getByLabel('Or paste approval CSV')
+    .fill(
+      `farmer_id,name,location,limit_cents,expires_at,approval_reference\nfarmer-browser,Jane Demo,Nakuru,4000,${expiry},BANK-BROWSER-01`,
+    )
+  await page.getByRole('button', { name: 'Preview approvals' }).click()
+  await expect(
+    page.getByRole('button', { name: 'Import 1 approval', exact: true }),
+  ).toBeVisible()
+  await page
+    .getByRole('button', { name: 'Import 1 approval', exact: true })
+    .click()
+  await expect(page.getByText('1 approval(s) imported.')).toBeVisible()
+  await page.getByLabel('View as').selectOption('supplier-demo')
+  await page.getByRole('button', { name: 'Inventory', exact: true }).click()
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.getByRole('button', { name: 'Add product', exact: true }).click()
+  await page.getByLabel('Product ID', { exact: true }).fill('beans-browser')
+  await page.getByLabel('Product name', { exact: true }).fill('Beans seed')
+  await page.getByLabel('Category', { exact: true }).fill('Seed')
+  await page.getByLabel('Unit / pack size', { exact: true }).fill('1 kg pack')
+  await page.getByLabel('Unit price (USD)', { exact: true }).fill('8.50')
+  await page.getByLabel('On-hand stock', { exact: true }).fill('20')
+  await page.getByRole('button', { name: 'Save product', exact: true }).click()
+  await expect(
+    page.getByText('Catalogue saved. Existing order prices remain unchanged.'),
+  ).toBeVisible()
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true)
+  await page.getByLabel('View as').selectOption('farmer-browser')
+  await expect(
+    page.getByRole('button', { name: 'Add Beans seed 1 kg pack' }),
+  ).toBeVisible()
+  await page.getByRole('button', { name: 'Add Beans seed 1 kg pack' }).click()
+  await page.getByRole('button', { name: 'Confirm input request' }).click()
+  await expect(
+    page.getByRole('dialog').getByText('$8.50', { exact: false }).first(),
+  ).toBeVisible()
+})

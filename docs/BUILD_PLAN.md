@@ -38,6 +38,8 @@ repayment servicing remain with the lender. The platform coordinates execution.
 - Explicit demo parser and simulated payment modes.
 - PayPal sandbox adapter and Gemini structured-output adapter.
 - Backend financial integrity tests and browser journey checks.
+- CSV approval preview/import, including new farmer demo participants.
+- Dealer catalogue editing with reservation protection and stale-edit checks.
 
 External-service adapters require credentials and real end-to-end verification.
 Their existence in the code does not mean those integrations have been demonstrated.
@@ -49,7 +51,7 @@ Their existence in the code does not mean those integrations have been demonstra
 - Configure Gemini and evaluate English, Swahili, code-switching, and ambiguity.
 - Add SMS channel through Africa's Talking; document any simulator honestly.
 - Improve demo access controls for a hosted demonstration and add abuse limits.
-- Add approval import, editable dealer catalogue, issue reporting, and recovery UI.
+- Add issue reporting and recovery UI.
 - Verify PostgreSQL execution before recommending it for hosted use.
 - Document invoice failure recovery, refund/cancellation handling, and restart recovery.
 - Prepare hosted deployment, judge instructions, public YouTube video, and submission.
@@ -74,6 +76,10 @@ staff effort, reconciliation discrepancies, abandonment, support cost, and
 collection completion. Default and yield outcomes require longer observation.
 
 ## Presentation package
+
+After core workflow completion, build a public product information page with
+an animated explanation of the farmer, lender, and dealer flow. Keep this behind
+core features, external-service verification, and exception handling in priority.
 
 1. Working demonstration: one successful transaction and one meaningful exception.
 2. Short deck: evidence, customer, workflow, competition, business model, pilot ask.
