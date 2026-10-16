@@ -98,6 +98,34 @@ issues = Table(
     Column("resolution", Text),
     UniqueConstraint("order_id", "client_request_id"),
 )
+contacts = Table(
+    "farmer_contacts", metadata,
+    Column("farmer_id", ForeignKey("farmers.id"), primary_key=True),
+    Column("phone", String, nullable=False, unique=True),
+    Column("language", String, nullable=False),
+    Column("consented_at", String),
+    Column("verified_at", String),
+    Column("verification_hash", String),
+    Column("verification_expires_at", String),
+    Column("verification_attempts", Integer, nullable=False, default=0),
+    Column("updated_at", String, nullable=False),
+)
+sms_outbox = Table(
+    "sms_outbox", metadata,
+    Column("id", Integer, Identity(), primary_key=True),
+    Column("farmer_id", ForeignKey("farmers.id"), nullable=False, index=True),
+    Column("order_id", ForeignKey("orders.id")),
+    Column("event_key", String, nullable=False, unique=True),
+    Column("action", String, nullable=False),
+    Column("phone", String, nullable=False),
+    Column("body", Text, nullable=False),
+    Column("mode", String, nullable=False),
+    Column("status", String, nullable=False, default="QUEUED", index=True),
+    Column("provider_id", String),
+    Column("detail", String),
+    Column("created_at", String, nullable=False),
+    Column("updated_at", String, nullable=False),
+)
 
 
 def now():
@@ -146,6 +174,8 @@ def initialize():
 
 
 def record(conn, order_id, actor, action, detail):
-    conn.execute(insert(audit).values(
+    event_id = conn.execute(insert(audit).values(
         order_id=order_id, actor=actor, action=action, detail=detail, created_at=now(),
-    ))
+    )).inserted_primary_key[0]
+    from .notifications import enqueue_event
+    enqueue_event(conn, order_id, event_id, action)

@@ -19,9 +19,16 @@ class Settings:
     paypal_webhook = os.getenv("PAYPAL_WEBHOOK_ID", "")
     gemini_key = os.getenv("GEMINI_API_KEY", "")
     gemini_model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+    sms_mode = os.getenv("SMS_MODE", "demo")
+    sms_key = os.getenv("AFRICASTALKING_API_KEY", "")
+    sms_sender = os.getenv("AFRICASTALKING_SENDER_ID", "")
     allowed_hosts = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,testserver").split(",")
 
     def validate(self):
+        if self.sms_mode not in {"demo", "sandbox"}:
+            raise RuntimeError("Supported SMS modes: demo|sandbox. Real handset delivery is not enabled.")
+        if self.sms_mode == "sandbox" and not self.sms_key:
+            raise RuntimeError("SMS_MODE=sandbox requires AFRICASTALKING_API_KEY.")
         if self.payment_mode not in {"mock", "sandbox"} or self.ai_mode not in {"demo", "gemini"}:
             raise RuntimeError("Supported modes: PAYMENT_MODE=mock|sandbox, AI_MODE=demo|gemini.")
         if self.payment_mode == "sandbox":

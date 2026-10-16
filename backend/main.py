@@ -16,7 +16,7 @@ from sqlalchemy import insert, select, update
 from sqlalchemy.exc import IntegrityError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-from . import assistant, db, management
+from . import assistant, db, management, notifications
 from .config import ROOT, settings
 from .paypal import PayPal, PaymentError, cancelled_without_payment, matching_invoice, payment_link, verified_payment
 
@@ -261,6 +261,31 @@ def product_save(product_id: str, body: management.ProductEdit, user=Depends(act
     if not re.fullmatch(r"[a-z0-9][a-z0-9-]{0,79}", product_id):
         raise HTTPException(422, "Use a product ID with lowercase letters, numbers, and hyphens (up to 80 characters).")
     return management.save_product(product_id, body, user)
+
+
+@app.get("/api/sms")
+def sms_preferences(user=Depends(actor)):
+    require(user, "farmer")
+    return notifications.preferences(user)
+
+
+@app.put("/api/sms/contact")
+def sms_contact(body: notifications.ContactRequest, user=Depends(actor)):
+    require(user, "farmer")
+    return notifications.save_contact(user, body)
+
+
+@app.post("/api/sms/verify")
+def sms_verify(body: notifications.VerifyRequest, user=Depends(actor)):
+    require(user, "farmer")
+    return notifications.verify_contact(user, body)
+
+
+@app.post("/api/sms/dispatch")
+def sms_dispatch(user=Depends(actor)):
+    require(user, "farmer")
+    count = notifications.dispatch_pending(user["subject"], limit=1)
+    return {"message": f"Processed {count} queued SMS update(s). Check its recorded status; acceptance is not delivery."}
 
 
 @app.post("/api/assistant")

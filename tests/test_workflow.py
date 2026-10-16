@@ -28,6 +28,7 @@ def client(tmp_path, monkeypatch):
     monkeypatch.setattr(db, "engine", engine)
     monkeypatch.setattr(settings, "payment_mode", "mock")
     monkeypatch.setattr(settings, "ai_mode", "demo")
+    monkeypatch.setattr(settings, "sms_mode", "demo")
     monkeypatch.setattr(settings, "access_code", "afracanet-demo")
     try:
         with TestClient(app) as result:
