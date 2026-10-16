@@ -192,7 +192,7 @@ docs/SUBMISSION.md    Demo outline and submission checklist
 Internal submission target: **30 October 2026**.
 
 1. Verify real PayPal sandbox payment and Gemini interpretation.
-2. Add SMS access and evaluate the workflow with real users.
+2. Verify the SMS sandbox channel and evaluate the workflow with real users.
 3. Validate PostgreSQL, improve hosted access, and prepare a hosted demonstration.
 4. Record the public demonstration, finalize evidence, and submit through Devpost.
 
@@ -234,6 +234,92 @@ Those actions continue to use their transaction rules and provider evidence.
 Pre-invoice cancellation remains available and releases reservations once.
 Issue reports and resolutions remain in the transaction timeline. Retrying an
 identical issue report or a completed collection does not repeat its effects.
+
+## Farmer SMS updates
+
+The farmer's **SMS updates** tab accepts an opted-in Kenyan mobile number and
+English/Kiswahili preference. A six-digit code verifies the number before future
+order updates are queued. Codes expire after ten minutes and permit five attempts;
+requesting another code has a one-minute cooldown. Opting out suppresses queued
+updates. Contacts and message previews are visible only in the farmer's own view.
+The demo still uses shared-code identities; this is not production identity proof.
+
+`SMS_MODE=demo` creates clearly labelled local previews without contacting a
+gateway. Use **Preview next queued SMS**, read its code, and verify the number.
+Order, issue, collection, and cancellation updates then enter a durable outbox.
+Messages describing simulated payments carry a DEMO label. The dispatcher checks
+open issues before preparing collection codes; messages already in flight or sent
+cannot be recalled, and the collection endpoint enforces the hold again.
+
+For the Africa's Talking simulator, configure:
+
+```dotenv
+SMS_MODE=sandbox
+AFRICASTALKING_API_KEY=<your-sandbox-key>
+AFRICASTALKING_SENDER_ID=<optional-sandbox-sender>
+```
+
+Restart the backend, request a fresh verification SMS, and select **Send next SMS
+to sandbox**. Read the code in Africa's Talking's simulator. This adapter uses
+only its fixed sandbox API host and `sandbox` username, following the provider's
+[official SDK](https://github.com/AfricasTalkingLtd/africastalking-python/blob/master/africastalking/SMS.py).
+Real handset delivery, SMS ordering, and USSD are not enabled.
+Local demo verification does not carry over to sandbox mode; reverify the number.
+
+To process queued jobs outside the browser, run:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/dispatch_sms.py --limit 20
+```
+
+The worker claims each job once and calls the provider outside the transaction.
+`SIMULATED` means no API call; `ACCEPTED` means sandbox acceptance, not delivery.
+`REJECTED`, `UNCERTAIN`, and interrupted `SENDING` jobs require operator review;
+there is no automatic retry that could duplicate a message. Queue processing is
+an explicit command or browser action; a continuously running worker and delivery
+receipt reconciliation remain future work. Never treat SMS status as payment proof.
+
+## Evaluate the assistant
+
+The labelled synthetic set in `evaluations/assistant-cases.json` covers English,
+Swahili, mixed language, multiple inputs, unit/count ambiguity, unknown products,
+and attempts to bypass the assistant's boundaries. Native-speaker and real-user
+review remain necessary. The scorer requires exact product/count matches or an
+actual clarification with no proposed items.
+
+```powershell
+# Local parser baseline; no model calls. Multi-product cases intentionally fail.
+.\.venv\Scripts\python.exe scripts/evaluate_assistant.py --mode demo
+# Calls the configured model using your local key; start with a small check.
+.\.venv\Scripts\python.exe scripts/evaluate_assistant.py --mode gemini --limit 4
+# Full labelled set after configuration is verified.
+.\.venv\Scripts\python.exe scripts/evaluate_assistant.py --mode gemini
+```
+
+Reports are saved under ignored `data/evaluations/` with mode/model, per-case
+results, timing, and language/category breakdowns. The command exits with code 1
+when a case fails. Demo baseline scores are never labelled as Gemini performance.
+Gemini has not yet been evaluated with live credentials.
+
+The demo parser is deliberately limited to one supported catalogue item at a time.
+It asks for missing quantities and unknown products instead of using pack weight
+as quantity or silently discarding the second item. Model output is also checked
+for strict integer quantities, duplicate lines, unknown products, and extra fields.
+
+## PostgreSQL integrity checks
+
+CI runs the backend suite against SQLite and a PostgreSQL 16 service. Each
+PostgreSQL test uses its own randomly named `test_afracanet_…` schema, then removes
+only that schema. To run against a locally prepared PostgreSQL test database:
+
+```powershell
+$env:TEST_POSTGRES_URL='postgresql+psycopg://test_user:test_password@localhost:5432/test_database'
+.\.venv\Scripts\python.exe -m pytest -q
+Remove-Item Env:TEST_POSTGRES_URL
+```
+
+Use a dedicated test account/database with schema-creation permissions. These
+checks do not supply migrations, backups, or production operations procedures.
 
 ## License
 

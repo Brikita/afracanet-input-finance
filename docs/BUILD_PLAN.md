@@ -42,6 +42,9 @@ repayment servicing remain with the lender. The platform coordinates execution.
 - Dealer catalogue editing with reservation protection and stale-edit checks.
 - Existing invoice recovery with correlation checks and unpaid-cancellation safeguards.
 - Participant issue reporting, lender resolutions, and collection holds.
+- Opted-in, verified farmer SMS updates with a durable outbox and demo/sandbox modes.
+- A labelled bilingual evaluation runner, with strict model-output validation.
+- An isolated PostgreSQL CI job alongside the existing SQLite checks.
 
 External-service adapters require credentials and real end-to-end verification.
 Their existence in the code does not mean those integrations have been demonstrated.
@@ -51,9 +54,11 @@ Their existence in the code does not mean those integrations have been demonstra
 - Configure supplier-owned PayPal sandbox app and lender sandbox buyer account.
 - Confirm real invoice request payload, payer experience, payment records, and webhook.
 - Configure Gemini and evaluate English, Swahili, code-switching, and ambiguity.
-- Add SMS channel through Africa's Talking; document any simulator honestly.
+- Verify Africa's Talking sandbox sends. Current channel covers outbound updates;
+  real handset delivery, SMS ordering, and USSD remain beyond this prototype slice.
 - Improve demo access controls for a hosted demonstration and add abuse limits.
-- Verify PostgreSQL execution before recommending it for hosted use.
+- Review PostgreSQL CI evidence before recommending a hosted configuration;
+  migrations, backups, and deployment operations still need implementation.
 - Validate documented invoice recovery and unpaid cancellation against real PayPal sandbox records; paid refunds remain an operator workflow.
 - Prepare hosted deployment, judge instructions, public YouTube video, and submission.
 

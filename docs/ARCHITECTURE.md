@@ -8,6 +8,9 @@ flowchart LR
   API --> DB[(SQLite locally / PostgreSQL adapter)]
   API --> AI[Gemini request interpretation]
   API --> PP[PayPal sandbox invoicing]
+  API --> OUT[Transactional SMS outbox]
+  OUT --> WORK[Explicit queue dispatcher]
+  WORK --> SMS[Africa's Talking sandbox / local preview]
   PP --> WH[Verified webhook]
   WH --> API
 ```
@@ -82,10 +85,32 @@ an issue is open. Dealers must obtain
 the code from the farmer. Code verification records handover; it does not
 independently prove delivery quality or prevent collusion.
 
+## SMS boundaries
+
+Farmer contacts require opt-in and a six-digit number-verification challenge.
+Only the farmer role can manage its own contact or preview its own queue. Attempts
+and expiry are enforced server-side. Local verification previews are labelled;
+sandbox codes must be read in the provider simulator. No real handset API host
+is supported. Phone numbers and codes are not included in management audit details
+or assistant prompts.
+
+Order audit events enqueue messages in the same transaction. The worker claims
+each queued row once, rechecks contact consent/current order facts, and makes
+provider requests outside database transactions. Stale updates are suppressed.
+Incoming financial events do not depend on SMS success. Open issues suppress
+collection codes at dispatch; an already sent code cannot be recalled, so the
+collection endpoint always enforces the issue hold again.
+
+Acceptance, local preview, rejection, and uncertain outcomes are separate states.
+There is no automatic retry of uncertain or interrupted sends. A scheduled worker,
+delivery receipts, and production messaging remain future work.
+
 ## Limitations and next gates
 
-- PostgreSQL connection support exists but is not yet integration-tested.
-- No live SMS/USSD gateway yet.
+- PostgreSQL has an isolated CI test job; successful execution must be confirmed
+  from the run before claiming verification. Hosted operations remain unvalidated.
+- SMS adapter supports local previews and provider sandbox only; live provider
+  verification, real handset delivery, SMS ordering, and USSD remain outstanding.
 - One illustrative lender/dealer; no merchant onboarding for multiple suppliers.
 - No automated reservation expiry or refund processing. Post-invoice cancellation
   is verified from PayPal records; ambiguous or partially paid states stay held.
