@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   ArrowDownToLine,
   ArrowRight,
@@ -30,22 +30,15 @@ import {
 import { Issues } from '../features/issues/Issues'
 import { Notifications } from '../features/notifications/Notifications'
 
-import type {
-  Role,
-  Session,
-  Farmer,
-  Product,
-  Line,
-  Order,
-  State,
-  Event,
-} from '../domain/models'
+import type { Session, Line, Order, State, Event } from '../domain/models'
 import { api } from '../lib/api'
 import { money } from '../lib/format'
 import { labels } from '../domain/orderStatus'
 import { Brand } from '../components/Brand'
 import { Status } from '../components/Status'
 import { Stat } from '../components/Stat'
+import { LenderWorkspace } from '../features/lender/LenderWorkspace'
+import { Dialog } from '../components/Dialog'
 
 const participants = [
   {
@@ -307,16 +300,7 @@ export function App() {
         <section className="login-story">
           <Brand light />
           <div className="story-content">
-            <span className="eyebrow light">
-              <span /> FROM APPROVAL TO THE FIELD
-            </span>
-            <h1>
-              Good credit.
-              <br />
-              Real inputs.
-              <br />
-              <em>Growing futures.</em>
-            </h1>
+            <h1>Credit, connected.</h1>
             <p>
               A shared path from approved agricultural credit to supplier
               payment and farmer collection.
@@ -329,26 +313,15 @@ export function App() {
               </div>
             </div>
           </div>
-          <svg className="field-art" viewBox="0 0 800 300" aria-hidden="true">
-            <path
-              d="M-50 290 Q300 -70 870 160M-50 330 Q300 -30 870 200M-50 370 Q300 10 870 240M-50 410 Q300 50 870 280M-50 450 Q300 90 870 320M-50 490 Q300 130 870 360"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
-            <circle cx="640" cy="60" r="35" fill="currentColor" opacity=".3" />
-          </svg>
+
           <footer>Built for agricultural finance in Kenya.</footer>
         </section>
         <section className="login-panel">
           <div className="login-top">
-            <span className="prototype-pill">WORKING PROTOTYPE</span>
-            <span>01 / Explore</span>
+            <span className="prototype-pill">Working prototype</span>
+            <span>Demonstration access</span>
           </div>
           <div className="login-form">
-            <span className="eyebrow">
-              ONE TRANSACTION. THREE PERSPECTIVES.
-            </span>
             <h2>Step into the workspace.</h2>
             <p>
               Choose a demonstration participant to follow the full input
@@ -433,11 +406,18 @@ export function App() {
   )
   const totalFunded = funded.reduce((sum, o) => sum + o.amount_cents, 0)
   const pending = state.orders.filter((o) =>
-    ['REQUESTED', 'APPROVED', 'AWAITING_PAYMENT', 'PAYMENT_REVIEW'].includes(
-      o.status,
-    ),
+    [
+      'REQUESTED',
+      'APPROVED',
+      'INVOICING',
+      'AWAITING_PAYMENT',
+      'PAYMENT_REVIEW',
+    ].includes(o.status),
   )
   const collected = state.orders.filter((o) => o.status === 'COLLECTED')
+  const awaitingApproval = state.orders.filter(
+    (o) => o.status === 'REQUESTED',
+  ).length
   const current = state.orders.find((o) => o.id === selected)
   const openIssues =
     current?.issues?.some((issue) => !issue.resolved_at) ?? false
@@ -476,52 +456,32 @@ export function App() {
 
   return (
     <div className="app-shell">
-      <aside className="sidebar">
-        <Brand light />
-        <span className="workspace-label">
-          {role === 'lender'
-            ? 'LENDER WORKSPACE'
-            : role === 'supplier'
-              ? 'AGRO-DEALER WORKSPACE'
-              : 'FARMER WORKSPACE'}
-        </span>
-        <nav aria-label="Workspace navigation">
-          {nav.map((n) => (
-            <button
-              key={n.id}
-              className={tab === n.id ? 'nav-item active' : 'nav-item'}
-              onClick={() => setTab(n.id)}
-            >
-              <n.icon size={18} />
-              {n.label}
-              {n.id === 'orders' && <span>{state.orders.length}</span>}
-            </button>
-          ))}
-        </nav>
-        <div className="sidebar-note">
-          <Sprout size={27} />
-          <strong>
-            Credit that reaches
-            <br />
-            the field.
-          </strong>
-          <p>Connect the request, the payment, and the collection.</p>
-        </div>
-        <div className="sidebar-bottom">
-          <span className="live-dot" /> Prototype workspace
-          <button aria-label="Sign out" onClick={() => void signOut()}>
-            <LogOut size={18} />
-          </button>
-        </div>
-      </aside>
-      <div className="main-shell">
-        <header className="topbar">
-          <div className="breadcrumb">
-            Workspace <span>/</span>{' '}
-            <strong>{nav.find((n) => n.id === tab)?.label}</strong>
-          </div>
-          <div className="topbar-right">
-            <span className="prototype-pill">PROTOTYPE</span>
+      <div
+        className="main-shell"
+        aria-hidden={current ? true : undefined}
+        inert={Boolean(current)}
+      >
+        <a className="skip-link" href="#workspace-content">
+          Skip to workspace
+        </a>
+        <header className="workspace-header">
+          <Brand light />
+          <nav aria-label="Workspace navigation">
+            {nav.map((n) => (
+              <button
+                key={n.id}
+                className={
+                  tab === n.id ? 'workspace-nav active' : 'workspace-nav'
+                }
+                aria-current={tab === n.id ? 'page' : undefined}
+                onClick={() => setTab(n.id)}
+              >
+                <n.icon size={17} />
+                <span>{n.label}</span>
+              </button>
+            ))}
+          </nav>
+          <div className="workspace-account">
             <div className="persona-select">
               <label htmlFor="persona">View as</label>
               <select
@@ -536,49 +496,39 @@ export function App() {
                   </option>
                 ))}
               </select>
-              <ChevronDown size={15} />
-            </div>
-            <div className="avatar">
-              {session.name
-                .split(' ')
-                .slice(0, 2)
-                .map((s) => s[0])
-                .join('')}
+              <ChevronDown size={14} />
             </div>
             <button
-              className="mobile-signout"
+              className="signout-button"
               aria-label="Sign out of workspace"
               onClick={() => void signOut()}
             >
-              <LogOut size={17} />
+              <LogOut size={18} />
             </button>
           </div>
         </header>
-        <main>
+        <main id="workspace-content" tabIndex={-1}>
           <div className="mode-banner">
             <ShieldCheck size={16} />
             <span>
               {state.payment_mode === 'mock'
                 ? 'Simulated payments · no money moves'
                 : 'PayPal sandbox · test funds only'}
-              <span className="mode-divider">|</span>
-              {state.ai_mode === 'demo'
-                ? 'Demo request parser · no AI model connected'
-                : 'Gemini request assistant'}
+              <span className="assistant-disclosure">
+                <span className="mode-divider">|</span>
+                {state.ai_mode === 'demo'
+                  ? 'Demo request parser · no AI model connected'
+                  : 'Gemini request assistant'}
+              </span>
             </span>
             <small>USD illustrative prices</small>
           </div>
           {banner}
           <div className="page-title">
             <div>
-              <span className="eyebrow">
-                {role === 'farmer'
-                  ? 'YOUR NEXT SEASON STARTS HERE'
-                  : 'AGRICULTURAL INPUT FINANCE'}
-              </span>
               <h1>
                 {tab === 'sms'
-                  ? 'Updates that reach your phone.'
+                  ? 'SMS updates'
                   : role === 'farmer'
                     ? 'From your credit to your farm.'
                     : tab === 'people'
@@ -586,13 +536,17 @@ export function App() {
                         ? 'Approved credit allocations'
                         : 'Your input inventory'
                       : tab === 'orders'
-                        ? 'Every transaction, in view.'
-                        : 'A clearer path to the field.'}
+                        ? 'Transactions'
+                        : 'Keep credit moving.'}
               </h1>
               <p>
                 {role === 'farmer'
                   ? 'Choose your inputs. Your lender pays the agro-dealer directly.'
-                  : 'Coordinate approved credit, supplier payments, and farmer collection.'}
+                  : role === 'lender' && tab === 'overview'
+                    ? awaitingApproval
+                      ? `${awaitingApproval} ${awaitingApproval === 1 ? 'request awaits' : 'requests await'} lender approval. Review the next step in each case.`
+                      : 'No requests are waiting for lender approval.'
+                    : 'Coordinate approved credit, supplier payments, and farmer collection.'}
               </p>
             </div>
             {role === 'lender' && (
@@ -601,50 +555,28 @@ export function App() {
                 onClick={() => void download()}
               >
                 <ArrowDownToLine size={16} />
-                Export records
+                <span className="export-label">Export records</span>
               </button>
             )}
           </div>
-          {tab === 'overview' && (
+          {tab === 'overview' && role === 'lender' && (
+            <LenderWorkspace
+              state={state}
+              busy={busy}
+              onOpen={(order) => {
+                setSelected(order.id)
+                setCollectionCode('')
+                setRecoveryInvoice(order.invoice_id ?? '')
+              }}
+              onAction={action}
+              onAllocations={() => setTab('people')}
+              onFarmer={() => void signIn('farmer-amina')}
+            />
+          )}
+          {tab === 'overview' && role !== 'lender' && (
             <>
-              {role !== 'farmer' && (
-                <section className="hero-strip">
-                  <div>
-                    <span className="eyebrow light">
-                      CONNECTED FROM START TO FINISH
-                    </span>
-                    <h2>
-                      One shared record.
-                      <br />
-                      Every step of the journey.
-                    </h2>
-                    <p>
-                      Give credit a clear destination and keep every participant
-                      informed.
-                    </p>
-                  </div>
-                  <div className="journey-inline">
-                    {[
-                      { icon: Tractor, label: 'Farmer requests' },
-                      { icon: Wallet, label: 'Lender pays' },
-                      { icon: Package, label: 'Dealer fulfils' },
-                    ].map((step, i) => (
-                      <React.Fragment key={step.label}>
-                        {i > 0 && <span className="journey-line" />}
-                        <div>
-                          <span>
-                            <step.icon size={23} />
-                          </span>
-                          <small>{step.label}</small>
-                        </div>
-                      </React.Fragment>
-                    ))}
-                  </div>
-                </section>
-              )}
               <section className="stats-grid">
                 <Stat
-                  icon={Wallet}
                   label={
                     role === 'supplier'
                       ? 'Confirmed payments'
@@ -658,19 +590,16 @@ export function App() {
                   }
                 />
                 <Stat
-                  icon={Clock3}
                   label="In progress"
                   value={String(pending.length)}
                   note="Requests requiring the next step"
                 />
                 <Stat
-                  icon={Package}
                   label="Ready for collection"
                   value={String(funded.length - collected.length)}
                   note="Payment confirmed, handover pending"
                 />
                 <Stat
-                  icon={CheckCircle2}
                   label="Collected orders"
                   value={String(collected.length)}
                   note="Dealer recorded farmer collection"
@@ -683,7 +612,6 @@ export function App() {
               <section className="panel request-panel">
                 <div className="section-title">
                   <div>
-                    <span className="eyebrow">START A REQUEST</span>
                     <h2>What does your farm need?</h2>
                   </div>
                   <Sparkles size={22} />
@@ -762,7 +690,6 @@ export function App() {
                 </div>
               </section>
               <section className="panel order-summary">
-                <span className="eyebrow">REVIEW & CONFIRM</span>
                 <h2>Your input order</h2>
                 <p className="muted">Supplier: Demo Green Valley Agrovet</p>
                 {cartLines.length === 0 ? (
@@ -841,124 +768,128 @@ export function App() {
               }
             />
           )}
-          {tab !== 'people' && tab !== 'sms' && (
-            <section className="panel transaction-panel">
-              <div className="section-title">
-                <div>
-                  <h2>
-                    {role === 'farmer'
-                      ? 'Your requests'
-                      : 'Transaction activity'}
-                  </h2>
-                  <p className="muted">
-                    A connected record from request to collection.
-                  </p>
+          {tab !== 'people' &&
+            tab !== 'sms' &&
+            !(role === 'lender' && tab === 'overview') && (
+              <section className="panel transaction-panel">
+                <div className="section-title">
+                  <div>
+                    <h2>
+                      {role === 'farmer'
+                        ? 'Your requests'
+                        : 'Transaction activity'}
+                    </h2>
+                    <p className="muted">
+                      A connected record from request to collection.
+                    </p>
+                  </div>
+                  <div className="search-field">
+                    <Search size={16} />
+                    <input
+                      aria-label="Search transactions"
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      placeholder="Search transactions…"
+                    />
+                  </div>
                 </div>
-                <div className="search-field">
-                  <Search size={16} />
-                  <input
-                    aria-label="Search transactions"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Search transactions…"
-                  />
-                </div>
-              </div>
-              {filtered.length === 0 ? (
-                <div className="empty-state">
-                  <span>
-                    <Sprout size={28} />
-                  </span>
-                  <h3>
-                    {state.orders.length
-                      ? 'No matching transactions'
-                      : 'The next growing season starts with a request.'}
-                  </h3>
-                  <p>
-                    {state.orders.length
-                      ? 'Try a different reference, farmer, or status.'
-                      : role === 'farmer'
-                        ? 'Choose inputs above to start your first request.'
-                        : 'Open the farmer experience to request inputs, then follow the journey here.'}
-                  </p>
-                  {!state.orders.length && role !== 'farmer' && (
-                    <button
-                      className="button secondary"
-                      onClick={() => void signIn('farmer-amina')}
-                    >
-                      Explore farmer experience
-                      <ArrowRight size={16} />
-                    </button>
-                  )}
-                </div>
-              ) : (
-                <div className="table-scroll">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>ORDER / FARMER</th>
-                        <th>INPUTS</th>
-                        <th>AMOUNT</th>
-                        <th>STATUS</th>
-                        <th />
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filtered.map((o) => (
-                        <tr key={o.id}>
-                          <td>
-                            <strong>{o.reference}</strong>
-                            <small>
-                              {state.farmers.find((f) => f.id === o.farmer_id)
-                                ?.name ?? o.farmer_id}
-                            </small>
-                          </td>
-                          <td>
-                            {o.items
-                              .map((i) => i.quantity + ' × ' + i.name)
-                              .join(', ')}
-                            <small>
-                              {o.items.map((i) => i.unit).join(', ')}
-                            </small>
-                          </td>
-                          <td>
-                            <strong>{money(o.amount_cents)}</strong>
-                            <small>
-                              {o.payment_mode === 'mock'
-                                ? 'Simulated'
-                                : 'PayPal sandbox'}
-                            </small>
-                          </td>
-                          <td>
-                            <Status status={o.status} />
-                            {o.issues?.some((issue) => !issue.resolved_at) && (
-                              <small className="issue-flag">
-                                Issue requires review
-                              </small>
-                            )}
-                          </td>
-                          <td>
-                            <button
-                              className="text-button"
-                              aria-label={'Open ' + o.reference}
-                              onClick={() => {
-                                setSelected(o.id)
-                                setCollectionCode('')
-                                setRecoveryInvoice(o.invoice_id ?? '')
-                              }}
-                            >
-                              View
-                              <ArrowRight size={15} />
-                            </button>
-                          </td>
+                {filtered.length === 0 ? (
+                  <div className="empty-state">
+                    <span>
+                      <Sprout size={28} />
+                    </span>
+                    <h3>
+                      {state.orders.length
+                        ? 'No matching transactions'
+                        : 'The next growing season starts with a request.'}
+                    </h3>
+                    <p>
+                      {state.orders.length
+                        ? 'Try a different reference, farmer, or status.'
+                        : role === 'farmer'
+                          ? 'Choose inputs above to start your first request.'
+                          : 'Open the farmer experience to request inputs, then follow the journey here.'}
+                    </p>
+                    {!state.orders.length && role !== 'farmer' && (
+                      <button
+                        className="button secondary"
+                        onClick={() => void signIn('farmer-amina')}
+                      >
+                        Explore farmer experience
+                        <ArrowRight size={16} />
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <div className="table-scroll">
+                    <table className="transactions-table">
+                      <thead>
+                        <tr>
+                          <th>Order / farmer</th>
+                          <th>Inputs</th>
+                          <th>Amount</th>
+                          <th>Status</th>
+                          <th />
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </section>
-          )}
+                      </thead>
+                      <tbody>
+                        {filtered.map((o) => (
+                          <tr key={o.id}>
+                            <td>
+                              <strong>{o.reference}</strong>
+                              <small>
+                                {state.farmers.find((f) => f.id === o.farmer_id)
+                                  ?.name ?? o.farmer_id}
+                              </small>
+                            </td>
+                            <td>
+                              {o.items
+                                .map((i) => i.quantity + ' × ' + i.name)
+                                .join(', ')}
+                              <small>
+                                {o.items.map((i) => i.unit).join(', ')}
+                              </small>
+                            </td>
+                            <td>
+                              <strong>{money(o.amount_cents)}</strong>
+                              <small>
+                                {o.payment_mode === 'mock'
+                                  ? 'Simulated'
+                                  : 'PayPal sandbox'}
+                              </small>
+                            </td>
+                            <td>
+                              <Status status={o.status} />
+                              {o.issues?.some(
+                                (issue) => !issue.resolved_at,
+                              ) && (
+                                <small className="issue-flag">
+                                  Issue requires review
+                                </small>
+                              )}
+                            </td>
+                            <td>
+                              <button
+                                className="text-button"
+                                aria-label={'Open ' + o.reference}
+                                onClick={() => {
+                                  setSelected(o.id)
+                                  setCollectionCode('')
+                                  setRecoveryInvoice(o.invoice_id ?? '')
+                                }}
+                              >
+                                View
+                                <ArrowRight size={15} />
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </section>
+            )}
           {tab === 'people' && (
             <section className="panel transaction-panel">
               <div className="section-title">
@@ -1002,12 +933,12 @@ export function App() {
                     <>
                       <thead>
                         <tr>
-                          <th>FARMER</th>
-                          <th>APPROVAL</th>
-                          <th>LIMIT</th>
-                          <th>RESERVED</th>
-                          <th>PAID TO SUPPLIERS</th>
-                          <th>AVAILABLE</th>
+                          <th>Farmer</th>
+                          <th>Approval</th>
+                          <th>Limit</th>
+                          <th>Reserved</th>
+                          <th>Paid to suppliers</th>
+                          <th>Available</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -1046,11 +977,11 @@ export function App() {
                     <>
                       <thead>
                         <tr>
-                          <th>PRODUCT</th>
-                          <th>UNIT PRICE</th>
-                          <th>ON HAND</th>
-                          <th>RESERVED</th>
-                          <th>AVAILABLE</th>
+                          <th>Product</th>
+                          <th>Unit price</th>
+                          <th>On hand</th>
+                          <th>Reserved</th>
+                          <th>Available</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -1073,32 +1004,6 @@ export function App() {
               </div>
             </section>
           )}
-          {tab === 'overview' && role !== 'farmer' && (
-            <div className="bottom-grid">
-              <div className="panel insight-card">
-                <ShieldCheck size={22} />
-                <div>
-                  <h3>Purpose recorded. Progress visible.</h3>
-                  <p>
-                    Credit reservations, supplier invoices, and collection
-                    records stay connected. Payment confirmation and fulfilment
-                    are tracked separately.
-                  </p>
-                </div>
-              </div>
-              <div className="panel insight-card">
-                <Leaf size={22} />
-                <div>
-                  <h3>Built around existing approvals.</h3>
-                  <p>
-                    The lender owns credit decisions and loan terms. AFRACANet
-                    coordinates the journey from an approved allocation to
-                    inputs.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
           <footer className="page-footer">
             <span>AFRACANet AI · Input Finance</span>
             <span>
@@ -1108,272 +1013,264 @@ export function App() {
         </main>
       </div>
       {current && (
-        <div className="drawer-backdrop" onClick={() => setSelected(null)}>
-          <section
-            className="drawer"
-            role="dialog"
-            aria-modal="true"
-            aria-label={'Order ' + current.reference}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="drawer-header">
-              <div>
-                <span className="eyebrow">TRANSACTION RECORD</span>
-                <h2>{current.reference}</h2>
+        <Dialog
+          title={'Order ' + current.reference}
+          onClose={() => setSelected(null)}
+        >
+          <div className="drawer-header">
+            <div>
+              <h2>{current.reference}</h2>
+            </div>
+            <button
+              aria-label="Close transaction"
+              onClick={() => setSelected(null)}
+            >
+              <X size={22} />
+            </button>
+          </div>
+          <Status status={current.status} />
+          <div className="drawer-amount">
+            {money(current.amount_cents)}
+            <small>
+              {current.payment_mode === 'mock'
+                ? 'Simulated payment workflow'
+                : 'PayPal sandbox workflow'}
+            </small>
+          </div>
+          <div className="detail-items">
+            {current.items.map((i) => (
+              <div key={i.product_id}>
+                <span>
+                  {i.quantity} × {i.name}
+                  <small>{i.unit}</small>
+                </span>
+                <strong>{money((i.price_cents ?? 0) * i.quantity)}</strong>
               </div>
-              <button
-                aria-label="Close transaction"
-                onClick={() => setSelected(null)}
-              >
-                <X size={22} />
-              </button>
+            ))}
+          </div>
+          {current.invoice_id && (
+            <div className="record-field">
+              <span>Invoice reference</span>
+              <code>{current.invoice_id}</code>
             </div>
-            <Status status={current.status} />
-            <div className="drawer-amount">
-              {money(current.amount_cents)}
-              <small>
-                {current.payment_mode === 'mock'
-                  ? 'Simulated payment workflow'
-                  : 'PayPal sandbox workflow'}
-              </small>
+          )}
+          {current.payment_reference && (
+            <div className="record-field">
+              <span>Payment reference</span>
+              <code>{current.payment_reference}</code>
             </div>
-            <div className="detail-items">
-              {current.items.map((i) => (
-                <div key={i.product_id}>
-                  <span>
-                    {i.quantity} × {i.name}
-                    <small>{i.unit}</small>
-                  </span>
-                  <strong>{money((i.price_cents ?? 0) * i.quantity)}</strong>
-                </div>
+          )}
+          {role === 'farmer' &&
+            current.pickup_code &&
+            current.status === 'READY_FOR_COLLECTION' && (
+              <div className="pickup-code">
+                <span>Your collection code</span>
+                <strong>{current.pickup_code}</strong>
+                <p>
+                  Share this code with the agro-dealer when collecting your
+                  inputs.
+                </p>
+              </div>
+            )}
+          {banner}
+          <Issues
+            key={session.token + ':' + current.id}
+            orderId={current.id}
+            issues={current.issues ?? []}
+            role={role}
+            request={(path, body) => api(path, session.token, body)}
+            onSaved={refresh}
+          />
+          <div className="drawer-actions">
+            {role === 'lender' &&
+              !openIssues &&
+              current.status === 'REQUESTED' && (
+                <button
+                  className="button primary full"
+                  disabled={busy}
+                  onClick={() =>
+                    void action('/orders/' + current.id + '/approve')
+                  }
+                >
+                  Approve input order
+                  <Check size={17} />
+                </button>
+              )}
+            {role === 'supplier' &&
+              !openIssues &&
+              current.status === 'APPROVED' && (
+                <>
+                  <p className="fine-print">
+                    Confirm you can supply the listed quantities at the quoted
+                    prices before issuing the invoice.
+                  </p>
+                  <button
+                    className="button primary full"
+                    disabled={busy}
+                    onClick={() =>
+                      void action('/orders/' + current.id + '/invoice')
+                    }
+                  >
+                    Confirm stock & issue invoice
+                    <ArrowRight size={17} />
+                  </button>
+                </>
+              )}
+            {role === 'lender' &&
+              !openIssues &&
+              current.status === 'AWAITING_PAYMENT' &&
+              (current.payment_mode === 'mock' ? (
+                <button
+                  className="button primary full"
+                  disabled={busy}
+                  onClick={() =>
+                    void action('/orders/' + current.id + '/demo-pay')
+                  }
+                >
+                  Simulate lender payment
+                  <CreditCard size={17} />
+                </button>
+              ) : (
+                current.payment_url && (
+                  <a
+                    className="button primary full"
+                    href={current.payment_url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Pay invoice in PayPal sandbox
+                    <ArrowRight size={17} />
+                  </a>
+                )
               ))}
-            </div>
-            {current.invoice_id && (
-              <div className="record-field">
-                <span>Invoice reference</span>
-                <code>{current.invoice_id}</code>
-              </div>
-            )}
-            {current.payment_reference && (
-              <div className="record-field">
-                <span>Payment reference</span>
-                <code>{current.payment_reference}</code>
-              </div>
-            )}
-            {role === 'farmer' &&
-              current.pickup_code &&
+            {role !== 'farmer' &&
+              current.payment_mode === 'sandbox' &&
+              current.invoice_id &&
+              ['AWAITING_PAYMENT', 'PAYMENT_REVIEW', 'INVOICING'].includes(
+                current.status,
+              ) && (
+                <button
+                  className="button secondary full"
+                  disabled={busy}
+                  onClick={() =>
+                    void action('/orders/' + current.id + '/reconcile')
+                  }
+                >
+                  Check PayPal payment status
+                </button>
+              )}
+            {role === 'supplier' &&
+              !openIssues &&
               current.status === 'READY_FOR_COLLECTION' && (
-                <div className="pickup-code">
-                  <span>Your collection code</span>
-                  <strong>{current.pickup_code}</strong>
-                  <p>
-                    Share this code with the agro-dealer when collecting your
-                    inputs.
+                <>
+                  <label className="input-label" htmlFor="collection-code">
+                    Farmer's collection code
+                  </label>
+                  <input
+                    id="collection-code"
+                    inputMode="numeric"
+                    maxLength={6}
+                    value={collectionCode}
+                    onChange={(e) =>
+                      setCollectionCode(e.target.value.replace(/\D/g, ''))
+                    }
+                    placeholder="Enter six-digit code"
+                  />
+                  <button
+                    className="button primary full"
+                    disabled={busy || collectionCode.length !== 6}
+                    onClick={() =>
+                      void action('/orders/' + current.id + '/collect', {
+                        code: collectionCode,
+                      })
+                    }
+                  >
+                    Record farmer collection
+                    <Package size={17} />
+                  </button>
+                </>
+              )}
+            {role !== 'supplier' &&
+              ['REQUESTED', 'APPROVED'].includes(current.status) && (
+                <button
+                  className="button secondary full"
+                  disabled={busy}
+                  onClick={() =>
+                    void action('/orders/' + current.id + '/cancel')
+                  }
+                >
+                  Cancel request & release credit
+                </button>
+              )}
+            {current.status === 'PAYMENT_REVIEW' && (
+              <p className="inline-error">
+                Provider confirmation is uncertain. Review the PayPal invoice
+                records before any retry. Credit remains reserved.
+              </p>
+            )}
+            {role === 'supplier' &&
+              current.payment_mode === 'sandbox' &&
+              ['PAYMENT_REVIEW', 'INVOICING', 'AWAITING_PAYMENT'].includes(
+                current.status,
+              ) && (
+                <div className="recovery-panel">
+                  <h3>Recover an existing invoice</h3>
+                  <p className="fine-print">
+                    Check the supplier's PayPal sandbox records for this order.
+                    Recovery verifies an existing invoice and its payment
+                    records. Allow two minutes after interrupted preparation.
+                    Credit remains reserved until payment or an unpaid
+                    cancellation is verified.
+                  </p>
+                  <label className="input-label" htmlFor="recovery-invoice">
+                    Existing PayPal invoice ID
+                  </label>
+                  <input
+                    id="recovery-invoice"
+                    value={current.invoice_id ?? recoveryInvoice}
+                    readOnly={Boolean(current.invoice_id)}
+                    placeholder="INV2-…"
+                    maxLength={106}
+                    onChange={(e) =>
+                      setRecoveryInvoice(e.target.value.trim().toUpperCase())
+                    }
+                  />
+                  <button
+                    className="button secondary full"
+                    disabled={busy || !(current.invoice_id ?? recoveryInvoice)}
+                    onClick={() =>
+                      void action(
+                        '/orders/' + current.id + '/recover-invoice',
+                        { invoice_id: current.invoice_id ?? recoveryInvoice },
+                      )
+                    }
+                  >
+                    Verify & recover existing invoice
+                  </button>
+                  <p className="fine-print">
+                    If PayPal still shows a draft, send that same invoice in its
+                    dashboard, then verify again here. Partial payments and
+                    refunds require operator review.
                   </p>
                 </div>
               )}
-            {banner}
-            <Issues
-              key={session.token + ':' + current.id}
-              orderId={current.id}
-              issues={current.issues ?? []}
-              role={role}
-              request={(path, body) => api(path, session.token, body)}
-              onSaved={refresh}
-            />
-            <div className="drawer-actions">
-              {role === 'lender' &&
-                !openIssues &&
-                current.status === 'REQUESTED' && (
-                  <button
-                    className="button primary full"
-                    disabled={busy}
-                    onClick={() =>
-                      void action('/orders/' + current.id + '/approve')
-                    }
-                  >
-                    Approve input order
-                    <Check size={17} />
-                  </button>
-                )}
-              {role === 'supplier' &&
-                !openIssues &&
-                current.status === 'APPROVED' && (
-                  <>
-                    <p className="fine-print">
-                      Confirm you can supply the listed quantities at the quoted
-                      prices before issuing the invoice.
-                    </p>
-                    <button
-                      className="button primary full"
-                      disabled={busy}
-                      onClick={() =>
-                        void action('/orders/' + current.id + '/invoice')
-                      }
-                    >
-                      Confirm stock & issue invoice
-                      <ArrowRight size={17} />
-                    </button>
-                  </>
-                )}
-              {role === 'lender' &&
-                !openIssues &&
-                current.status === 'AWAITING_PAYMENT' &&
-                (current.payment_mode === 'mock' ? (
-                  <button
-                    className="button primary full"
-                    disabled={busy}
-                    onClick={() =>
-                      void action('/orders/' + current.id + '/demo-pay')
-                    }
-                  >
-                    Simulate lender payment
-                    <CreditCard size={17} />
-                  </button>
-                ) : (
-                  current.payment_url && (
-                    <a
-                      className="button primary full"
-                      href={current.payment_url}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Pay invoice in PayPal sandbox
-                      <ArrowRight size={17} />
-                    </a>
-                  )
-                ))}
-              {role !== 'farmer' &&
-                current.payment_mode === 'sandbox' &&
-                current.invoice_id &&
-                ['AWAITING_PAYMENT', 'PAYMENT_REVIEW', 'INVOICING'].includes(
-                  current.status,
-                ) && (
-                  <button
-                    className="button secondary full"
-                    disabled={busy}
-                    onClick={() =>
-                      void action('/orders/' + current.id + '/reconcile')
-                    }
-                  >
-                    Check PayPal payment status
-                  </button>
-                )}
-              {role === 'supplier' &&
-                !openIssues &&
-                current.status === 'READY_FOR_COLLECTION' && (
-                  <>
-                    <label className="input-label" htmlFor="collection-code">
-                      Farmer's collection code
-                    </label>
-                    <input
-                      id="collection-code"
-                      inputMode="numeric"
-                      maxLength={6}
-                      value={collectionCode}
-                      onChange={(e) =>
-                        setCollectionCode(e.target.value.replace(/\D/g, ''))
-                      }
-                      placeholder="Enter six-digit code"
-                    />
-                    <button
-                      className="button primary full"
-                      disabled={busy || collectionCode.length !== 6}
-                      onClick={() =>
-                        void action('/orders/' + current.id + '/collect', {
-                          code: collectionCode,
-                        })
-                      }
-                    >
-                      Record farmer collection
-                      <Package size={17} />
-                    </button>
-                  </>
-                )}
-              {role !== 'supplier' &&
-                ['REQUESTED', 'APPROVED'].includes(current.status) && (
-                  <button
-                    className="button secondary full"
-                    disabled={busy}
-                    onClick={() =>
-                      void action('/orders/' + current.id + '/cancel')
-                    }
-                  >
-                    Cancel request & release credit
-                  </button>
-                )}
-              {current.status === 'PAYMENT_REVIEW' && (
-                <p className="inline-error">
-                  Provider confirmation is uncertain. Review the PayPal invoice
-                  records before any retry. Credit remains reserved.
-                </p>
-              )}
-              {role === 'supplier' &&
-                current.payment_mode === 'sandbox' &&
-                ['PAYMENT_REVIEW', 'INVOICING', 'AWAITING_PAYMENT'].includes(
-                  current.status,
-                ) && (
-                  <div className="recovery-panel">
-                    <h3>Recover an existing invoice</h3>
-                    <p className="fine-print">
-                      Check the supplier's PayPal sandbox records for this
-                      order. Recovery verifies an existing invoice and its
-                      payment records. Allow two minutes after interrupted
-                      preparation. Credit remains reserved until payment or an
-                      unpaid cancellation is verified.
-                    </p>
-                    <label className="input-label" htmlFor="recovery-invoice">
-                      Existing PayPal invoice ID
-                    </label>
-                    <input
-                      id="recovery-invoice"
-                      value={current.invoice_id ?? recoveryInvoice}
-                      readOnly={Boolean(current.invoice_id)}
-                      placeholder="INV2-…"
-                      maxLength={106}
-                      onChange={(e) =>
-                        setRecoveryInvoice(e.target.value.trim().toUpperCase())
-                      }
-                    />
-                    <button
-                      className="button secondary full"
-                      disabled={
-                        busy || !(current.invoice_id ?? recoveryInvoice)
-                      }
-                      onClick={() =>
-                        void action(
-                          '/orders/' + current.id + '/recover-invoice',
-                          { invoice_id: current.invoice_id ?? recoveryInvoice },
-                        )
-                      }
-                    >
-                      Verify & recover existing invoice
-                    </button>
-                    <p className="fine-print">
-                      If PayPal still shows a draft, send that same invoice in
-                      its dashboard, then verify again here. Partial payments
-                      and refunds require operator review.
-                    </p>
-                  </div>
-                )}
-            </div>
-            <h3 className="timeline-title">Transaction timeline</h3>
-            <ol className="timeline">
-              {events.map((e) => (
-                <li key={e.id}>
-                  <span className="timeline-dot">
-                    <Check size={12} />
-                  </span>
-                  <strong>{e.action.replaceAll('_', ' ').toLowerCase()}</strong>
-                  <p>{e.detail}</p>
-                  <small>
-                    {e.actor} · {new Date(e.created_at).toLocaleString()}
-                  </small>
-                </li>
-              ))}
-            </ol>
-          </section>
-        </div>
+          </div>
+          <h3 className="timeline-title">Transaction timeline</h3>
+          <ol className="timeline">
+            {events.map((e) => (
+              <li key={e.id}>
+                <span className="timeline-dot">
+                  <Check size={12} />
+                </span>
+                <strong>{e.action.replaceAll('_', ' ').toLowerCase()}</strong>
+                <p>{e.detail}</p>
+                <small>
+                  {e.actor} · {new Date(e.created_at).toLocaleString()}
+                </small>
+              </li>
+            ))}
+          </ol>
+        </Dialog>
       )}
     </div>
   )

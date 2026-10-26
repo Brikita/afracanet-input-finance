@@ -7,7 +7,7 @@ export function Brand({ light = false }: { light?: boolean }) {
         <Sprout size={24} />
       </span>
       <div>
-        AFRACANet AI<small>INPUT FINANCE</small>
+        AFRACANet AI<small>Input finance</small>
       </div>
     </div>
   )

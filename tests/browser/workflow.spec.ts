@@ -281,3 +281,74 @@ test('farmer verifies an SMS number and previews a Swahili order update', async 
     page.getByRole('button', { name: 'SMS updates', exact: true }),
   ).toHaveCount(0)
 })
+
+test('lender filters cases, respects issue holds, and closes details by keyboard', async ({
+  page,
+}) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Farmer experience' }).click()
+  await page.getByRole('button', { name: 'Open workspace' }).click()
+  await page
+    .getByRole('button', { name: 'Add Maize seed 2 kg pack', exact: true })
+    .click()
+  await page
+    .getByRole('button', { name: 'Confirm input request', exact: true })
+    .click()
+  const dialog = page.getByRole('dialog')
+  const reference = await dialog.locator('.drawer-header h2').innerText()
+  await page.keyboard.press('Escape')
+  await expect(dialog).toHaveCount(0)
+  await page.getByLabel('View as').selectOption('lender-demo')
+  await page.getByLabel('Search input requests').fill(reference)
+  await expect(page.locator('.queue-caption')).toContainText(
+    '1 request in this view',
+  )
+  await page.getByLabel('Filter requests by status').selectOption('COLLECTED')
+  await expect(
+    page.getByText('No matching requests', { exact: true }),
+  ).toBeVisible()
+  await expect(
+    page.getByRole('button', { name: 'Approve input order' }),
+  ).toHaveCount(0)
+  await page.getByLabel('Filter requests by status').selectOption('all')
+  await expect(
+    page
+      .locator('.selected-record')
+      .getByRole('button', { name: 'Approve input order' }),
+  ).toBeVisible()
+  await page.getByRole('button', { name: `Open ${reference}` }).click()
+  await dialog.getByRole('button', { name: 'Report an issue' }).click()
+  await dialog
+    .getByLabel('Describe the issue')
+    .fill('Please verify the quoted input pack before approval.')
+  await dialog.getByRole('button', { name: 'Submit issue report' }).click()
+  await expect(dialog.getByText('1 open issue', { exact: false })).toBeVisible()
+  await page.keyboard.press('Tab')
+  expect(
+    await page.evaluate(() =>
+      Boolean(document.activeElement?.closest('[role="dialog"]')),
+    ),
+  ).toBe(true)
+  await page.keyboard.press('Escape')
+  await expect(
+    page
+      .locator('.selected-record')
+      .getByRole('button', { name: 'Review order issue' }),
+  ).toBeVisible()
+  await expect(
+    page.getByRole('button', { name: 'Approve input order' }),
+  ).toHaveCount(0)
+  for (const width of [1440, 768, 390]) {
+    await page.setViewportSize({ width, height: 900 })
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true)
+    await expect(
+      page.getByRole('img', {
+        name: /Available:.*Reserved:.*Paid to suppliers:/,
+      }),
+    ).toBeVisible()
+  }
+})

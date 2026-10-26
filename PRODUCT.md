@@ -45,7 +45,10 @@ readiness. Provider credentials and live integration checks remain outstanding.
 AFRACANet AI is the shared product name. The user requested a full UX redesign
 using Taste and Impeccable, followed by meaningful restructuring and comprehensive
 synthetic graph/relational data. Preserve factual content and working features.
-No replacement visual palette or composition has yet been approved.
+The user selected Waterline: teal navigation, pale blue ground, white working
+surfaces, and purposeful blue/green credit graphics with Lucide action icons.
+The lender view follows a credit graphic and queue beside a selected case;
+mobile layouts prioritize the work queue. See docs/WATERLINE.md.
 
 ## Evidence on Hand
 
