@@ -1,4 +1,5 @@
 """Validated API request shapes; no persistence or provider calls."""
+
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -39,5 +40,3 @@ class IssueRequest(BaseModel):
 
 class IssueResolution(BaseModel):
     resolution: str = Field(min_length=5, max_length=1000)
-
-
