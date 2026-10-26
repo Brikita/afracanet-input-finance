@@ -1,0 +1,6334 @@
+{
+  "manifest": {
+    "source_kind": "synthetic_replay",
+    "seed": 20261026,
+    "as_of": "2026-10-26",
+    "contains_real_people": false,
+    "contains_real_financial_records": false,
+    "statistically_calibrated": false,
+    "loan_model_training_allowed": false,
+    "currency_boundary": "KES histories are fictional. USD allocations/catalogue are separately assigned sandbox fixtures, not currency conversions.",
+    "weather_boundary": "Public weather may be joined at reference-region level; farmer location associations remain fictional.",
+    "use": "Anonymous non-live scenarios for integration tests and labelled demos. No evidence of predictive accuracy, lending performance, or demand."
+  },
+  "organizations": {
+    "lenders": [
+      "REPLAY-LENDER-1"
+    ],
+    "cooperatives": [
+      "REPLAY-COOP-1",
+      "REPLAY-COOP-2"
+    ],
+    "chamas": [
+      "REPLAY-CHAMA-1",
+      "REPLAY-CHAMA-2",
+      "REPLAY-CHAMA-3"
+    ],
+    "dealers": [
+      "REPLAY-DEALER-1",
+      "REPLAY-DEALER-2"
+    ]
+  },
+  "farmers": [
+    {
+      "farmer_id": "farmer-replay-001",
+      "source_farmer_id": "REPLAY-F-001",
+      "display_name": "Replay Farmer 001",
+      "reference_region": "meru-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "regular_history",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-002",
+      "source_farmer_id": "REPLAY-F-002",
+      "display_name": "Replay Farmer 002",
+      "reference_region": "machakos-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "thin_file",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-003",
+      "source_farmer_id": "REPLAY-F-003",
+      "display_name": "Replay Farmer 003",
+      "reference_region": "meru-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "late_installments",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-004",
+      "source_farmer_id": "REPLAY-F-004",
+      "display_name": "Replay Farmer 004",
+      "reference_region": "machakos-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "new_member",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-005",
+      "source_farmer_id": "REPLAY-F-005",
+      "display_name": "Replay Farmer 005",
+      "reference_region": "meru-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "sparse_network",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-006",
+      "source_farmer_id": "REPLAY-F-006",
+      "display_name": "Replay Farmer 006",
+      "reference_region": "machakos-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "regular_history",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-007",
+      "source_farmer_id": "REPLAY-F-007",
+      "display_name": "Replay Farmer 007",
+      "reference_region": "meru-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "thin_file",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-008",
+      "source_farmer_id": "REPLAY-F-008",
+      "display_name": "Replay Farmer 008",
+      "reference_region": "machakos-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "late_installments",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-009",
+      "source_farmer_id": "REPLAY-F-009",
+      "display_name": "Replay Farmer 009",
+      "reference_region": "meru-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "new_member",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-010",
+      "source_farmer_id": "REPLAY-F-010",
+      "display_name": "Replay Farmer 010",
+      "reference_region": "machakos-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "sparse_network",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-011",
+      "source_farmer_id": "REPLAY-F-011",
+      "display_name": "Replay Farmer 011",
+      "reference_region": "meru-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "regular_history",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-012",
+      "source_farmer_id": "REPLAY-F-012",
+      "display_name": "Replay Farmer 012",
+      "reference_region": "machakos-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "thin_file",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-013",
+      "source_farmer_id": "REPLAY-F-013",
+      "display_name": "Replay Farmer 013",
+      "reference_region": "meru-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "late_installments",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-014",
+      "source_farmer_id": "REPLAY-F-014",
+      "display_name": "Replay Farmer 014",
+      "reference_region": "machakos-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "new_member",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-015",
+      "source_farmer_id": "REPLAY-F-015",
+      "display_name": "Replay Farmer 015",
+      "reference_region": "meru-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "sparse_network",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-016",
+      "source_farmer_id": "REPLAY-F-016",
+      "display_name": "Replay Farmer 016",
+      "reference_region": "machakos-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "regular_history",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-017",
+      "source_farmer_id": "REPLAY-F-017",
+      "display_name": "Replay Farmer 017",
+      "reference_region": "meru-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "thin_file",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-018",
+      "source_farmer_id": "REPLAY-F-018",
+      "display_name": "Replay Farmer 018",
+      "reference_region": "machakos-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "late_installments",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-019",
+      "source_farmer_id": "REPLAY-F-019",
+      "display_name": "Replay Farmer 019",
+      "reference_region": "meru-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "new_member",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-020",
+      "source_farmer_id": "REPLAY-F-020",
+      "display_name": "Replay Farmer 020",
+      "reference_region": "machakos-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "sparse_network",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-021",
+      "source_farmer_id": "REPLAY-F-021",
+      "display_name": "Replay Farmer 021",
+      "reference_region": "meru-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "regular_history",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-022",
+      "source_farmer_id": "REPLAY-F-022",
+      "display_name": "Replay Farmer 022",
+      "reference_region": "machakos-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "thin_file",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-023",
+      "source_farmer_id": "REPLAY-F-023",
+      "display_name": "Replay Farmer 023",
+      "reference_region": "meru-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "late_installments",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-024",
+      "source_farmer_id": "REPLAY-F-024",
+      "display_name": "Replay Farmer 024",
+      "reference_region": "machakos-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "new_member",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-025",
+      "source_farmer_id": "REPLAY-F-025",
+      "display_name": "Replay Farmer 025",
+      "reference_region": "meru-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "sparse_network",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-026",
+      "source_farmer_id": "REPLAY-F-026",
+      "display_name": "Replay Farmer 026",
+      "reference_region": "machakos-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "regular_history",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-027",
+      "source_farmer_id": "REPLAY-F-027",
+      "display_name": "Replay Farmer 027",
+      "reference_region": "meru-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "thin_file",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-028",
+      "source_farmer_id": "REPLAY-F-028",
+      "display_name": "Replay Farmer 028",
+      "reference_region": "machakos-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "late_installments",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-029",
+      "source_farmer_id": "REPLAY-F-029",
+      "display_name": "Replay Farmer 029",
+      "reference_region": "meru-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "new_member",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-030",
+      "source_farmer_id": "REPLAY-F-030",
+      "display_name": "Replay Farmer 030",
+      "reference_region": "machakos-reference",
+      "location_assignment": "synthetic_reference_point_assignment",
+      "scenario": "sparse_network",
+      "source_kind": "synthetic_replay"
+    }
+  ],
+  "memberships": [
+    {
+      "farmer_id": "farmer-replay-001",
+      "organization_id": "REPLAY-COOP-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-001",
+      "organization_id": "REPLAY-CHAMA-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-002",
+      "organization_id": "REPLAY-COOP-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-002",
+      "organization_id": "REPLAY-CHAMA-3",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-003",
+      "organization_id": "REPLAY-COOP-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-003",
+      "organization_id": "REPLAY-CHAMA-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-004",
+      "organization_id": "REPLAY-COOP-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-004",
+      "organization_id": "REPLAY-CHAMA-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-005",
+      "organization_id": "REPLAY-COOP-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-006",
+      "organization_id": "REPLAY-COOP-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-006",
+      "organization_id": "REPLAY-CHAMA-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-007",
+      "organization_id": "REPLAY-COOP-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-007",
+      "organization_id": "REPLAY-CHAMA-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-008",
+      "organization_id": "REPLAY-COOP-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-008",
+      "organization_id": "REPLAY-CHAMA-3",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-009",
+      "organization_id": "REPLAY-COOP-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-009",
+      "organization_id": "REPLAY-CHAMA-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-010",
+      "organization_id": "REPLAY-COOP-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-011",
+      "organization_id": "REPLAY-COOP-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-011",
+      "organization_id": "REPLAY-CHAMA-3",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-012",
+      "organization_id": "REPLAY-COOP-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-012",
+      "organization_id": "REPLAY-CHAMA-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-013",
+      "organization_id": "REPLAY-COOP-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-013",
+      "organization_id": "REPLAY-CHAMA-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-014",
+      "organization_id": "REPLAY-COOP-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-014",
+      "organization_id": "REPLAY-CHAMA-3",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-015",
+      "organization_id": "REPLAY-COOP-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-016",
+      "organization_id": "REPLAY-COOP-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-016",
+      "organization_id": "REPLAY-CHAMA-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-017",
+      "organization_id": "REPLAY-COOP-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-017",
+      "organization_id": "REPLAY-CHAMA-3",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-018",
+      "organization_id": "REPLAY-COOP-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-018",
+      "organization_id": "REPLAY-CHAMA-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-019",
+      "organization_id": "REPLAY-COOP-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-019",
+      "organization_id": "REPLAY-CHAMA-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-020",
+      "organization_id": "REPLAY-COOP-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-021",
+      "organization_id": "REPLAY-COOP-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-021",
+      "organization_id": "REPLAY-CHAMA-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-022",
+      "organization_id": "REPLAY-COOP-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-022",
+      "organization_id": "REPLAY-CHAMA-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-023",
+      "organization_id": "REPLAY-COOP-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-023",
+      "organization_id": "REPLAY-CHAMA-3",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-024",
+      "organization_id": "REPLAY-COOP-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-024",
+      "organization_id": "REPLAY-CHAMA-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-025",
+      "organization_id": "REPLAY-COOP-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-026",
+      "organization_id": "REPLAY-COOP-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-026",
+      "organization_id": "REPLAY-CHAMA-3",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-027",
+      "organization_id": "REPLAY-COOP-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-027",
+      "organization_id": "REPLAY-CHAMA-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-028",
+      "organization_id": "REPLAY-COOP-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-028",
+      "organization_id": "REPLAY-CHAMA-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-029",
+      "organization_id": "REPLAY-COOP-2",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-029",
+      "organization_id": "REPLAY-CHAMA-3",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "farmer_id": "farmer-replay-030",
+      "organization_id": "REPLAY-COOP-1",
+      "relationship": "MEMBER_OF",
+      "source_kind": "synthetic_replay"
+    }
+  ],
+  "ledger": [
+    {
+      "id": "REPLAY-TX-000001",
+      "farmer_id": "farmer-replay-001",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2200000,
+      "currency": "KES",
+      "date": "2026-01-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000038",
+      "farmer_id": "farmer-replay-003",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3400000,
+      "currency": "KES",
+      "date": "2026-01-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000070",
+      "farmer_id": "farmer-replay-005",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3000000,
+      "currency": "KES",
+      "date": "2026-01-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000088",
+      "farmer_id": "farmer-replay-006",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2500000,
+      "currency": "KES",
+      "date": "2026-01-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000125",
+      "farmer_id": "farmer-replay-008",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4700000,
+      "currency": "KES",
+      "date": "2026-01-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000157",
+      "farmer_id": "farmer-replay-010",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2000000,
+      "currency": "KES",
+      "date": "2026-01-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000175",
+      "farmer_id": "farmer-replay-011",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3700000,
+      "currency": "KES",
+      "date": "2026-01-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000212",
+      "farmer_id": "farmer-replay-013",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4300000,
+      "currency": "KES",
+      "date": "2026-01-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000244",
+      "farmer_id": "farmer-replay-015",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2100000,
+      "currency": "KES",
+      "date": "2026-01-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000262",
+      "farmer_id": "farmer-replay-016",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 1600000,
+      "currency": "KES",
+      "date": "2026-01-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000299",
+      "farmer_id": "farmer-replay-018",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4300000,
+      "currency": "KES",
+      "date": "2026-01-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000331",
+      "farmer_id": "farmer-replay-020",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 6000000,
+      "currency": "KES",
+      "date": "2026-01-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000349",
+      "farmer_id": "farmer-replay-021",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3700000,
+      "currency": "KES",
+      "date": "2026-01-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000386",
+      "farmer_id": "farmer-replay-023",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2700000,
+      "currency": "KES",
+      "date": "2026-01-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000418",
+      "farmer_id": "farmer-replay-025",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4500000,
+      "currency": "KES",
+      "date": "2026-01-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000436",
+      "farmer_id": "farmer-replay-026",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3700000,
+      "currency": "KES",
+      "date": "2026-01-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000473",
+      "farmer_id": "farmer-replay-028",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 1900000,
+      "currency": "KES",
+      "date": "2026-01-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000505",
+      "farmer_id": "farmer-replay-030",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 1800000,
+      "currency": "KES",
+      "date": "2026-01-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000002",
+      "farmer_id": "farmer-replay-001",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-01-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000039",
+      "farmer_id": "farmer-replay-003",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-01-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000089",
+      "farmer_id": "farmer-replay-006",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-01-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000126",
+      "farmer_id": "farmer-replay-008",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-01-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000176",
+      "farmer_id": "farmer-replay-011",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-01-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000213",
+      "farmer_id": "farmer-replay-013",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-01-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000263",
+      "farmer_id": "farmer-replay-016",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-01-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000300",
+      "farmer_id": "farmer-replay-018",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-01-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000350",
+      "farmer_id": "farmer-replay-021",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-01-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000387",
+      "farmer_id": "farmer-replay-023",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-01-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000437",
+      "farmer_id": "farmer-replay-026",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-01-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000474",
+      "farmer_id": "farmer-replay-028",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-01-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000003",
+      "farmer_id": "farmer-replay-001",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-01-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000040",
+      "farmer_id": "farmer-replay-003",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-01-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000071",
+      "farmer_id": "farmer-replay-005",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-01-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000090",
+      "farmer_id": "farmer-replay-006",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-01-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000127",
+      "farmer_id": "farmer-replay-008",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-01-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000158",
+      "farmer_id": "farmer-replay-010",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-01-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000177",
+      "farmer_id": "farmer-replay-011",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-01-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000214",
+      "farmer_id": "farmer-replay-013",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-01-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000245",
+      "farmer_id": "farmer-replay-015",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-01-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000264",
+      "farmer_id": "farmer-replay-016",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-01-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000301",
+      "farmer_id": "farmer-replay-018",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-01-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000332",
+      "farmer_id": "farmer-replay-020",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-01-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000351",
+      "farmer_id": "farmer-replay-021",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-01-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000388",
+      "farmer_id": "farmer-replay-023",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-01-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000419",
+      "farmer_id": "farmer-replay-025",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-01-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000438",
+      "farmer_id": "farmer-replay-026",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-01-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000475",
+      "farmer_id": "farmer-replay-028",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-01-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000506",
+      "farmer_id": "farmer-replay-030",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-01-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000004",
+      "farmer_id": "farmer-replay-001",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2300000,
+      "currency": "KES",
+      "date": "2026-02-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000041",
+      "farmer_id": "farmer-replay-003",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4000000,
+      "currency": "KES",
+      "date": "2026-02-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000072",
+      "farmer_id": "farmer-replay-005",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4200000,
+      "currency": "KES",
+      "date": "2026-02-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000091",
+      "farmer_id": "farmer-replay-006",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3200000,
+      "currency": "KES",
+      "date": "2026-02-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000128",
+      "farmer_id": "farmer-replay-008",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3700000,
+      "currency": "KES",
+      "date": "2026-02-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000159",
+      "farmer_id": "farmer-replay-010",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3500000,
+      "currency": "KES",
+      "date": "2026-02-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000178",
+      "farmer_id": "farmer-replay-011",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 6000000,
+      "currency": "KES",
+      "date": "2026-02-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000215",
+      "farmer_id": "farmer-replay-013",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5700000,
+      "currency": "KES",
+      "date": "2026-02-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000246",
+      "farmer_id": "farmer-replay-015",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4900000,
+      "currency": "KES",
+      "date": "2026-02-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000265",
+      "farmer_id": "farmer-replay-016",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 1800000,
+      "currency": "KES",
+      "date": "2026-02-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000302",
+      "farmer_id": "farmer-replay-018",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 1900000,
+      "currency": "KES",
+      "date": "2026-02-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000333",
+      "farmer_id": "farmer-replay-020",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4700000,
+      "currency": "KES",
+      "date": "2026-02-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000352",
+      "farmer_id": "farmer-replay-021",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4800000,
+      "currency": "KES",
+      "date": "2026-02-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000389",
+      "farmer_id": "farmer-replay-023",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5800000,
+      "currency": "KES",
+      "date": "2026-02-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000420",
+      "farmer_id": "farmer-replay-025",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2400000,
+      "currency": "KES",
+      "date": "2026-02-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000439",
+      "farmer_id": "farmer-replay-026",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2100000,
+      "currency": "KES",
+      "date": "2026-02-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000476",
+      "farmer_id": "farmer-replay-028",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3300000,
+      "currency": "KES",
+      "date": "2026-02-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000507",
+      "farmer_id": "farmer-replay-030",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3200000,
+      "currency": "KES",
+      "date": "2026-02-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000005",
+      "farmer_id": "farmer-replay-001",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-02-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000042",
+      "farmer_id": "farmer-replay-003",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-02-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000092",
+      "farmer_id": "farmer-replay-006",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-02-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000129",
+      "farmer_id": "farmer-replay-008",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-02-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000179",
+      "farmer_id": "farmer-replay-011",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-02-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000216",
+      "farmer_id": "farmer-replay-013",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-02-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000266",
+      "farmer_id": "farmer-replay-016",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-02-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000303",
+      "farmer_id": "farmer-replay-018",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-02-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000353",
+      "farmer_id": "farmer-replay-021",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-02-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000390",
+      "farmer_id": "farmer-replay-023",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-02-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000440",
+      "farmer_id": "farmer-replay-026",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-02-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000477",
+      "farmer_id": "farmer-replay-028",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-02-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000028",
+      "farmer_id": "farmer-replay-001",
+      "kind": "loan_disbursement",
+      "amount_minor": 4800000,
+      "currency": "KES",
+      "date": "2026-02-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000065",
+      "farmer_id": "farmer-replay-003",
+      "kind": "loan_disbursement",
+      "amount_minor": 2400000,
+      "currency": "KES",
+      "date": "2026-02-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000115",
+      "farmer_id": "farmer-replay-006",
+      "kind": "loan_disbursement",
+      "amount_minor": 4800000,
+      "currency": "KES",
+      "date": "2026-02-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000152",
+      "farmer_id": "farmer-replay-008",
+      "kind": "loan_disbursement",
+      "amount_minor": 3600000,
+      "currency": "KES",
+      "date": "2026-02-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000202",
+      "farmer_id": "farmer-replay-011",
+      "kind": "loan_disbursement",
+      "amount_minor": 4800000,
+      "currency": "KES",
+      "date": "2026-02-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000239",
+      "farmer_id": "farmer-replay-013",
+      "kind": "loan_disbursement",
+      "amount_minor": 4800000,
+      "currency": "KES",
+      "date": "2026-02-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000289",
+      "farmer_id": "farmer-replay-016",
+      "kind": "loan_disbursement",
+      "amount_minor": 3600000,
+      "currency": "KES",
+      "date": "2026-02-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000326",
+      "farmer_id": "farmer-replay-018",
+      "kind": "loan_disbursement",
+      "amount_minor": 2400000,
+      "currency": "KES",
+      "date": "2026-02-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000376",
+      "farmer_id": "farmer-replay-021",
+      "kind": "loan_disbursement",
+      "amount_minor": 3600000,
+      "currency": "KES",
+      "date": "2026-02-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000413",
+      "farmer_id": "farmer-replay-023",
+      "kind": "loan_disbursement",
+      "amount_minor": 2400000,
+      "currency": "KES",
+      "date": "2026-02-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000463",
+      "farmer_id": "farmer-replay-026",
+      "kind": "loan_disbursement",
+      "amount_minor": 3600000,
+      "currency": "KES",
+      "date": "2026-02-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000500",
+      "farmer_id": "farmer-replay-028",
+      "kind": "loan_disbursement",
+      "amount_minor": 3600000,
+      "currency": "KES",
+      "date": "2026-02-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000006",
+      "farmer_id": "farmer-replay-001",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-02-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000043",
+      "farmer_id": "farmer-replay-003",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-02-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000073",
+      "farmer_id": "farmer-replay-005",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-02-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000093",
+      "farmer_id": "farmer-replay-006",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-02-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000130",
+      "farmer_id": "farmer-replay-008",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-02-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000160",
+      "farmer_id": "farmer-replay-010",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-02-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000180",
+      "farmer_id": "farmer-replay-011",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-02-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000217",
+      "farmer_id": "farmer-replay-013",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-02-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000247",
+      "farmer_id": "farmer-replay-015",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-02-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000267",
+      "farmer_id": "farmer-replay-016",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-02-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000304",
+      "farmer_id": "farmer-replay-018",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-02-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000334",
+      "farmer_id": "farmer-replay-020",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-02-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000354",
+      "farmer_id": "farmer-replay-021",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-02-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000391",
+      "farmer_id": "farmer-replay-023",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-02-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000421",
+      "farmer_id": "farmer-replay-025",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-02-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000441",
+      "farmer_id": "farmer-replay-026",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-02-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000478",
+      "farmer_id": "farmer-replay-028",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-02-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000508",
+      "farmer_id": "farmer-replay-030",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-02-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000007",
+      "farmer_id": "farmer-replay-001",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4900000,
+      "currency": "KES",
+      "date": "2026-03-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000044",
+      "farmer_id": "farmer-replay-003",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3300000,
+      "currency": "KES",
+      "date": "2026-03-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000074",
+      "farmer_id": "farmer-replay-005",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4000000,
+      "currency": "KES",
+      "date": "2026-03-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000094",
+      "farmer_id": "farmer-replay-006",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2100000,
+      "currency": "KES",
+      "date": "2026-03-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000131",
+      "farmer_id": "farmer-replay-008",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4300000,
+      "currency": "KES",
+      "date": "2026-03-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000161",
+      "farmer_id": "farmer-replay-010",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 1900000,
+      "currency": "KES",
+      "date": "2026-03-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000181",
+      "farmer_id": "farmer-replay-011",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4800000,
+      "currency": "KES",
+      "date": "2026-03-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000218",
+      "farmer_id": "farmer-replay-013",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5200000,
+      "currency": "KES",
+      "date": "2026-03-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000248",
+      "farmer_id": "farmer-replay-015",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2000000,
+      "currency": "KES",
+      "date": "2026-03-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000268",
+      "farmer_id": "farmer-replay-016",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2900000,
+      "currency": "KES",
+      "date": "2026-03-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000305",
+      "farmer_id": "farmer-replay-018",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3700000,
+      "currency": "KES",
+      "date": "2026-03-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000335",
+      "farmer_id": "farmer-replay-020",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2100000,
+      "currency": "KES",
+      "date": "2026-03-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000355",
+      "farmer_id": "farmer-replay-021",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4300000,
+      "currency": "KES",
+      "date": "2026-03-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000392",
+      "farmer_id": "farmer-replay-023",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2700000,
+      "currency": "KES",
+      "date": "2026-03-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000422",
+      "farmer_id": "farmer-replay-025",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5400000,
+      "currency": "KES",
+      "date": "2026-03-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000442",
+      "farmer_id": "farmer-replay-026",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4300000,
+      "currency": "KES",
+      "date": "2026-03-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000479",
+      "farmer_id": "farmer-replay-028",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3600000,
+      "currency": "KES",
+      "date": "2026-03-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000509",
+      "farmer_id": "farmer-replay-030",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5600000,
+      "currency": "KES",
+      "date": "2026-03-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000008",
+      "farmer_id": "farmer-replay-001",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-03-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000045",
+      "farmer_id": "farmer-replay-003",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-03-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000095",
+      "farmer_id": "farmer-replay-006",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-03-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000132",
+      "farmer_id": "farmer-replay-008",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-03-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000182",
+      "farmer_id": "farmer-replay-011",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-03-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000219",
+      "farmer_id": "farmer-replay-013",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-03-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000269",
+      "farmer_id": "farmer-replay-016",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-03-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000306",
+      "farmer_id": "farmer-replay-018",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-03-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000356",
+      "farmer_id": "farmer-replay-021",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-03-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000393",
+      "farmer_id": "farmer-replay-023",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-03-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000443",
+      "farmer_id": "farmer-replay-026",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-03-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000480",
+      "farmer_id": "farmer-replay-028",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-03-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000029",
+      "farmer_id": "farmer-replay-001",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-03-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000066",
+      "farmer_id": "farmer-replay-003",
+      "kind": "loan_repayment",
+      "amount_minor": 400000,
+      "currency": "KES",
+      "date": "2026-03-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000116",
+      "farmer_id": "farmer-replay-006",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-03-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000153",
+      "farmer_id": "farmer-replay-008",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-03-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000203",
+      "farmer_id": "farmer-replay-011",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-03-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000240",
+      "farmer_id": "farmer-replay-013",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-03-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000290",
+      "farmer_id": "farmer-replay-016",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-03-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000327",
+      "farmer_id": "farmer-replay-018",
+      "kind": "loan_repayment",
+      "amount_minor": 400000,
+      "currency": "KES",
+      "date": "2026-03-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000377",
+      "farmer_id": "farmer-replay-021",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-03-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000414",
+      "farmer_id": "farmer-replay-023",
+      "kind": "loan_repayment",
+      "amount_minor": 400000,
+      "currency": "KES",
+      "date": "2026-03-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000464",
+      "farmer_id": "farmer-replay-026",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-03-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000501",
+      "farmer_id": "farmer-replay-028",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-03-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000009",
+      "farmer_id": "farmer-replay-001",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-03-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000046",
+      "farmer_id": "farmer-replay-003",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-03-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000075",
+      "farmer_id": "farmer-replay-005",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-03-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000096",
+      "farmer_id": "farmer-replay-006",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-03-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000133",
+      "farmer_id": "farmer-replay-008",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-03-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000162",
+      "farmer_id": "farmer-replay-010",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-03-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000183",
+      "farmer_id": "farmer-replay-011",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-03-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000220",
+      "farmer_id": "farmer-replay-013",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-03-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000249",
+      "farmer_id": "farmer-replay-015",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-03-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000270",
+      "farmer_id": "farmer-replay-016",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-03-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000307",
+      "farmer_id": "farmer-replay-018",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-03-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000336",
+      "farmer_id": "farmer-replay-020",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-03-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000357",
+      "farmer_id": "farmer-replay-021",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-03-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000394",
+      "farmer_id": "farmer-replay-023",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-03-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000423",
+      "farmer_id": "farmer-replay-025",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-03-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000444",
+      "farmer_id": "farmer-replay-026",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-03-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000481",
+      "farmer_id": "farmer-replay-028",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-03-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000510",
+      "farmer_id": "farmer-replay-030",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-03-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000010",
+      "farmer_id": "farmer-replay-001",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4000000,
+      "currency": "KES",
+      "date": "2026-04-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000047",
+      "farmer_id": "farmer-replay-003",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3800000,
+      "currency": "KES",
+      "date": "2026-04-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000076",
+      "farmer_id": "farmer-replay-005",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4000000,
+      "currency": "KES",
+      "date": "2026-04-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000097",
+      "farmer_id": "farmer-replay-006",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2100000,
+      "currency": "KES",
+      "date": "2026-04-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000134",
+      "farmer_id": "farmer-replay-008",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4600000,
+      "currency": "KES",
+      "date": "2026-04-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000163",
+      "farmer_id": "farmer-replay-010",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 1700000,
+      "currency": "KES",
+      "date": "2026-04-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000184",
+      "farmer_id": "farmer-replay-011",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2700000,
+      "currency": "KES",
+      "date": "2026-04-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000221",
+      "farmer_id": "farmer-replay-013",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2900000,
+      "currency": "KES",
+      "date": "2026-04-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000250",
+      "farmer_id": "farmer-replay-015",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4800000,
+      "currency": "KES",
+      "date": "2026-04-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000271",
+      "farmer_id": "farmer-replay-016",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 1500000,
+      "currency": "KES",
+      "date": "2026-04-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000308",
+      "farmer_id": "farmer-replay-018",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3900000,
+      "currency": "KES",
+      "date": "2026-04-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000337",
+      "farmer_id": "farmer-replay-020",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 1500000,
+      "currency": "KES",
+      "date": "2026-04-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000358",
+      "farmer_id": "farmer-replay-021",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3500000,
+      "currency": "KES",
+      "date": "2026-04-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000395",
+      "farmer_id": "farmer-replay-023",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3500000,
+      "currency": "KES",
+      "date": "2026-04-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000424",
+      "farmer_id": "farmer-replay-025",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2600000,
+      "currency": "KES",
+      "date": "2026-04-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000445",
+      "farmer_id": "farmer-replay-026",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3700000,
+      "currency": "KES",
+      "date": "2026-04-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000482",
+      "farmer_id": "farmer-replay-028",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3300000,
+      "currency": "KES",
+      "date": "2026-04-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000511",
+      "farmer_id": "farmer-replay-030",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 6000000,
+      "currency": "KES",
+      "date": "2026-04-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000011",
+      "farmer_id": "farmer-replay-001",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-04-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000048",
+      "farmer_id": "farmer-replay-003",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-04-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000098",
+      "farmer_id": "farmer-replay-006",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-04-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000135",
+      "farmer_id": "farmer-replay-008",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-04-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000185",
+      "farmer_id": "farmer-replay-011",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-04-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000222",
+      "farmer_id": "farmer-replay-013",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-04-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000272",
+      "farmer_id": "farmer-replay-016",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-04-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000309",
+      "farmer_id": "farmer-replay-018",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-04-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000359",
+      "farmer_id": "farmer-replay-021",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-04-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000396",
+      "farmer_id": "farmer-replay-023",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-04-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000446",
+      "farmer_id": "farmer-replay-026",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-04-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000483",
+      "farmer_id": "farmer-replay-028",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-04-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000030",
+      "farmer_id": "farmer-replay-001",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-04-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000067",
+      "farmer_id": "farmer-replay-003",
+      "kind": "loan_repayment",
+      "amount_minor": 400000,
+      "currency": "KES",
+      "date": "2026-04-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000117",
+      "farmer_id": "farmer-replay-006",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-04-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000154",
+      "farmer_id": "farmer-replay-008",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-04-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000204",
+      "farmer_id": "farmer-replay-011",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-04-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000241",
+      "farmer_id": "farmer-replay-013",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-04-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000291",
+      "farmer_id": "farmer-replay-016",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-04-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000328",
+      "farmer_id": "farmer-replay-018",
+      "kind": "loan_repayment",
+      "amount_minor": 400000,
+      "currency": "KES",
+      "date": "2026-04-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000378",
+      "farmer_id": "farmer-replay-021",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-04-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000415",
+      "farmer_id": "farmer-replay-023",
+      "kind": "loan_repayment",
+      "amount_minor": 400000,
+      "currency": "KES",
+      "date": "2026-04-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000465",
+      "farmer_id": "farmer-replay-026",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-04-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000502",
+      "farmer_id": "farmer-replay-028",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-04-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000012",
+      "farmer_id": "farmer-replay-001",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-04-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000049",
+      "farmer_id": "farmer-replay-003",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-04-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000077",
+      "farmer_id": "farmer-replay-005",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-04-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000099",
+      "farmer_id": "farmer-replay-006",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-04-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000136",
+      "farmer_id": "farmer-replay-008",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-04-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000164",
+      "farmer_id": "farmer-replay-010",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-04-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000186",
+      "farmer_id": "farmer-replay-011",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-04-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000223",
+      "farmer_id": "farmer-replay-013",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-04-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000251",
+      "farmer_id": "farmer-replay-015",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-04-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000273",
+      "farmer_id": "farmer-replay-016",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-04-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000310",
+      "farmer_id": "farmer-replay-018",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-04-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000338",
+      "farmer_id": "farmer-replay-020",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-04-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000360",
+      "farmer_id": "farmer-replay-021",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-04-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000397",
+      "farmer_id": "farmer-replay-023",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-04-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000425",
+      "farmer_id": "farmer-replay-025",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-04-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000447",
+      "farmer_id": "farmer-replay-026",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-04-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000484",
+      "farmer_id": "farmer-replay-028",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-04-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000512",
+      "farmer_id": "farmer-replay-030",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-04-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000013",
+      "farmer_id": "farmer-replay-001",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3600000,
+      "currency": "KES",
+      "date": "2026-05-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000050",
+      "farmer_id": "farmer-replay-003",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3500000,
+      "currency": "KES",
+      "date": "2026-05-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000078",
+      "farmer_id": "farmer-replay-005",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5500000,
+      "currency": "KES",
+      "date": "2026-05-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000100",
+      "farmer_id": "farmer-replay-006",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3100000,
+      "currency": "KES",
+      "date": "2026-05-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000137",
+      "farmer_id": "farmer-replay-008",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2000000,
+      "currency": "KES",
+      "date": "2026-05-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000165",
+      "farmer_id": "farmer-replay-010",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3800000,
+      "currency": "KES",
+      "date": "2026-05-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000187",
+      "farmer_id": "farmer-replay-011",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4200000,
+      "currency": "KES",
+      "date": "2026-05-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000224",
+      "farmer_id": "farmer-replay-013",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3200000,
+      "currency": "KES",
+      "date": "2026-05-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000252",
+      "farmer_id": "farmer-replay-015",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3400000,
+      "currency": "KES",
+      "date": "2026-05-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000274",
+      "farmer_id": "farmer-replay-016",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5100000,
+      "currency": "KES",
+      "date": "2026-05-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000311",
+      "farmer_id": "farmer-replay-018",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4600000,
+      "currency": "KES",
+      "date": "2026-05-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000339",
+      "farmer_id": "farmer-replay-020",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 1800000,
+      "currency": "KES",
+      "date": "2026-05-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000361",
+      "farmer_id": "farmer-replay-021",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3200000,
+      "currency": "KES",
+      "date": "2026-05-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000398",
+      "farmer_id": "farmer-replay-023",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5400000,
+      "currency": "KES",
+      "date": "2026-05-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000426",
+      "farmer_id": "farmer-replay-025",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4800000,
+      "currency": "KES",
+      "date": "2026-05-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000448",
+      "farmer_id": "farmer-replay-026",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 1800000,
+      "currency": "KES",
+      "date": "2026-05-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000485",
+      "farmer_id": "farmer-replay-028",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2500000,
+      "currency": "KES",
+      "date": "2026-05-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000513",
+      "farmer_id": "farmer-replay-030",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2900000,
+      "currency": "KES",
+      "date": "2026-05-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000014",
+      "farmer_id": "farmer-replay-001",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-05-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000051",
+      "farmer_id": "farmer-replay-003",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-05-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000101",
+      "farmer_id": "farmer-replay-006",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-05-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000138",
+      "farmer_id": "farmer-replay-008",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-05-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000188",
+      "farmer_id": "farmer-replay-011",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-05-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000225",
+      "farmer_id": "farmer-replay-013",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-05-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000275",
+      "farmer_id": "farmer-replay-016",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-05-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000312",
+      "farmer_id": "farmer-replay-018",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-05-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000362",
+      "farmer_id": "farmer-replay-021",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-05-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000399",
+      "farmer_id": "farmer-replay-023",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-05-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000449",
+      "farmer_id": "farmer-replay-026",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-05-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000486",
+      "farmer_id": "farmer-replay-028",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-05-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000031",
+      "farmer_id": "farmer-replay-001",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-05-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000068",
+      "farmer_id": "farmer-replay-003",
+      "kind": "loan_repayment",
+      "amount_minor": 400000,
+      "currency": "KES",
+      "date": "2026-05-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000118",
+      "farmer_id": "farmer-replay-006",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-05-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000155",
+      "farmer_id": "farmer-replay-008",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-05-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000205",
+      "farmer_id": "farmer-replay-011",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-05-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000242",
+      "farmer_id": "farmer-replay-013",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-05-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000292",
+      "farmer_id": "farmer-replay-016",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-05-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000329",
+      "farmer_id": "farmer-replay-018",
+      "kind": "loan_repayment",
+      "amount_minor": 400000,
+      "currency": "KES",
+      "date": "2026-05-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000379",
+      "farmer_id": "farmer-replay-021",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-05-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000416",
+      "farmer_id": "farmer-replay-023",
+      "kind": "loan_repayment",
+      "amount_minor": 400000,
+      "currency": "KES",
+      "date": "2026-05-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000466",
+      "farmer_id": "farmer-replay-026",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-05-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000503",
+      "farmer_id": "farmer-replay-028",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-05-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000015",
+      "farmer_id": "farmer-replay-001",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-05-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000052",
+      "farmer_id": "farmer-replay-003",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-05-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000079",
+      "farmer_id": "farmer-replay-005",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-05-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000102",
+      "farmer_id": "farmer-replay-006",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-05-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000139",
+      "farmer_id": "farmer-replay-008",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-05-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000166",
+      "farmer_id": "farmer-replay-010",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-05-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000189",
+      "farmer_id": "farmer-replay-011",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-05-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000226",
+      "farmer_id": "farmer-replay-013",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-05-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000253",
+      "farmer_id": "farmer-replay-015",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-05-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000276",
+      "farmer_id": "farmer-replay-016",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-05-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000313",
+      "farmer_id": "farmer-replay-018",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-05-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000340",
+      "farmer_id": "farmer-replay-020",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-05-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000363",
+      "farmer_id": "farmer-replay-021",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-05-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000400",
+      "farmer_id": "farmer-replay-023",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-05-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000427",
+      "farmer_id": "farmer-replay-025",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-05-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000450",
+      "farmer_id": "farmer-replay-026",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-05-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000487",
+      "farmer_id": "farmer-replay-028",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-05-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000514",
+      "farmer_id": "farmer-replay-030",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-05-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000016",
+      "farmer_id": "farmer-replay-001",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5600000,
+      "currency": "KES",
+      "date": "2026-06-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000053",
+      "farmer_id": "farmer-replay-003",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 6000000,
+      "currency": "KES",
+      "date": "2026-06-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000080",
+      "farmer_id": "farmer-replay-005",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 1500000,
+      "currency": "KES",
+      "date": "2026-06-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000103",
+      "farmer_id": "farmer-replay-006",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 6000000,
+      "currency": "KES",
+      "date": "2026-06-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000140",
+      "farmer_id": "farmer-replay-008",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5000000,
+      "currency": "KES",
+      "date": "2026-06-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000167",
+      "farmer_id": "farmer-replay-010",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3700000,
+      "currency": "KES",
+      "date": "2026-06-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000190",
+      "farmer_id": "farmer-replay-011",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3500000,
+      "currency": "KES",
+      "date": "2026-06-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000227",
+      "farmer_id": "farmer-replay-013",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5800000,
+      "currency": "KES",
+      "date": "2026-06-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000254",
+      "farmer_id": "farmer-replay-015",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4500000,
+      "currency": "KES",
+      "date": "2026-06-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000277",
+      "farmer_id": "farmer-replay-016",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 1600000,
+      "currency": "KES",
+      "date": "2026-06-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000314",
+      "farmer_id": "farmer-replay-018",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 6000000,
+      "currency": "KES",
+      "date": "2026-06-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000341",
+      "farmer_id": "farmer-replay-020",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5200000,
+      "currency": "KES",
+      "date": "2026-06-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000364",
+      "farmer_id": "farmer-replay-021",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5900000,
+      "currency": "KES",
+      "date": "2026-06-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000401",
+      "farmer_id": "farmer-replay-023",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2800000,
+      "currency": "KES",
+      "date": "2026-06-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000428",
+      "farmer_id": "farmer-replay-025",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5100000,
+      "currency": "KES",
+      "date": "2026-06-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000451",
+      "farmer_id": "farmer-replay-026",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4200000,
+      "currency": "KES",
+      "date": "2026-06-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000488",
+      "farmer_id": "farmer-replay-028",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5400000,
+      "currency": "KES",
+      "date": "2026-06-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000515",
+      "farmer_id": "farmer-replay-030",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 1600000,
+      "currency": "KES",
+      "date": "2026-06-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000017",
+      "farmer_id": "farmer-replay-001",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-06-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000054",
+      "farmer_id": "farmer-replay-003",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-06-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000104",
+      "farmer_id": "farmer-replay-006",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-06-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000141",
+      "farmer_id": "farmer-replay-008",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-06-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000191",
+      "farmer_id": "farmer-replay-011",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-06-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000228",
+      "farmer_id": "farmer-replay-013",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-06-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000278",
+      "farmer_id": "farmer-replay-016",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-06-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000315",
+      "farmer_id": "farmer-replay-018",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-06-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000365",
+      "farmer_id": "farmer-replay-021",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-06-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000402",
+      "farmer_id": "farmer-replay-023",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-06-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000452",
+      "farmer_id": "farmer-replay-026",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-06-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000489",
+      "farmer_id": "farmer-replay-028",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-06-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000032",
+      "farmer_id": "farmer-replay-001",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-06-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000119",
+      "farmer_id": "farmer-replay-006",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-06-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000206",
+      "farmer_id": "farmer-replay-011",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-06-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000293",
+      "farmer_id": "farmer-replay-016",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-06-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000380",
+      "farmer_id": "farmer-replay-021",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-06-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000467",
+      "farmer_id": "farmer-replay-026",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-06-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000018",
+      "farmer_id": "farmer-replay-001",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-06-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000055",
+      "farmer_id": "farmer-replay-003",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-06-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000081",
+      "farmer_id": "farmer-replay-005",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-06-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000105",
+      "farmer_id": "farmer-replay-006",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-06-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000142",
+      "farmer_id": "farmer-replay-008",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-06-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000168",
+      "farmer_id": "farmer-replay-010",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-06-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000192",
+      "farmer_id": "farmer-replay-011",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-06-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000229",
+      "farmer_id": "farmer-replay-013",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-06-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000255",
+      "farmer_id": "farmer-replay-015",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-06-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000279",
+      "farmer_id": "farmer-replay-016",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-06-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000316",
+      "farmer_id": "farmer-replay-018",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-06-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000342",
+      "farmer_id": "farmer-replay-020",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-06-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000366",
+      "farmer_id": "farmer-replay-021",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-06-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000403",
+      "farmer_id": "farmer-replay-023",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-06-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000429",
+      "farmer_id": "farmer-replay-025",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-06-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000453",
+      "farmer_id": "farmer-replay-026",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-06-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000490",
+      "farmer_id": "farmer-replay-028",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-06-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000516",
+      "farmer_id": "farmer-replay-030",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-06-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000019",
+      "farmer_id": "farmer-replay-001",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4600000,
+      "currency": "KES",
+      "date": "2026-07-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000056",
+      "farmer_id": "farmer-replay-003",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4400000,
+      "currency": "KES",
+      "date": "2026-07-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000082",
+      "farmer_id": "farmer-replay-005",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4700000,
+      "currency": "KES",
+      "date": "2026-07-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000106",
+      "farmer_id": "farmer-replay-006",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2000000,
+      "currency": "KES",
+      "date": "2026-07-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000143",
+      "farmer_id": "farmer-replay-008",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4600000,
+      "currency": "KES",
+      "date": "2026-07-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000169",
+      "farmer_id": "farmer-replay-010",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3400000,
+      "currency": "KES",
+      "date": "2026-07-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000193",
+      "farmer_id": "farmer-replay-011",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5700000,
+      "currency": "KES",
+      "date": "2026-07-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000230",
+      "farmer_id": "farmer-replay-013",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2300000,
+      "currency": "KES",
+      "date": "2026-07-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000256",
+      "farmer_id": "farmer-replay-015",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4300000,
+      "currency": "KES",
+      "date": "2026-07-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000280",
+      "farmer_id": "farmer-replay-016",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 1800000,
+      "currency": "KES",
+      "date": "2026-07-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000317",
+      "farmer_id": "farmer-replay-018",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3900000,
+      "currency": "KES",
+      "date": "2026-07-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000343",
+      "farmer_id": "farmer-replay-020",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3000000,
+      "currency": "KES",
+      "date": "2026-07-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000367",
+      "farmer_id": "farmer-replay-021",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4800000,
+      "currency": "KES",
+      "date": "2026-07-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000404",
+      "farmer_id": "farmer-replay-023",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3200000,
+      "currency": "KES",
+      "date": "2026-07-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000430",
+      "farmer_id": "farmer-replay-025",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3000000,
+      "currency": "KES",
+      "date": "2026-07-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000454",
+      "farmer_id": "farmer-replay-026",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3200000,
+      "currency": "KES",
+      "date": "2026-07-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000491",
+      "farmer_id": "farmer-replay-028",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2500000,
+      "currency": "KES",
+      "date": "2026-07-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000517",
+      "farmer_id": "farmer-replay-030",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4200000,
+      "currency": "KES",
+      "date": "2026-07-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000020",
+      "farmer_id": "farmer-replay-001",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-07-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000057",
+      "farmer_id": "farmer-replay-003",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-07-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000107",
+      "farmer_id": "farmer-replay-006",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-07-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000144",
+      "farmer_id": "farmer-replay-008",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-07-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000194",
+      "farmer_id": "farmer-replay-011",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-07-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000231",
+      "farmer_id": "farmer-replay-013",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-07-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000281",
+      "farmer_id": "farmer-replay-016",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-07-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000318",
+      "farmer_id": "farmer-replay-018",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-07-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000368",
+      "farmer_id": "farmer-replay-021",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-07-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000405",
+      "farmer_id": "farmer-replay-023",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-07-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000455",
+      "farmer_id": "farmer-replay-026",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-07-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000492",
+      "farmer_id": "farmer-replay-028",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-07-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000033",
+      "farmer_id": "farmer-replay-001",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-07-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000120",
+      "farmer_id": "farmer-replay-006",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-07-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000207",
+      "farmer_id": "farmer-replay-011",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-07-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000294",
+      "farmer_id": "farmer-replay-016",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-07-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000381",
+      "farmer_id": "farmer-replay-021",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-07-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000468",
+      "farmer_id": "farmer-replay-026",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-07-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000021",
+      "farmer_id": "farmer-replay-001",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-07-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000058",
+      "farmer_id": "farmer-replay-003",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-07-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000083",
+      "farmer_id": "farmer-replay-005",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-07-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000108",
+      "farmer_id": "farmer-replay-006",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-07-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000145",
+      "farmer_id": "farmer-replay-008",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-07-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000170",
+      "farmer_id": "farmer-replay-010",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-07-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000195",
+      "farmer_id": "farmer-replay-011",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-07-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000232",
+      "farmer_id": "farmer-replay-013",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-07-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000257",
+      "farmer_id": "farmer-replay-015",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-07-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000282",
+      "farmer_id": "farmer-replay-016",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-07-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000319",
+      "farmer_id": "farmer-replay-018",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-07-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000344",
+      "farmer_id": "farmer-replay-020",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-07-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000369",
+      "farmer_id": "farmer-replay-021",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-07-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000406",
+      "farmer_id": "farmer-replay-023",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-07-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000431",
+      "farmer_id": "farmer-replay-025",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-07-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000456",
+      "farmer_id": "farmer-replay-026",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-07-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000493",
+      "farmer_id": "farmer-replay-028",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-07-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000518",
+      "farmer_id": "farmer-replay-030",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-07-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000022",
+      "farmer_id": "farmer-replay-001",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5800000,
+      "currency": "KES",
+      "date": "2026-08-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000059",
+      "farmer_id": "farmer-replay-003",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 1800000,
+      "currency": "KES",
+      "date": "2026-08-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000084",
+      "farmer_id": "farmer-replay-005",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 1900000,
+      "currency": "KES",
+      "date": "2026-08-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000109",
+      "farmer_id": "farmer-replay-006",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3300000,
+      "currency": "KES",
+      "date": "2026-08-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000146",
+      "farmer_id": "farmer-replay-008",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3800000,
+      "currency": "KES",
+      "date": "2026-08-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000171",
+      "farmer_id": "farmer-replay-010",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5000000,
+      "currency": "KES",
+      "date": "2026-08-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000196",
+      "farmer_id": "farmer-replay-011",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4400000,
+      "currency": "KES",
+      "date": "2026-08-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000233",
+      "farmer_id": "farmer-replay-013",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3600000,
+      "currency": "KES",
+      "date": "2026-08-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000258",
+      "farmer_id": "farmer-replay-015",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2300000,
+      "currency": "KES",
+      "date": "2026-08-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000283",
+      "farmer_id": "farmer-replay-016",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5700000,
+      "currency": "KES",
+      "date": "2026-08-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000320",
+      "farmer_id": "farmer-replay-018",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2000000,
+      "currency": "KES",
+      "date": "2026-08-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000345",
+      "farmer_id": "farmer-replay-020",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5200000,
+      "currency": "KES",
+      "date": "2026-08-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000370",
+      "farmer_id": "farmer-replay-021",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4500000,
+      "currency": "KES",
+      "date": "2026-08-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000407",
+      "farmer_id": "farmer-replay-023",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5600000,
+      "currency": "KES",
+      "date": "2026-08-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000432",
+      "farmer_id": "farmer-replay-025",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4100000,
+      "currency": "KES",
+      "date": "2026-08-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000457",
+      "farmer_id": "farmer-replay-026",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3000000,
+      "currency": "KES",
+      "date": "2026-08-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000494",
+      "farmer_id": "farmer-replay-028",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5100000,
+      "currency": "KES",
+      "date": "2026-08-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000519",
+      "farmer_id": "farmer-replay-030",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 1900000,
+      "currency": "KES",
+      "date": "2026-08-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000023",
+      "farmer_id": "farmer-replay-001",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-08-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000060",
+      "farmer_id": "farmer-replay-003",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-08-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000110",
+      "farmer_id": "farmer-replay-006",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-08-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000147",
+      "farmer_id": "farmer-replay-008",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-08-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000197",
+      "farmer_id": "farmer-replay-011",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-08-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000234",
+      "farmer_id": "farmer-replay-013",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-08-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000284",
+      "farmer_id": "farmer-replay-016",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-08-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000321",
+      "farmer_id": "farmer-replay-018",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-08-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000371",
+      "farmer_id": "farmer-replay-021",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-08-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000408",
+      "farmer_id": "farmer-replay-023",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-08-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000458",
+      "farmer_id": "farmer-replay-026",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-08-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000495",
+      "farmer_id": "farmer-replay-028",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-08-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000034",
+      "farmer_id": "farmer-replay-001",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-08-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000069",
+      "farmer_id": "farmer-replay-003",
+      "kind": "loan_repayment",
+      "amount_minor": 400000,
+      "currency": "KES",
+      "date": "2026-08-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000121",
+      "farmer_id": "farmer-replay-006",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-08-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000156",
+      "farmer_id": "farmer-replay-008",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-08-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000208",
+      "farmer_id": "farmer-replay-011",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-08-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000243",
+      "farmer_id": "farmer-replay-013",
+      "kind": "loan_repayment",
+      "amount_minor": 800000,
+      "currency": "KES",
+      "date": "2026-08-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000295",
+      "farmer_id": "farmer-replay-016",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-08-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000330",
+      "farmer_id": "farmer-replay-018",
+      "kind": "loan_repayment",
+      "amount_minor": 400000,
+      "currency": "KES",
+      "date": "2026-08-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000382",
+      "farmer_id": "farmer-replay-021",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-08-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000417",
+      "farmer_id": "farmer-replay-023",
+      "kind": "loan_repayment",
+      "amount_minor": 400000,
+      "currency": "KES",
+      "date": "2026-08-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000469",
+      "farmer_id": "farmer-replay-026",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-08-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000504",
+      "farmer_id": "farmer-replay-028",
+      "kind": "loan_repayment",
+      "amount_minor": 600000,
+      "currency": "KES",
+      "date": "2026-08-15",
+      "counterparty_id": "REPLAY-LENDER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000024",
+      "farmer_id": "farmer-replay-001",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-08-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000061",
+      "farmer_id": "farmer-replay-003",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-08-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000085",
+      "farmer_id": "farmer-replay-005",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-08-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000111",
+      "farmer_id": "farmer-replay-006",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-08-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000148",
+      "farmer_id": "farmer-replay-008",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-08-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000172",
+      "farmer_id": "farmer-replay-010",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-08-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000198",
+      "farmer_id": "farmer-replay-011",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-08-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000235",
+      "farmer_id": "farmer-replay-013",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-08-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000259",
+      "farmer_id": "farmer-replay-015",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-08-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000285",
+      "farmer_id": "farmer-replay-016",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-08-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000322",
+      "farmer_id": "farmer-replay-018",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-08-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000346",
+      "farmer_id": "farmer-replay-020",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-08-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000372",
+      "farmer_id": "farmer-replay-021",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-08-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000409",
+      "farmer_id": "farmer-replay-023",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-08-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000433",
+      "farmer_id": "farmer-replay-025",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-08-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000459",
+      "farmer_id": "farmer-replay-026",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-08-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000496",
+      "farmer_id": "farmer-replay-028",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-08-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000520",
+      "farmer_id": "farmer-replay-030",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-08-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000025",
+      "farmer_id": "farmer-replay-001",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2800000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000035",
+      "farmer_id": "farmer-replay-002",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4600000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000062",
+      "farmer_id": "farmer-replay-003",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2800000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000086",
+      "farmer_id": "farmer-replay-005",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5800000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000112",
+      "farmer_id": "farmer-replay-006",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4800000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000122",
+      "farmer_id": "farmer-replay-007",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5100000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000149",
+      "farmer_id": "farmer-replay-008",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3900000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000173",
+      "farmer_id": "farmer-replay-010",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4800000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000199",
+      "farmer_id": "farmer-replay-011",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3900000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000209",
+      "farmer_id": "farmer-replay-012",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2400000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000236",
+      "farmer_id": "farmer-replay-013",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4500000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000260",
+      "farmer_id": "farmer-replay-015",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4100000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000286",
+      "farmer_id": "farmer-replay-016",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2800000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000296",
+      "farmer_id": "farmer-replay-017",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5300000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000323",
+      "farmer_id": "farmer-replay-018",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2600000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000347",
+      "farmer_id": "farmer-replay-020",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2400000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000373",
+      "farmer_id": "farmer-replay-021",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3900000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000383",
+      "farmer_id": "farmer-replay-022",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2700000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000410",
+      "farmer_id": "farmer-replay-023",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5600000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000434",
+      "farmer_id": "farmer-replay-025",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 2200000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000460",
+      "farmer_id": "farmer-replay-026",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 4000000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000470",
+      "farmer_id": "farmer-replay-027",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5200000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000497",
+      "farmer_id": "farmer-replay-028",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 3200000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000521",
+      "farmer_id": "farmer-replay-030",
+      "kind": "cooperative_delivery_receipt",
+      "amount_minor": 5700000,
+      "currency": "KES",
+      "date": "2026-09-10",
+      "counterparty_id": "REPLAY-COOP-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000026",
+      "farmer_id": "farmer-replay-001",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-09-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000036",
+      "farmer_id": "farmer-replay-002",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-09-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000063",
+      "farmer_id": "farmer-replay-003",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-09-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000113",
+      "farmer_id": "farmer-replay-006",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-09-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000123",
+      "farmer_id": "farmer-replay-007",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-09-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000150",
+      "farmer_id": "farmer-replay-008",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-09-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000200",
+      "farmer_id": "farmer-replay-011",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-09-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000210",
+      "farmer_id": "farmer-replay-012",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-09-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000237",
+      "farmer_id": "farmer-replay-013",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-09-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000287",
+      "farmer_id": "farmer-replay-016",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-09-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000297",
+      "farmer_id": "farmer-replay-017",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-09-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000324",
+      "farmer_id": "farmer-replay-018",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-09-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000374",
+      "farmer_id": "farmer-replay-021",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-09-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000384",
+      "farmer_id": "farmer-replay-022",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-09-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000411",
+      "farmer_id": "farmer-replay-023",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-09-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000461",
+      "farmer_id": "farmer-replay-026",
+      "kind": "group_contribution",
+      "amount_minor": 150000,
+      "currency": "KES",
+      "date": "2026-09-12",
+      "counterparty_id": "REPLAY-CHAMA-3",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000471",
+      "farmer_id": "farmer-replay-027",
+      "kind": "group_contribution",
+      "amount_minor": 100000,
+      "currency": "KES",
+      "date": "2026-09-12",
+      "counterparty_id": "REPLAY-CHAMA-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000498",
+      "farmer_id": "farmer-replay-028",
+      "kind": "group_contribution",
+      "amount_minor": 50000,
+      "currency": "KES",
+      "date": "2026-09-12",
+      "counterparty_id": "REPLAY-CHAMA-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000027",
+      "farmer_id": "farmer-replay-001",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000037",
+      "farmer_id": "farmer-replay-002",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000064",
+      "farmer_id": "farmer-replay-003",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000087",
+      "farmer_id": "farmer-replay-005",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000114",
+      "farmer_id": "farmer-replay-006",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000124",
+      "farmer_id": "farmer-replay-007",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000151",
+      "farmer_id": "farmer-replay-008",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000174",
+      "farmer_id": "farmer-replay-010",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000201",
+      "farmer_id": "farmer-replay-011",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000211",
+      "farmer_id": "farmer-replay-012",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000238",
+      "farmer_id": "farmer-replay-013",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000261",
+      "farmer_id": "farmer-replay-015",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000288",
+      "farmer_id": "farmer-replay-016",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000298",
+      "farmer_id": "farmer-replay-017",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000325",
+      "farmer_id": "farmer-replay-018",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000348",
+      "farmer_id": "farmer-replay-020",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000375",
+      "farmer_id": "farmer-replay-021",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000385",
+      "farmer_id": "farmer-replay-022",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000412",
+      "farmer_id": "farmer-replay-023",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000435",
+      "farmer_id": "farmer-replay-025",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000462",
+      "farmer_id": "farmer-replay-026",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000472",
+      "farmer_id": "farmer-replay-027",
+      "kind": "dealer_purchase",
+      "amount_minor": 630000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-2",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000499",
+      "farmer_id": "farmer-replay-028",
+      "kind": "dealer_purchase",
+      "amount_minor": 450000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    },
+    {
+      "id": "REPLAY-TX-000522",
+      "farmer_id": "farmer-replay-030",
+      "kind": "dealer_purchase",
+      "amount_minor": 240000,
+      "currency": "KES",
+      "date": "2026-09-20",
+      "counterparty_id": "REPLAY-DEALER-1",
+      "source_kind": "synthetic_replay"
+    }
+  ],
+  "loans": [
+    {
+      "id": "REPLAY-LOAN-001",
+      "farmer_id": "farmer-replay-001",
+      "currency": "KES",
+      "principal_minor": 4800000,
+      "repaid_minor": 4800000,
+      "outstanding_minor": 0,
+      "final_due_date": "2026-08-15",
+      "repayment_transaction_ids": [
+        "REPLAY-TX-000029",
+        "REPLAY-TX-000030",
+        "REPLAY-TX-000031",
+        "REPLAY-TX-000032",
+        "REPLAY-TX-000033",
+        "REPLAY-TX-000034"
+      ],
+      "source_kind": "synthetic_replay",
+      "use": "Workflow scenario only; not observed loan outcomes or a training label."
+    },
+    {
+      "id": "REPLAY-LOAN-003",
+      "farmer_id": "farmer-replay-003",
+      "currency": "KES",
+      "principal_minor": 2400000,
+      "repaid_minor": 1600000,
+      "outstanding_minor": 800000,
+      "final_due_date": "2026-08-15",
+      "repayment_transaction_ids": [
+        "REPLAY-TX-000066",
+        "REPLAY-TX-000067",
+        "REPLAY-TX-000068",
+        "REPLAY-TX-000069"
+      ],
+      "source_kind": "synthetic_replay",
+      "use": "Workflow scenario only; not observed loan outcomes or a training label."
+    },
+    {
+      "id": "REPLAY-LOAN-006",
+      "farmer_id": "farmer-replay-006",
+      "currency": "KES",
+      "principal_minor": 4800000,
+      "repaid_minor": 4800000,
+      "outstanding_minor": 0,
+      "final_due_date": "2026-08-15",
+      "repayment_transaction_ids": [
+        "REPLAY-TX-000116",
+        "REPLAY-TX-000117",
+        "REPLAY-TX-000118",
+        "REPLAY-TX-000119",
+        "REPLAY-TX-000120",
+        "REPLAY-TX-000121"
+      ],
+      "source_kind": "synthetic_replay",
+      "use": "Workflow scenario only; not observed loan outcomes or a training label."
+    },
+    {
+      "id": "REPLAY-LOAN-008",
+      "farmer_id": "farmer-replay-008",
+      "currency": "KES",
+      "principal_minor": 3600000,
+      "repaid_minor": 2400000,
+      "outstanding_minor": 1200000,
+      "final_due_date": "2026-08-15",
+      "repayment_transaction_ids": [
+        "REPLAY-TX-000153",
+        "REPLAY-TX-000154",
+        "REPLAY-TX-000155",
+        "REPLAY-TX-000156"
+      ],
+      "source_kind": "synthetic_replay",
+      "use": "Workflow scenario only; not observed loan outcomes or a training label."
+    },
+    {
+      "id": "REPLAY-LOAN-011",
+      "farmer_id": "farmer-replay-011",
+      "currency": "KES",
+      "principal_minor": 4800000,
+      "repaid_minor": 4800000,
+      "outstanding_minor": 0,
+      "final_due_date": "2026-08-15",
+      "repayment_transaction_ids": [
+        "REPLAY-TX-000203",
+        "REPLAY-TX-000204",
+        "REPLAY-TX-000205",
+        "REPLAY-TX-000206",
+        "REPLAY-TX-000207",
+        "REPLAY-TX-000208"
+      ],
+      "source_kind": "synthetic_replay",
+      "use": "Workflow scenario only; not observed loan outcomes or a training label."
+    },
+    {
+      "id": "REPLAY-LOAN-013",
+      "farmer_id": "farmer-replay-013",
+      "currency": "KES",
+      "principal_minor": 4800000,
+      "repaid_minor": 3200000,
+      "outstanding_minor": 1600000,
+      "final_due_date": "2026-08-15",
+      "repayment_transaction_ids": [
+        "REPLAY-TX-000240",
+        "REPLAY-TX-000241",
+        "REPLAY-TX-000242",
+        "REPLAY-TX-000243"
+      ],
+      "source_kind": "synthetic_replay",
+      "use": "Workflow scenario only; not observed loan outcomes or a training label."
+    },
+    {
+      "id": "REPLAY-LOAN-016",
+      "farmer_id": "farmer-replay-016",
+      "currency": "KES",
+      "principal_minor": 3600000,
+      "repaid_minor": 3600000,
+      "outstanding_minor": 0,
+      "final_due_date": "2026-08-15",
+      "repayment_transaction_ids": [
+        "REPLAY-TX-000290",
+        "REPLAY-TX-000291",
+        "REPLAY-TX-000292",
+        "REPLAY-TX-000293",
+        "REPLAY-TX-000294",
+        "REPLAY-TX-000295"
+      ],
+      "source_kind": "synthetic_replay",
+      "use": "Workflow scenario only; not observed loan outcomes or a training label."
+    },
+    {
+      "id": "REPLAY-LOAN-018",
+      "farmer_id": "farmer-replay-018",
+      "currency": "KES",
+      "principal_minor": 2400000,
+      "repaid_minor": 1600000,
+      "outstanding_minor": 800000,
+      "final_due_date": "2026-08-15",
+      "repayment_transaction_ids": [
+        "REPLAY-TX-000327",
+        "REPLAY-TX-000328",
+        "REPLAY-TX-000329",
+        "REPLAY-TX-000330"
+      ],
+      "source_kind": "synthetic_replay",
+      "use": "Workflow scenario only; not observed loan outcomes or a training label."
+    },
+    {
+      "id": "REPLAY-LOAN-021",
+      "farmer_id": "farmer-replay-021",
+      "currency": "KES",
+      "principal_minor": 3600000,
+      "repaid_minor": 3600000,
+      "outstanding_minor": 0,
+      "final_due_date": "2026-08-15",
+      "repayment_transaction_ids": [
+        "REPLAY-TX-000377",
+        "REPLAY-TX-000378",
+        "REPLAY-TX-000379",
+        "REPLAY-TX-000380",
+        "REPLAY-TX-000381",
+        "REPLAY-TX-000382"
+      ],
+      "source_kind": "synthetic_replay",
+      "use": "Workflow scenario only; not observed loan outcomes or a training label."
+    },
+    {
+      "id": "REPLAY-LOAN-023",
+      "farmer_id": "farmer-replay-023",
+      "currency": "KES",
+      "principal_minor": 2400000,
+      "repaid_minor": 1600000,
+      "outstanding_minor": 800000,
+      "final_due_date": "2026-08-15",
+      "repayment_transaction_ids": [
+        "REPLAY-TX-000414",
+        "REPLAY-TX-000415",
+        "REPLAY-TX-000416",
+        "REPLAY-TX-000417"
+      ],
+      "source_kind": "synthetic_replay",
+      "use": "Workflow scenario only; not observed loan outcomes or a training label."
+    },
+    {
+      "id": "REPLAY-LOAN-026",
+      "farmer_id": "farmer-replay-026",
+      "currency": "KES",
+      "principal_minor": 3600000,
+      "repaid_minor": 3600000,
+      "outstanding_minor": 0,
+      "final_due_date": "2026-08-15",
+      "repayment_transaction_ids": [
+        "REPLAY-TX-000464",
+        "REPLAY-TX-000465",
+        "REPLAY-TX-000466",
+        "REPLAY-TX-000467",
+        "REPLAY-TX-000468",
+        "REPLAY-TX-000469"
+      ],
+      "source_kind": "synthetic_replay",
+      "use": "Workflow scenario only; not observed loan outcomes or a training label."
+    },
+    {
+      "id": "REPLAY-LOAN-028",
+      "farmer_id": "farmer-replay-028",
+      "currency": "KES",
+      "principal_minor": 3600000,
+      "repaid_minor": 2400000,
+      "outstanding_minor": 1200000,
+      "final_due_date": "2026-08-15",
+      "repayment_transaction_ids": [
+        "REPLAY-TX-000501",
+        "REPLAY-TX-000502",
+        "REPLAY-TX-000503",
+        "REPLAY-TX-000504"
+      ],
+      "source_kind": "synthetic_replay",
+      "use": "Workflow scenario only; not observed loan outcomes or a training label."
+    }
+  ],
+  "sandbox_catalogue": [
+    {
+      "id": "replay-dap-50",
+      "supplier_id": "supplier-demo",
+      "name": "Replay DAP fertilizer",
+      "category": "Fertilizer",
+      "unit": "50 kg bag",
+      "price_cents": 4500,
+      "stock": 100,
+      "currency": "USD"
+    },
+    {
+      "id": "replay-seed-2",
+      "supplier_id": "supplier-demo",
+      "name": "Replay maize seed",
+      "category": "Seed",
+      "unit": "2 kg pack",
+      "price_cents": 1800,
+      "stock": 100,
+      "currency": "USD"
+    }
+  ],
+  "sandbox_approvals": [
+    {
+      "farmer_id": "farmer-replay-001",
+      "name": "Replay Farmer 001",
+      "location": "meru-reference",
+      "limit_cents": 7500,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-001"
+    },
+    {
+      "farmer_id": "farmer-replay-002",
+      "name": "Replay Farmer 002",
+      "location": "machakos-reference",
+      "limit_cents": 15000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-002"
+    },
+    {
+      "farmer_id": "farmer-replay-003",
+      "name": "Replay Farmer 003",
+      "location": "meru-reference",
+      "limit_cents": 15000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-003"
+    },
+    {
+      "farmer_id": "farmer-replay-004",
+      "name": "Replay Farmer 004",
+      "location": "machakos-reference",
+      "limit_cents": 20000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-004"
+    },
+    {
+      "farmer_id": "farmer-replay-005",
+      "name": "Replay Farmer 005",
+      "location": "meru-reference",
+      "limit_cents": 15000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-005"
+    },
+    {
+      "farmer_id": "farmer-replay-006",
+      "name": "Replay Farmer 006",
+      "location": "machakos-reference",
+      "limit_cents": 15000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-006"
+    },
+    {
+      "farmer_id": "farmer-replay-007",
+      "name": "Replay Farmer 007",
+      "location": "meru-reference",
+      "limit_cents": 7500,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-007"
+    },
+    {
+      "farmer_id": "farmer-replay-008",
+      "name": "Replay Farmer 008",
+      "location": "machakos-reference",
+      "limit_cents": 20000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-008"
+    },
+    {
+      "farmer_id": "farmer-replay-009",
+      "name": "Replay Farmer 009",
+      "location": "meru-reference",
+      "limit_cents": 15000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-009"
+    },
+    {
+      "farmer_id": "farmer-replay-010",
+      "name": "Replay Farmer 010",
+      "location": "machakos-reference",
+      "limit_cents": 7500,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-010"
+    },
+    {
+      "farmer_id": "farmer-replay-011",
+      "name": "Replay Farmer 011",
+      "location": "meru-reference",
+      "limit_cents": 15000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-011"
+    },
+    {
+      "farmer_id": "farmer-replay-012",
+      "name": "Replay Farmer 012",
+      "location": "machakos-reference",
+      "limit_cents": 20000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-012"
+    },
+    {
+      "farmer_id": "farmer-replay-013",
+      "name": "Replay Farmer 013",
+      "location": "meru-reference",
+      "limit_cents": 15000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-013"
+    },
+    {
+      "farmer_id": "farmer-replay-014",
+      "name": "Replay Farmer 014",
+      "location": "machakos-reference",
+      "limit_cents": 15000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-014"
+    },
+    {
+      "farmer_id": "farmer-replay-015",
+      "name": "Replay Farmer 015",
+      "location": "meru-reference",
+      "limit_cents": 20000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-015"
+    },
+    {
+      "farmer_id": "farmer-replay-016",
+      "name": "Replay Farmer 016",
+      "location": "machakos-reference",
+      "limit_cents": 20000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-016"
+    },
+    {
+      "farmer_id": "farmer-replay-017",
+      "name": "Replay Farmer 017",
+      "location": "meru-reference",
+      "limit_cents": 20000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-017"
+    },
+    {
+      "farmer_id": "farmer-replay-018",
+      "name": "Replay Farmer 018",
+      "location": "machakos-reference",
+      "limit_cents": 20000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-018"
+    },
+    {
+      "farmer_id": "farmer-replay-019",
+      "name": "Replay Farmer 019",
+      "location": "meru-reference",
+      "limit_cents": 7500,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-019"
+    },
+    {
+      "farmer_id": "farmer-replay-020",
+      "name": "Replay Farmer 020",
+      "location": "machakos-reference",
+      "limit_cents": 20000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-020"
+    },
+    {
+      "farmer_id": "farmer-replay-021",
+      "name": "Replay Farmer 021",
+      "location": "meru-reference",
+      "limit_cents": 20000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-021"
+    },
+    {
+      "farmer_id": "farmer-replay-022",
+      "name": "Replay Farmer 022",
+      "location": "machakos-reference",
+      "limit_cents": 7500,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-022"
+    },
+    {
+      "farmer_id": "farmer-replay-023",
+      "name": "Replay Farmer 023",
+      "location": "meru-reference",
+      "limit_cents": 7500,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-023"
+    },
+    {
+      "farmer_id": "farmer-replay-024",
+      "name": "Replay Farmer 024",
+      "location": "machakos-reference",
+      "limit_cents": 20000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-024"
+    },
+    {
+      "farmer_id": "farmer-replay-025",
+      "name": "Replay Farmer 025",
+      "location": "meru-reference",
+      "limit_cents": 7500,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-025"
+    },
+    {
+      "farmer_id": "farmer-replay-026",
+      "name": "Replay Farmer 026",
+      "location": "machakos-reference",
+      "limit_cents": 7500,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-026"
+    },
+    {
+      "farmer_id": "farmer-replay-027",
+      "name": "Replay Farmer 027",
+      "location": "meru-reference",
+      "limit_cents": 20000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-027"
+    },
+    {
+      "farmer_id": "farmer-replay-028",
+      "name": "Replay Farmer 028",
+      "location": "machakos-reference",
+      "limit_cents": 20000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-028"
+    },
+    {
+      "farmer_id": "farmer-replay-029",
+      "name": "Replay Farmer 029",
+      "location": "meru-reference",
+      "limit_cents": 7500,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-029"
+    },
+    {
+      "farmer_id": "farmer-replay-030",
+      "name": "Replay Farmer 030",
+      "location": "machakos-reference",
+      "limit_cents": 20000,
+      "expires_at": "2027-01-24T23:59:59+00:00",
+      "approval_reference": "REPLAY-USD-APP-030"
+    }
+  ]
+}

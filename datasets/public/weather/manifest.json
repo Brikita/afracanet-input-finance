@@ -1,0 +1,39 @@
+{
+  "source_kind": "public_weather_reanalysis",
+  "provider": "Open-Meteo / ERA5",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "attribution": "Weather data by Open-Meteo.com; ERA5 via Copernicus Climate Change Service.",
+  "documentation": "https://open-meteo.com/en/docs/historical-weather-api",
+  "api_use_terms": "https://open-meteo.com/en/pricing",
+  "fetched_at_utc": "2026-10-26T19:19:50.308958+00:00",
+  "start_date": "2026-09-01",
+  "end_date": "2026-09-30",
+  "limits": "Gridded reanalysis, not on-farm measurements. Reference points are not verified farmer locations. No credit-risk score is inferred.",
+  "snapshots": [
+    {
+      "location": {
+        "id": "meru-reference",
+        "name": "Meru reference point",
+        "latitude": 0.0464,
+        "longitude": 37.6538
+      },
+      "source_url": "https://archive-api.open-meteo.com/v1/archive?latitude=0.0464&longitude=37.6538&start_date=2026-09-01&end_date=2026-09-30&models=era5&daily=precipitation_sum%2Ctemperature_2m_max%2Ctemperature_2m_min&timezone=Africa%2FNairobi",
+      "file": "meru-reference-2026-09-01-2026-09-30.json",
+      "sha256": "f9e8235ff74dabb0fe9dd4267f3b0a2da57d1f5703b32eabe3cbb7817a91bb4b",
+      "daily_records": 30
+    },
+    {
+      "location": {
+        "id": "machakos-reference",
+        "name": "Machakos reference point",
+        "latitude": -1.5177,
+        "longitude": 37.2634
+      },
+      "source_url": "https://archive-api.open-meteo.com/v1/archive?latitude=-1.5177&longitude=37.2634&start_date=2026-09-01&end_date=2026-09-30&models=era5&daily=precipitation_sum%2Ctemperature_2m_max%2Ctemperature_2m_min&timezone=Africa%2FNairobi",
+      "file": "machakos-reference-2026-09-01-2026-09-30.json",
+      "sha256": "7a668d6919a9e0b167ebad84d00c915e38cf58f483a48f5a557ddbca0f579c65",
+      "daily_records": 30
+    }
+  ]
+}
