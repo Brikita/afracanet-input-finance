@@ -24,6 +24,17 @@ For the current backlog and data-sourcing options, see the
 [26 October status and data report](docs/STATUS_AND_DATA_PLAN_2026-10-26.md)
 and the [public-context/labelled-replay pack](datasets/README.md).
 
+The [redesign and restructuring brief](docs/REDESIGN_AND_RESTRUCTURE.md) tracks
+the new UX work. Frontend domain/transport/feature modules and backend
+validation/authentication/transaction helpers now have explicit boundaries;
+the visual replacement is awaiting direction selection. See [frontend layout](src/README.md)
+and [backend layout](backend/README.md).
+
+For larger isolated graph and relational scenarios, use the
+[scalable synthetic generator](datasets/SYNTHETIC.md). The development profile
+contains 10,000 farmers and 24 months of authored history. Generated database and
+CSV artifacts remain outside Git and are not automatically loaded into the apps.
+
 ## Current status
 
 The local demonstration works without service credentials. It includes:

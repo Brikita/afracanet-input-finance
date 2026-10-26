@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "source_kind": "synthetic_replay",
+  "profile": "development",
+  "seed": 20261026,
+  "as_of": "2026-10-26",
+  "farmers": 10000,
+  "months": 24,
+  "contains_real_people": false,
+  "contains_real_financial_records": false,
+  "statistically_calibrated": false,
+  "loan_model_training_allowed": false,
+  "payment_evidence_kind": "synthetic_replay",
+  "provider_calls": 0,
+  "currency_boundary": "Fictional KES histories; separate illustrative USD allocations and orders. No exchange rate or relabelling.",
+  "weather_boundary": "Synthetic reference-region assignments only. Public weather is not embedded or invented.",
+  "use": "Workflow, graph exploration, query/load testing. Not predictive or real-world financial validation.",
+  "counts": {
+    "entities": 918043,
+    "relationships": 1876548,
+    "ledger": 784656,
+    "loans": 12496,
+    "installments": 74976,
+    "allocations": 10000,
+    "input_orders": 10000
+  },
+  "nodes_by_kind": {
+    "Allocation": 10000,
+    "Application": 10000,
+    "Collection": 1252,
+    "Cooperative": 80,
+    "Crop": 4,
+    "CropSeason": 38732,
+    "Dealer": 20,
+    "Farm": 10000,
+    "Farmer": 10000,
+    "Household": 10000,
+    "InputOrder": 10000,
+    "Invoice": 5000,
+    "Issue": 1713,
+    "LedgerEvent": 784656,
+    "Lender": 4,
+    "LenderDecision": 10000,
+    "Loan": 12496,
+    "Officer": 12,
+    "Product": 60,
+    "ReferenceRegion": 12,
+    "ReplayPayment": 3752,
+    "SavingsGroup": 250
+  },
+  "relationships_by_kind": {
+    "ASSIGNED_REFERENCE_REGION": 10000,
+    "AUTHORIZED": 10000,
+    "CONTAINS_PRODUCT": 10000,
+    "CREATED_ALLOCATION": 10000,
+    "FOR_LOAN": 84976,
+    "GROWS": 10000,
+    "HAS_ALLOCATION": 10000,
+    "HAS_COLLECTION": 1252,
+    "HAS_DECISION": 10000,
+    "HAS_INVOICE": 5000,
+    "HAS_ISSUE": 1713,
+    "HAS_LEDGER_EVENT": 784656,
+    "HAS_LOAN": 12496,
+    "HAS_REPLAY_PAYMENT": 3752,
+    "HAS_SEASON": 38732,
+    "IN_HOUSEHOLD": 10000,
+    "MEMBER_OF": 19255,
+    "OFFERS": 60,
+    "OPERATES_FARM": 10000,
+    "REQUESTED_INPUTS": 10000,
+    "SERVED_BY": 10000,
+    "SUBMITTED": 10000,
+    "SUPPLIED_BY": 10000,
+    "USES_ALLOCATION": 10000,
+    "WITH_COUNTERPARTY": 784656
+  },
+  "files": [
+    {
+      "file": "allocations.csv",
+      "bytes": 699346,
+      "sha256": "8d34512d0029b85e5c1526dc1d5a6fca001ee3313285c9c3988de630f1a45ebd"
+    },
+    {
+      "file": "graph-nodes.csv",
+      "bytes": 177753961,
+      "sha256": "1b61d7727e31e37b89848aa2bbb33978d74a3382bc72323c9ac2f1466fab185a"
+    },
+    {
+      "file": "graph-relationships.csv",
+      "bytes": 164653110,
+      "sha256": "5a2db6bb98e0de419d6f2aceabc2438ef510be00d6ff06a4b43e563ab9984177"
+    },
+    {
+      "file": "input_orders.csv",
+      "bytes": 1295719,
+      "sha256": "5fd8ec60a2c6eb833cc29cfc80ca87f4341c16d6efe517500ac2710e8379e921"
+    },
+    {
+      "file": "installments.csv",
+      "bytes": 4347805,
+      "sha256": "5a49f20b1ec581967b7ec480fe26f9bbaf1ade64ffac3b2c5da63e9681c5e2cd"
+    },
+    {
+      "file": "ledger.csv",
+      "bytes": 95949517,
+      "sha256": "ef20cd8fe325e585b669293356f3d6539ecc431dc114e9d6d4edba34270065a4"
+    },
+    {
+      "file": "loans.csv",
+      "bytes": 1063510,
+      "sha256": "74392ca748862cd1a57dba189932c9a372116a274a384516bb6746d9d7d2eb1b"
+    },
+    {
+      "file": "scenario.sqlite",
+      "bytes": 865390592,
+      "sha256": "0d702255501162a123bfc10f83db2875508d5ea26537f4a8a758918c1601aea2"
+    }
+  ]
+}

@@ -3,6 +3,10 @@
 Prepared 26 October 2026. These files are not automatically loaded into either
 application. They do not replace the current runtime seeds or connect the modules.
 
+For the larger, configurable packs with a populated isolated relational database
+and matching graph exports, see [scalable synthetic scenarios](SYNTHETIC.md).
+The small replay below remains useful for a quick manual allocation-import demo.
+
 | Pack                                | Contents                                                                                                                | What may be claimed                                                                                                          |
 | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | `public/weather/`                   | Actual Open-Meteo/ERA5 API responses for September 2026 at two representative county reference points; 60 daily records | Public gridded weather reanalysis with source, retrieval time, units, and hashes; not on-farm measurements                   |

@@ -1,0 +1,45 @@
+{
+  "source_kind": "synthetic_replay",
+  "database_counts": {
+    "entities": 918043,
+    "relationships": 1876548,
+    "ledger": 784656,
+    "loans": 12496,
+    "installments": 74976,
+    "allocations": 10000,
+    "input_orders": 10000
+  },
+  "repetitions": 7,
+  "scope": "Local SQLite read queries; operating-system cache may be warm. No Neo4j, GDS, network, concurrency, or production throughput measurement.",
+  "queries": {
+    "farmer_recent_ledger": {
+      "returned_rows": 24,
+      "median_ms": 0.192,
+      "max_ms": 0.349,
+      "query_plan": [
+        "SEARCH ledger USING INDEX ledger_farmer_time (farmer_id=?)"
+      ]
+    },
+    "farmer_graph_neighborhood": {
+      "returned_rows": 100,
+      "median_ms": 0.421,
+      "max_ms": 0.73,
+      "query_plan": [
+        "SEARCH r USING INDEX relationships_source (source_id=?)",
+        "SEARCH e USING INDEX sqlite_autoindex_entities_1 (id=?)"
+      ]
+    },
+    "pending_order_queue": {
+      "returned_rows": 50,
+      "median_ms": 0.23,
+      "max_ms": 0.674,
+      "query_plan": ["SEARCH input_orders USING INDEX orders_status (status=?)"]
+    },
+    "farmer_loans": {
+      "returned_rows": 2,
+      "median_ms": 0.139,
+      "max_ms": 0.214,
+      "query_plan": ["SEARCH loans USING INDEX loans_farmer (farmer_id=?)"]
+    }
+  }
+}
