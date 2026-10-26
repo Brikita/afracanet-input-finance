@@ -176,7 +176,7 @@ function Brand({ light = false }: { light?: boolean }) {
         <Sprout size={24} />
       </span>
       <div>
-        AFRACANet<small>INPUT FINANCE</small>
+        AFRACANet AI<small>INPUT FINANCE</small>
       </div>
     </div>
   )
@@ -506,7 +506,7 @@ function App() {
             </div>
           </div>
           <footer>
-            AFRACANet Input Finance <span>Independent project · v0.1</span>
+            AFRACANet AI <span>Input finance module · v0.1</span>
           </footer>
         </section>
       </div>
@@ -1204,7 +1204,7 @@ function App() {
             </div>
           )}
           <footer className="page-footer">
-            <span>AFRACANet · Input Finance</span>
+            <span>AFRACANet AI · Input Finance</span>
             <span>
               Illustrative data · One lender, one dealer network · v0.1
             </span>
