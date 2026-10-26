@@ -20,6 +20,9 @@ preview/import flow. Automatic transfer from the AI portal is not implemented.
 The reviewed AI approval endpoint does not yet provide the amount, expiry, and
 authorization needed for that transfer. See the [unified platform brief](docs/PLATFORM.md)
 for the product narrative, module boundary, and concrete connection plan.
+For the current backlog and data-sourcing options, see the
+[26 October status and data report](docs/STATUS_AND_DATA_PLAN_2026-10-26.md)
+and the [public-context/labelled-replay pack](datasets/README.md).
 
 ## Current status
 
