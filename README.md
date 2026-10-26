@@ -1,16 +1,25 @@
-# AFRACANet Input Finance
+# AFRACANet AI — Input Finance
 
-**From approved agricultural credit to inputs in a farmer's hands.**
+**From credit intelligence to inputs in a farmer's hands.**
 
-An independent prototype for Kenyan agricultural input finance. Farmers request
+The input-finance and PayPal module of **AFRACANet AI**, a platform for Kenyan
+agricultural credit assessment, lender decisions, and input finance. Farmers request
 approved catalogue items, lenders approve and pay supplier invoices, and dealers
 record collection. Each transaction connects credit, inventory, payment, and
 fulfilment in one traceable record.
 
-This repository is separate from
-[afracanet-green-path](https://github.com/Brikita/afracanet-green-path).
-It starts with existing credit approvals and has no underwriting, Neo4j, or GDS
-dependency. All code here was created independently for this execution workflow.
+AFRACANet AI has two separately maintained modules:
+[credit intelligence](https://github.com/Brikita/afracanet-green-path) and
+[input finance](https://github.com/Brikita/afracanet-input-finance). They form
+one product story. This module starts with lender-approved credit and has no
+underwriting, Neo4j, or GDS runtime dependency. Its implementation was developed
+independently for the execution workflow.
+
+**Integration status:** lender approvals can be imported through the existing CSV
+preview/import flow. Automatic transfer from the AI portal is not implemented.
+The reviewed AI approval endpoint does not yet provide the amount, expiry, and
+authorization needed for that transfer. See the [unified platform brief](docs/PLATFORM.md)
+for the product narrative, module boundary, and concrete connection plan.
 
 ## Current status
 

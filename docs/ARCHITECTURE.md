@@ -15,8 +15,11 @@ flowchart LR
   WH --> API
 ```
 
-The independent codebase shares no runtime or credentials with the previous
-AFRACANet underwriting project.
+This is the input-finance module of AFRACANet AI. Its companion credit-intelligence
+module lives in afracanet-green-path. The services currently share no runtime or
+credentials. A lender-authorized approval is the handoff boundary; CSV import
+already supports a manual transfer. Automatic cross-service transfer remains to
+be implemented. See [the unified platform brief](PLATFORM.md).
 
 ## Workflow
 
@@ -109,8 +112,9 @@ delivery receipts, and production messaging remain future work.
 
 - PostgreSQL has an isolated CI test job; successful execution must be confirmed
   from the run before claiming verification. Hosted operations remain unvalidated.
-- SMS adapter supports local previews and provider sandbox only; live provider
-  verification, real handset delivery, SMS ordering, and USSD remain outstanding.
+- This module's SMS adapter supports local previews and provider sandbox only;
+  real handset delivery and SMS ordering remain outstanding. The AI module has
+  an application USSD flow, which is not yet connected to payment/collection status.
 - One illustrative lender/dealer; no merchant onboarding for multiple suppliers.
 - No automated reservation expiry or refund processing. Post-invoice cancellation
   is verified from PayPal records; ambiguous or partially paid states stay held.

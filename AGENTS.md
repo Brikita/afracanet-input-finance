@@ -1,12 +1,18 @@
-# AFRACANet Input Finance
+# AFRACANet AI — Input Finance Module
 
-Independent project for agricultural input finance. Do not copy underwriting,
-Neo4j, GDS, or credentials from afracanet-green-path.
+AFRACANet AI is presented as one platform covering credit intelligence and
+agricultural input finance. This repository implements the input-finance and
+PayPal execution module; afracanet-green-path implements credit intelligence.
+The repositories may remain separate modules of the same product.
+Do not duplicate underwriting or Neo4j/GDS internals here. Connect through an
+explicit, lender-authorized approval handoff. Never copy credentials between repos.
 
 ## Product boundary
 
 Start with externally approved credit. Coordinate the farmer request, lender
 approval, supplier invoice, verified payment, and recorded collection.
+An upstream AI recommendation is not a lender approval, a credit allocation,
+a payment, or permission to collect. Label manual and automated handoffs accurately.
 Do not represent simulated payment or deterministic parsing as PayPal or AI.
 Do not claim escrow, guaranteed delivery, eliminated default, or production readiness.
 

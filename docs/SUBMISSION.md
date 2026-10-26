@@ -2,17 +2,41 @@
 
 Status: **not submitted; external PayPal and AI verification remains outstanding.**
 
-## Project description draft
+## Unified project description draft
 
-AFRACANet Input Finance coordinates already-approved agricultural credit
-between farmers, lenders, and agro-dealers. Farmers request catalogue inputs,
-lenders approve and pay supplier invoices, and dealers record collection.
-Credit, inventory, payment, and collection are tracked in a shared transaction
-record with role-specific views.
+**AFRACANet AI — from credit intelligence to agricultural inputs.**
 
-The prototype is independent of the earlier AFRACANet credit-scoring project.
-Its focus is execution after approval. No graph database or underwriting model
-is required to run it.
+AFRACANet AI brings credit assessment and input finance into one platform for
+farmers, agricultural lenders, and agro-dealers. Its credit-intelligence module
+supports loan officers with alternative-data assessment. A lender-authorized
+allocation then enables the input-finance journey: the farmer requests catalogue
+items, the lender approves the order and pays the supplier's PayPal invoice,
+and the dealer records collection using the farmer's code.
+
+The new input-finance module adds credit and inventory reservations, supplier
+invoicing, verified payment reconciliation, collection controls, issue resolution,
+and bilingual request-assistance/SMS adapters. The intended combined experience
+connects the application, decision, payment, and handover through shared references.
+
+**Current evidence boundary:** these are two repositories within one product.
+The execution module has a tested local demonstration and a manual approval import.
+Automatic transfer from the AI portal, live provider verification, and a complete
+cross-module demonstration remain outstanding. The default payment/parser/SMS
+modes are simulations; describe the exact demonstrated mode in the final entry.
+
+## Existing work and new contributions
+
+The credit-intelligence codebase predates this PayPal expansion. Identify its
+existing contributors and capabilities separately from work added during the
+hackathon: the input-finance module, PayPal adapter/reconciliation, collection,
+issues, and the eventual cross-module handoff. Include both source locations and
+one clear setup route. Check the AI module's ownership and open-source licensing;
+the MIT license in this repository does not automatically license the other repo.
+
+The official rules allow significantly updated existing projects and require an
+explanation of updates made during the submission period; the organizers decide
+whether a change is significant. PayPal must be central to the project. See
+[Project Requirements, New & Existing](https://paypalaihackathon.devpost.com/rules).
 
 ## Claims to support before finalizing
 
@@ -25,16 +49,20 @@ is required to run it.
 
 ## Demonstration sequence (approximately 2:40)
 
-- 0:00–0:20: Introduce the gap between approved credit and collected inputs.
-- 0:20–0:50: Farmer request; AI clarifies the fertilizer bag size.
-- 0:50–1:15: Confirm order; show credit reservation and lender approval.
-- 1:15–1:55: Dealer invoice; lender pays in PayPal sandbox; payment reconciles.
-- 1:55–2:20: Farmer collection code; dealer records handover; shared timeline.
-- 2:20–2:40: Customer, pilot hypothesis, business model, partnership request.
+- 0:00–0:15: One farmer journey, from access to credit to inputs.
+- 0:15–0:40: AI assessment in the officer portal and explicit lender decision.
+- 0:40–0:55: Show the allocation reaching input finance, labelling any manual import.
+- 0:55–1:15: Farmer request and clarification; confirm quote and reserve credit/stock.
+- 1:15–1:55: Dealer invoice; lender pays in PayPal sandbox; reconcile actual payment.
+- 1:55–2:20: Farmer collection code; dealer handover; show linked records and an issue hold.
+- 2:20–2:40: Customer evidence, commercial hypothesis, pilot ask, and new PayPal contribution.
 
 ## Checklist
 
-- [x] Separate source repository and MIT license.
+- [x] Input-finance source repository and MIT license.
+- [ ] Prior-work/new-work disclosure and complete source licensing for both modules.
+- [ ] Lender-authorized approval handoff demonstrated across both modules.
+- [ ] One reproducible combined setup and shared-reference demonstration.
 - [x] Complete local setup instructions and runnable simulated workflow.
 - [x] Explicit distinction between demonstration and external integrations.
 - [ ] Real PayPal sandbox transaction recorded end-to-end.

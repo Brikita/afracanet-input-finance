@@ -1,4 +1,4 @@
-# AFRACANet Input Finance — execution plan
+# AFRACANet AI — input-finance execution plan
 
 Started: 13 October 2026. Internal submission target: **30 October 2026**.
 Official deadline: 12 November 2026, 23:00 Africa/Nairobi.
@@ -6,15 +6,17 @@ The internal target is a planning goal, not a scheduled automation or a guarante
 
 ## Product
 
-Help Kenyan agricultural lenders turn existing credit approvals into traceable
-input orders, supplier payments, and farmer collection records.
+Present one AFRACANet AI platform: credit intelligence and officer review in
+afracanet-green-path, followed by traceable input orders, supplier payments, and
+collection in this module. See [the unified platform brief](PLATFORM.md).
 
 Initial customer hypothesis: one agricultural SACCO. Users: farmers, lender
 staff, and verified agro-dealers. Initial catalogue: a few seed and fertilizer
 products. Choose the county and crop through access to a willing pilot partner.
 
-Credit scoring, underwriting, loan origination, interest calculations, and
-repayment servicing remain with the lender. The platform coordinates execution.
+The AI module supports credit assessment; the lender owns the credit decision,
+terms, and repayment servicing. This module coordinates execution after approval.
+Do not treat an AI recommendation as an authorized allocation or completed payment.
 
 ## Delivery gates
 
@@ -51,6 +53,10 @@ Their existence in the code does not mean those integrations have been demonstra
 
 ## Remaining before submission
 
+- Connect the two modules through a lender-authorized allocation with a shared
+  farmer mapping and reference; existing CSV import is the manual starting point.
+- Update upstream approval SMS so it does not invite collection before payment.
+- Explain prior AI work versus the new PayPal expansion in the combined submission.
 - Configure supplier-owned PayPal sandbox app and lender sandbox buyer account.
 - Confirm real invoice request payload, payer experience, payment records, and webhook.
 - Configure Gemini and evaluate English, Swahili, code-switching, and ambiguity.
