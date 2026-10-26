@@ -1,16 +1,7 @@
 import { useState } from 'react'
 import { CircleHelp, CheckCircle2 } from 'lucide-react'
 
-export type Issue = {
-  id: number
-  category: string
-  detail: string
-  reported_by: string
-  created_at: string
-  resolved_at: string | null
-  resolved_by: string | null
-  resolution: string | null
-}
+import type { Issue } from '../../domain/models'
 
 export function Issues({
   orderId,

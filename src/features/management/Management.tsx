@@ -1,3 +1,5 @@
+import type { Product } from '../../domain/models'
+import { money } from '../../lib/format'
 import { useState } from 'react'
 import { ArrowDownToLine, CheckCircle2, Plus, X } from 'lucide-react'
 
@@ -18,21 +20,6 @@ type Preview = {
   }[]
   message: string
 }
-type Product = {
-  id: string
-  name: string
-  category: string
-  unit: string
-  price_cents: number
-  stock: number
-  reserved: number
-  revision: string
-}
-const money = (cents: number) =>
-  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-    cents / 100,
-  )
-
 export function ApprovalImport({ request, onSaved }: Props) {
   const [csv, setCsv] = useState('')
   const [preview, setPreview] = useState<Preview | null>(null)
