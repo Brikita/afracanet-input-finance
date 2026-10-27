@@ -1,8 +1,28 @@
 # Redesign and restructuring: first implementation slice
 
-26 October 2026. The product brief was confirmed with “let's start”. The visual
-direction selection remains open. This is a progress record, not a claim that
-the whole redesign or cross-module integration is finished.
+26 October 2026. The product brief was confirmed with “let's start”. This records
+the first implementation slice. See the 27 October update below for the selected
+visual direction; cross-module integration remains unfinished.
+
+## 27 October update
+
+The user selected **Waterline** after requesting color, useful icons, and
+visualizations. Its working React implementation replaces the previous shell
+and lender overview, with shared styling across farmer, dealer, management,
+issues, and notification screens. Figures come from scoped application records.
+The queue supports search, status filtering, case selection, and existing
+transaction actions. Mobile selection transfers keyboard focus to the case;
+dialogs trap focus and restore it on close.
+
+The production build passes. Browser verification covers five journeys. A fresh
+Impeccable reviewer requested the narrow-screen focus correction and returned
+`ship` after verification. Taste inspection reports no failures and two warnings
+about small metadata and colored header area. See [the review](WATERLINE_REVIEW.md).
+
+Remaining work includes the secure lender-authorized cross-module handoff,
+further workspace/API extraction, isolated graph/PostgreSQL loading, explicit
+runtime data modes, and broader scenario coverage. Marketing-page design and
+motion are deferred until core features are complete, as requested.
 
 ## Completed structure work
 
@@ -16,7 +36,7 @@ the whole redesign or cross-module integration is finished.
 - The larger application composition and API route files remain further
   extraction work. Their remaining size is visible rather than hidden by wrappers.
 
-## Design work
+## Initial design exploration (superseded by the update above)
 
 Taste's app draw produced **Achromatic ledger**, seed **1190266030**, with the
 existing type/palette retained as input and the brand green mapped to the data
@@ -40,10 +60,11 @@ brought the primary action into the first viewport and made the evidence-atlas
 preview visibly different. They use synthetic examples and disclose unavailable
 upstream evidence. Preview files and screenshots are local development artifacts.
 
-The selected composition still needs to be built as working responsive React
-screens and reviewed at all target sizes. No final Taste score, detector pass,
-or Impeccable finish-review verdict is claimed. Marketing-page art direction,
-motion, and complete farmer/dealer screen redesigns remain outstanding.
+At this initial checkpoint the composition had not yet been built as working
+React screens, so no final Taste score, detector pass, or Impeccable finish-review
+verdict was claimed. The 27 October update records the subsequent implementation
+and review. Marketing-page art direction, motion, and deeper farmer/dealer flow
+refinement remain outstanding.
 
 ## Generated data
 
@@ -83,12 +104,12 @@ concurrency, deployed performance, or predictive accuracy.
 
 ## Checks and next slices
 
-The current local verification is 95 backend/data tests, a production frontend
-build, and four browser journeys. Corruption tests exercise broken references,
+The initial local verification was 95 backend/data tests, a production frontend
+build, and four browser journeys (now five). Corruption tests exercise broken references,
 future events, crossed tenant ownership, and mismatched financial totals.
 
-Next: select the visual composition; implement and review the lender case flow;
-extract the remaining workspace screens and API routers; connect a secure
+Next after the completed Waterline case-flow slice: extract the remaining
+workspace screens and API routers; connect a secure
 lender-authorized handoff; map the generated world into isolated graph/PostgreSQL
 stores; replace runtime demo fallbacks with explicit data modes; extend scenario
 coverage. The generated pack has not been loaded into either running app or an

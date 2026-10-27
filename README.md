@@ -27,7 +27,10 @@ and the [public-context/labelled-replay pack](datasets/README.md).
 The [redesign and restructuring brief](docs/REDESIGN_AND_RESTRUCTURE.md) tracks
 the new UX work. Frontend domain/transport/feature modules and backend
 validation/authentication/transaction helpers now have explicit boundaries;
-the visual replacement is awaiting direction selection. See [frontend layout](src/README.md)
+the selected Waterline direction is implemented in the working input-finance
+workspace. It includes a scoped credit breakdown, searchable request queue,
+selected-case actions, and responsive role screens. See the
+[Waterline review](docs/WATERLINE_REVIEW.md), [frontend layout](src/README.md),
 and [backend layout](backend/README.md).
 
 For larger isolated graph and relational scenarios, use the
