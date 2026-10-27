@@ -1,3 +1,9 @@
+export type Requester = <T>(
+  path: string,
+  body?: unknown,
+  method?: string,
+) => Promise<T>
+
 export async function api<T>(
   path: string,
   token?: string,

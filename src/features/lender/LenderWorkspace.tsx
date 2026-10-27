@@ -16,6 +16,7 @@ import { money } from '../../lib/format'
 import { Status } from '../../components/Status'
 import { CreditAllocation } from './CreditAllocation'
 import { labels } from '../../domain/orderStatus'
+import { allocationActive, availableCredit } from '../../domain/credit'
 
 type Props = {
   state: State
@@ -106,11 +107,7 @@ export function LenderWorkspace({
   const farmer = current && farmers.get(current.farmer_id)
   const held = current?.issues.some((issue) => !issue.resolved_at)
   const available = state.farmers.reduce(
-    (sum, farmer) =>
-      sum +
-      (farmer.limit_cents ?? 0) -
-      (farmer.reserved_cents ?? 0) -
-      (farmer.spent_cents ?? 0),
+    (sum, farmer) => sum + availableCredit(farmer),
     0,
   )
   const reserved = state.farmers.reduce(
@@ -363,14 +360,8 @@ export function LenderWorkspace({
                     <dd>{money(farmer.limit_cents ?? 0)}</dd>
                   </div>
                   <div>
-                    <dt>Unreserved allocation</dt>
-                    <dd>
-                      {money(
-                        (farmer.limit_cents ?? 0) -
-                          (farmer.reserved_cents ?? 0) -
-                          (farmer.spent_cents ?? 0),
-                      )}
-                    </dd>
+                    <dt>Available allocation</dt>
+                    <dd>{money(availableCredit(farmer))}</dd>
                   </div>
                 </dl>
               )}
@@ -399,6 +390,21 @@ export function LenderWorkspace({
                   Review order issue
                   <ArrowRight size={16} />
                 </button>
+              ) : current.status === 'REQUESTED' &&
+                farmer &&
+                !allocationActive(farmer) ? (
+                <>
+                  <p className="action-note">
+                    Allocation expired or revoked. Record a new lender decision
+                    before approval or invoicing.
+                  </p>
+                  <button
+                    className="button secondary full"
+                    onClick={onAllocations}
+                  >
+                    Review credit allocation
+                  </button>
+                </>
               ) : current.status === 'REQUESTED' ? (
                 <>
                   <button

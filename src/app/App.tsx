@@ -33,12 +33,14 @@ import { Notifications } from '../features/notifications/Notifications'
 import type { Session, Line, Order, State, Event } from '../domain/models'
 import { api } from '../lib/api'
 import { money } from '../lib/format'
+import { allocationActive, availableCredit } from '../domain/credit'
 import { labels } from '../domain/orderStatus'
 import { Brand } from '../components/Brand'
 import { Status } from '../components/Status'
 import { Stat } from '../components/Stat'
 import { LenderWorkspace } from '../features/lender/LenderWorkspace'
 import { Dialog } from '../components/Dialog'
+import { ApprovalHandoff } from '../features/approvals/ApprovalHandoff'
 
 const participants = [
   {
@@ -394,11 +396,7 @@ export function App() {
 
   const role = session.role
   const available = state.farmers.reduce(
-    (sum, f) =>
-      sum +
-      (f.limit_cents ?? 0) -
-      (f.reserved_cents ?? 0) -
-      (f.spent_cents ?? 0),
+    (sum, f) => sum + availableCredit(f),
     0,
   )
   const funded = state.orders.filter((o) =>
@@ -739,6 +737,12 @@ export function App() {
                   <span>Available credit</span>
                   <b>{money(available)}</b>
                 </div>
+                {state.farmers[0] && !allocationActive(state.farmers[0]) && (
+                  <p className="limit-warning">
+                    Your allocation has expired or been revoked. Contact your
+                    lender to renew it.
+                  </p>
+                )}
                 {cartTotal > available && (
                   <p className="inline-error">
                     This order exceeds your available credit. Reduce the
@@ -907,16 +911,27 @@ export function App() {
                 </div>
               </div>
               {role === 'lender' ? (
-                <ApprovalImport
-                  key={session.token}
-                  request={(path, body, method) =>
-                    api(path, session.token, body, method)
-                  }
-                  onSaved={async () => {
-                    await refresh()
-                    await refreshChoices()
-                  }}
-                />
+                <>
+                  <ApprovalHandoff
+                    key={'handoff-' + session.token}
+                    farmers={state.farmers}
+                    lenderId={state.user.subject}
+                    request={(path, body, method) =>
+                      api(path, session.token, body, method)
+                    }
+                    onSaved={refresh}
+                  />
+                  <ApprovalImport
+                    key={session.token}
+                    request={(path, body, method) =>
+                      api(path, session.token, body, method)
+                    }
+                    onSaved={async () => {
+                      await refresh()
+                      await refreshChoices()
+                    }}
+                  />
+                </>
               ) : (
                 <CatalogueEditor
                   key={session.token}
@@ -928,7 +943,7 @@ export function App() {
                 />
               )}
               <div className="table-scroll">
-                <table>
+                <table className="management-table">
                   {role === 'lender' ? (
                     <>
                       <thead>
@@ -961,13 +976,7 @@ export function App() {
                             <td>{money(f.reserved_cents ?? 0)}</td>
                             <td>{money(f.spent_cents ?? 0)}</td>
                             <td>
-                              <strong>
-                                {money(
-                                  (f.limit_cents ?? 0) -
-                                    (f.reserved_cents ?? 0) -
-                                    (f.spent_cents ?? 0),
-                                )}
-                              </strong>
+                              <strong>{money(availableCredit(f))}</strong>
                             </td>
                           </tr>
                         ))}

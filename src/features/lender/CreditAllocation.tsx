@@ -1,5 +1,6 @@
 import type { Farmer } from '../../domain/models'
 import { money } from '../../lib/format'
+import { availableCredit } from '../../domain/credit'
 
 export function CreditAllocation({ farmers }: { farmers: Farmer[] }) {
   const total = farmers.reduce(
@@ -14,14 +15,28 @@ export function CreditAllocation({ farmers }: { farmers: Farmer[] }) {
     (sum, farmer) => sum + (farmer.spent_cents ?? 0),
     0,
   )
+  const available = farmers.reduce(
+    (sum, farmer) => sum + availableCredit(farmer),
+    0,
+  )
+  const unavailable = total - reserved - paid - available
   const parts = [
     {
       label: 'Available',
-      value: total - reserved - paid,
+      value: available,
       className: 'credit-available',
     },
     { label: 'Reserved', value: reserved, className: 'credit-reserved' },
     { label: 'Paid to suppliers', value: paid, className: 'credit-paid' },
+    ...(unavailable > 0
+      ? [
+          {
+            label: 'Unavailable unused credit',
+            value: unavailable,
+            className: 'credit-unavailable',
+          },
+        ]
+      : []),
   ]
 
   return (
@@ -59,6 +74,12 @@ export function CreditAllocation({ farmers }: { farmers: Farmer[] }) {
           </div>
         ))}
       </dl>
+      {unavailable > 0 && (
+        <p className="fine-print">
+          Expired or revoked unused credit is unavailable. Existing reservations
+          and payments remain shown.
+        </p>
+      )}
       {!total && (
         <p className="muted">
           Import a lender-approved allocation to get started.

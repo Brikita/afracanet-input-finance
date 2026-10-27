@@ -2,12 +2,8 @@ import type { Product } from '../../domain/models'
 import { money } from '../../lib/format'
 import { useState } from 'react'
 import { ArrowDownToLine, CheckCircle2, Plus, X } from 'lucide-react'
+import type { Requester } from '../../lib/api'
 
-type Requester = <T>(
-  path: string,
-  body?: unknown,
-  method?: string,
-) => Promise<T>
 type Props = { request: Requester; onSaved: () => Promise<void> }
 type Preview = {
   rows: {
@@ -118,7 +114,8 @@ export function ApprovalImport({ request, onSaved }: Props) {
         USD whole cents: 15000 means $150.00. Use a future expiry with a
         timezone, e.g. 2027-01-31T23:59:59+03:00. Existing reservations and
         payments are preserved. Imported farmers become available in the demo
-        participant switcher.
+        participant switcher. Allocations linked to a reviewed source decision
+        must be updated through the decision handoff above.
       </p>
       {error && (
         <div role="alert" className="alert error">

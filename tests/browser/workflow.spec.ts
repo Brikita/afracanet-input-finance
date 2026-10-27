@@ -1,5 +1,150 @@
 import { test, expect } from '@playwright/test'
 
+test('lender reviews a mapped decision, explicitly authorizes it, and records revocation', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/')
+  await page.getByRole('button', { name: 'Open workspace' }).click()
+  await page
+    .getByRole('button', { name: 'Credit allocations', exact: true })
+    .click()
+  const expiry = new Date(Date.now() + 60 * 86400000)
+  const approved = new Date(Date.now() - 10 * 60000)
+  const localDate = (value: Date) => {
+    const shifted = new Date(
+      value.getTime() - value.getTimezoneOffset() * 60000,
+    )
+    return shifted.toISOString().slice(0, 16)
+  }
+  await page
+    .getByLabel('Or paste approval CSV')
+    .fill(
+      `farmer_id,name,location,limit_cents,expires_at,approval_reference\nfarmer-handoff,Rehema Demo,Nakuru,4000,${expiry.toISOString()},PROFILE-HANDOFF`,
+    )
+  await page
+    .getByRole('button', { name: 'Preview approvals', exact: true })
+    .click()
+  await page
+    .getByRole('button', { name: 'Import 1 approval', exact: true })
+    .click()
+  await expect(page.getByText('1 approval(s) imported.')).toBeVisible()
+  await page
+    .getByLabel('Source farmer reference', { exact: true })
+    .fill('F-UI-HANDOFF')
+  await page
+    .getByLabel('Farmer in input finance')
+    .selectOption('farmer-handoff')
+  await page.getByRole('button', { name: 'Confirm farmer mapping' }).click()
+  await expect(
+    page.getByText('Farmer mapping confirmed.', { exact: false }),
+  ).toBeVisible()
+  await page
+    .getByRole('combobox', { name: 'Linked farmer', exact: true })
+    .selectOption({ label: 'Rehema Demo · F-UI-HANDOFF' })
+  await page
+    .getByLabel('Source application reference', { exact: true })
+    .fill('APP-UI-HANDOFF')
+  await page
+    .getByLabel('Lender decision reference', { exact: true })
+    .fill('DECISION-UI-HANDOFF')
+  await page.getByLabel('Officer recorded on decision').fill('officer-ui')
+  await page.getByLabel('Total allocation (USD)', { exact: true }).fill('90.00')
+  await page
+    .getByLabel('Decision made', { exact: true })
+    .fill(localDate(approved))
+  await page
+    .getByLabel('Allocation expiry', { exact: true })
+    .fill(localDate(expiry))
+  await page
+    .getByRole('combobox', { name: 'Assessment data provenance', exact: true })
+    .selectOption('synthetic')
+  await page
+    .getByRole('button', { name: 'Preview lender decision', exact: true })
+    .click()
+  const preview = page.getByLabel('Lender decision preview', { exact: true })
+  await expect(preview.getByText('$90.00 USD', { exact: true })).toBeVisible()
+  await expect(
+    page.getByRole('button', { name: 'Authorize reviewed allocation' }),
+  ).toBeDisabled()
+  await page.screenshot({
+    path: '.impeccable/review/handoff-desktop.png',
+    fullPage: true,
+  })
+  for (const width of [768, 390]) {
+    await page.setViewportSize({ width, height: 900 })
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true)
+    await page.screenshot({
+      path: `.impeccable/review/handoff-${width}.png`,
+      fullPage: true,
+    })
+  }
+  await preview.screenshot({
+    path: '.impeccable/review/handoff-preview-mobile.png',
+  })
+  await page
+    .getByLabel(
+      'I have reviewed this lender decision and authorize this allocation.',
+    )
+    .check()
+  await page
+    .getByRole('button', { name: 'Authorize reviewed allocation' })
+    .click()
+  await expect(
+    page.getByText('Lender-reviewed decision recorded.', { exact: false }),
+  ).toBeVisible()
+  const record = page
+    .locator('.handoff-history-record')
+    .filter({ hasText: 'DECISION-UI-HANDOFF' })
+  await record.locator('summary').click()
+  await expect(
+    record.getByText('APP-UI-HANDOFF', { exact: true }),
+  ).toBeVisible()
+  await expect(
+    record.getByText('Current allocation', { exact: true }),
+  ).toBeVisible()
+  await page.screenshot({
+    path: '.impeccable/review/handoff-record-mobile.png',
+    fullPage: true,
+  })
+  await record
+    .getByRole('button', { name: 'Review revocation for DECISION-UI-HANDOFF' })
+    .click()
+  await record
+    .getByLabel('Reason for revoking DECISION-UI-HANDOFF')
+    .fill('Lender requires an updated decision.')
+  await record
+    .getByRole('button', { name: 'Revoke DECISION-UI-HANDOFF', exact: true })
+    .click()
+  await expect(record.getByText('Revoked', { exact: true })).toBeVisible()
+  await record.screenshot({
+    path: '.impeccable/review/handoff-revoked-mobile.png',
+  })
+  await page
+    .getByText('Import a prepared decision file instead', { exact: true })
+    .click()
+  await page.getByLabel('Or paste lender decision JSON').fill('{broken')
+  await page
+    .getByRole('button', { name: 'Preview decision file', exact: true })
+    .click()
+  await expect(
+    page.getByText('The decision file must contain valid JSON.'),
+  ).toBeVisible()
+  await page.getByLabel('View as').selectOption('farmer-handoff')
+  await expect(
+    page.getByText(
+      'Your allocation has expired or been revoked. Contact your lender to renew it.',
+    ),
+  ).toBeVisible()
+  await expect(
+    page.getByRole('button', { name: 'Confirm input request' }),
+  ).toBeDisabled()
+})
+
 test('farmer, lender, and dealer complete a traceable order', async ({
   page,
 }) => {
