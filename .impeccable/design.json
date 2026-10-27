@@ -1,0 +1,481 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-27T03:09:13.660834+00:00",
+  "title": "Design System: AFRACANet AI — Waterline",
+  "extensions": {
+    "colorMeta": {
+      "ground": {
+        "role": "neutral",
+        "displayName": "Pale Water",
+        "canonical": "#eaf1f3",
+        "tonalRamp": [
+          "oklch(15.0% 0.0041 216.62)",
+          "oklch(26.0% 0.0059 216.62)",
+          "oklch(38.0% 0.0073 216.62)",
+          "oklch(49.0% 0.0079 216.62)",
+          "oklch(61.0% 0.0077 216.62)",
+          "oklch(72.0% 0.0068 216.62)",
+          "oklch(84.0% 0.0051 216.62)",
+          "oklch(95.0% 0.0032 216.62)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Working White",
+        "canonical": "#fff",
+        "tonalRamp": [
+          "oklch(15.0% 0.0000 0.00)",
+          "oklch(26.0% 0.0000 0.00)",
+          "oklch(38.0% 0.0000 0.00)",
+          "oklch(49.0% 0.0000 0.00)",
+          "oklch(61.0% 0.0000 0.00)",
+          "oklch(72.0% 0.0000 0.00)",
+          "oklch(84.0% 0.0000 0.00)",
+          "oklch(95.0% 0.0000 0.00)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Deep Ink",
+        "canonical": "#17343c",
+        "tonalRamp": [
+          "oklch(15.0% 0.0193 218.04)",
+          "oklch(26.0% 0.0278 218.04)",
+          "oklch(38.0% 0.0345 218.04)",
+          "oklch(49.0% 0.0374 218.04)",
+          "oklch(61.0% 0.0365 218.04)",
+          "oklch(72.0% 0.0321 218.04)",
+          "oklch(84.0% 0.0242 218.04)",
+          "oklch(95.0% 0.0150 218.04)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Slate Teal",
+        "canonical": "#526a72",
+        "tonalRamp": [
+          "oklch(15.0% 0.0160 220.21)",
+          "oklch(26.0% 0.0231 220.21)",
+          "oklch(38.0% 0.0286 220.21)",
+          "oklch(49.0% 0.0310 220.21)",
+          "oklch(61.0% 0.0302 220.21)",
+          "oklch(72.0% 0.0266 220.21)",
+          "oklch(84.0% 0.0200 220.21)",
+          "oklch(95.0% 0.0124 220.21)"
+        ]
+      },
+      "teal": {
+        "role": "primary",
+        "displayName": "Waterline Teal",
+        "canonical": "#17627a",
+        "tonalRamp": [
+          "oklch(15.0% 0.0407 224.54)",
+          "oklch(26.0% 0.0587 224.54)",
+          "oklch(38.0% 0.0728 224.54)",
+          "oklch(49.0% 0.0788 224.54)",
+          "oklch(61.0% 0.0770 224.54)",
+          "oklch(72.0% 0.0678 224.54)",
+          "oklch(84.0% 0.0510 224.54)",
+          "oklch(95.0% 0.0316 224.54)"
+        ]
+      },
+      "teal-dark": {
+        "role": "primary",
+        "displayName": "Deep Channel",
+        "canonical": "#123f4c",
+        "tonalRamp": [
+          "oklch(15.0% 0.0271 220.76)",
+          "oklch(26.0% 0.0391 220.76)",
+          "oklch(38.0% 0.0485 220.76)",
+          "oklch(49.0% 0.0525 220.76)",
+          "oklch(61.0% 0.0512 220.76)",
+          "oklch(72.0% 0.0451 220.76)",
+          "oklch(84.0% 0.0339 220.76)",
+          "oklch(95.0% 0.0210 220.76)"
+        ]
+      },
+      "teal-hover": {
+        "role": "primary",
+        "displayName": "Deep Action Teal",
+        "canonical": "#104e62",
+        "tonalRamp": [
+          "oklch(15.0% 0.0350 224.82)",
+          "oklch(26.0% 0.0504 224.82)",
+          "oklch(38.0% 0.0625 224.82)",
+          "oklch(49.0% 0.0677 224.82)",
+          "oklch(61.0% 0.0661 224.82)",
+          "oklch(72.0% 0.0582 224.82)",
+          "oklch(84.0% 0.0438 224.82)",
+          "oklch(95.0% 0.0271 224.82)"
+        ]
+      },
+      "soft": {
+        "role": "neutral",
+        "displayName": "Mist",
+        "canonical": "#e9f3f5",
+        "tonalRamp": [
+          "oklch(15.0% 0.0056 211.04)",
+          "oklch(26.0% 0.0081 211.04)",
+          "oklch(38.0% 0.0101 211.04)",
+          "oklch(49.0% 0.0109 211.04)",
+          "oklch(61.0% 0.0107 211.04)",
+          "oklch(72.0% 0.0094 211.04)",
+          "oklch(84.0% 0.0071 211.04)",
+          "oklch(95.0% 0.0044 211.04)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Fine Divider",
+        "canonical": "#d5e1e5",
+        "tonalRamp": [
+          "oklch(15.0% 0.0072 219.63)",
+          "oklch(26.0% 0.0104 219.63)",
+          "oklch(38.0% 0.0129 219.63)",
+          "oklch(49.0% 0.0140 219.63)",
+          "oklch(61.0% 0.0136 219.63)",
+          "oklch(72.0% 0.0120 219.63)",
+          "oklch(84.0% 0.0090 219.63)",
+          "oklch(95.0% 0.0056 219.63)"
+        ]
+      },
+      "control": {
+        "role": "neutral",
+        "displayName": "Control Edge",
+        "canonical": "#afc2c9",
+        "tonalRamp": [
+          "oklch(15.0% 0.0118 221.88)",
+          "oklch(26.0% 0.0171 221.88)",
+          "oklch(38.0% 0.0212 221.88)",
+          "oklch(49.0% 0.0229 221.88)",
+          "oklch(61.0% 0.0224 221.88)",
+          "oklch(72.0% 0.0197 221.88)",
+          "oklch(84.0% 0.0148 221.88)",
+          "oklch(95.0% 0.0092 221.88)"
+        ]
+      },
+      "reserved": {
+        "role": "secondary",
+        "displayName": "Reservation Blue",
+        "canonical": "#4c86b7",
+        "tonalRamp": [
+          "oklch(15.0% 0.0497 245.83)",
+          "oklch(26.0% 0.0717 245.83)",
+          "oklch(38.0% 0.0889 245.83)",
+          "oklch(49.0% 0.0963 245.83)",
+          "oklch(61.0% 0.0941 245.83)",
+          "oklch(72.0% 0.0828 245.83)",
+          "oklch(84.0% 0.0623 245.83)",
+          "oklch(95.0% 0.0386 245.83)"
+        ]
+      },
+      "paid": {
+        "role": "secondary",
+        "displayName": "Leaf Green",
+        "canonical": "#6e9544",
+        "tonalRamp": [
+          "oklch(15.0% 0.0609 130.50)",
+          "oklch(26.0% 0.0878 130.50)",
+          "oklch(38.0% 0.1089 130.50)",
+          "oklch(49.0% 0.1180 130.50)",
+          "oklch(61.0% 0.1152 130.50)",
+          "oklch(72.0% 0.1014 130.50)",
+          "oklch(84.0% 0.0763 130.50)",
+          "oklch(95.0% 0.0472 130.50)"
+        ]
+      },
+      "attention-bg": {
+        "role": "secondary",
+        "displayName": "Attention Amber Fill",
+        "canonical": "#fff3d9",
+        "tonalRamp": [
+          "oklch(15.0% 0.0187 86.17)",
+          "oklch(26.0% 0.0270 86.17)",
+          "oklch(38.0% 0.0334 86.17)",
+          "oklch(49.0% 0.0362 86.17)",
+          "oklch(61.0% 0.0354 86.17)",
+          "oklch(72.0% 0.0311 86.17)",
+          "oklch(84.0% 0.0234 86.17)",
+          "oklch(95.0% 0.0145 86.17)"
+        ]
+      },
+      "attention-ink": {
+        "role": "secondary",
+        "displayName": "Attention Amber Ink",
+        "canonical": "#73500e",
+        "tonalRamp": [
+          "oklch(15.0% 0.0460 77.35)",
+          "oklch(26.0% 0.0664 77.35)",
+          "oklch(38.0% 0.0823 77.35)",
+          "oklch(49.0% 0.0892 77.35)",
+          "oklch(61.0% 0.0871 77.35)",
+          "oklch(72.0% 0.0767 77.35)",
+          "oklch(84.0% 0.0577 77.35)",
+          "oklch(95.0% 0.0357 77.35)"
+        ]
+      },
+      "danger-bg": {
+        "role": "secondary",
+        "displayName": "Review Clay Fill",
+        "canonical": "#fff0ed",
+        "tonalRamp": [
+          "oklch(15.0% 0.0086 31.08)",
+          "oklch(26.0% 0.0124 31.08)",
+          "oklch(38.0% 0.0154 31.08)",
+          "oklch(49.0% 0.0167 31.08)",
+          "oklch(61.0% 0.0163 31.08)",
+          "oklch(72.0% 0.0144 31.08)",
+          "oklch(84.0% 0.0108 31.08)",
+          "oklch(95.0% 0.0067 31.08)"
+        ]
+      },
+      "danger-ink": {
+        "role": "secondary",
+        "displayName": "Review Clay Ink",
+        "canonical": "#8d3826",
+        "tonalRamp": [
+          "oklch(15.0% 0.0616 33.59)",
+          "oklch(26.0% 0.0889 33.59)",
+          "oklch(38.0% 0.1102 33.59)",
+          "oklch(49.0% 0.1194 33.59)",
+          "oklch(61.0% 0.1166 33.59)",
+          "oklch(72.0% 0.1026 33.59)",
+          "oklch(84.0% 0.0772 33.59)",
+          "oklch(95.0% 0.0478 33.59)"
+        ]
+      },
+      "success-bg": {
+        "role": "secondary",
+        "displayName": "Completion Green Fill",
+        "canonical": "#edf5e7",
+        "tonalRamp": [
+          "oklch(15.0% 0.0104 131.45)",
+          "oklch(26.0% 0.0151 131.45)",
+          "oklch(38.0% 0.0187 131.45)",
+          "oklch(49.0% 0.0202 131.45)",
+          "oklch(61.0% 0.0198 131.45)",
+          "oklch(72.0% 0.0174 131.45)",
+          "oklch(84.0% 0.0131 131.45)",
+          "oklch(95.0% 0.0081 131.45)"
+        ]
+      },
+      "success-ink": {
+        "role": "secondary",
+        "displayName": "Completion Green Ink",
+        "canonical": "#375b22",
+        "tonalRamp": [
+          "oklch(15.0% 0.0487 135.55)",
+          "oklch(26.0% 0.0702 135.55)",
+          "oklch(38.0% 0.0871 135.55)",
+          "oklch(49.0% 0.0943 135.55)",
+          "oklch(61.0% 0.0921 135.55)",
+          "oklch(72.0% 0.0811 135.55)",
+          "oklch(84.0% 0.0610 135.55)",
+          "oklch(95.0% 0.0378 135.55)"
+        ]
+      },
+      "nav-muted": {
+        "role": "neutral",
+        "displayName": "Header Mist",
+        "canonical": "#c4dce3",
+        "tonalRamp": [
+          "oklch(15.0% 0.0141 217.17)",
+          "oklch(26.0% 0.0203 217.17)",
+          "oklch(38.0% 0.0252 217.17)",
+          "oklch(49.0% 0.0272 217.17)",
+          "oklch(61.0% 0.0266 217.17)",
+          "oklch(72.0% 0.0234 217.17)",
+          "oklch(84.0% 0.0176 217.17)",
+          "oklch(95.0% 0.0109 217.17)"
+        ]
+      },
+      "nav-active": {
+        "role": "secondary",
+        "displayName": "Header Leaf",
+        "canonical": "#d5ecac",
+        "tonalRamp": [
+          "oklch(15.0% 0.0448 124.16)",
+          "oklch(26.0% 0.0646 124.16)",
+          "oklch(38.0% 0.0801 124.16)",
+          "oklch(49.0% 0.0867 124.16)",
+          "oklch(61.0% 0.0847 124.16)",
+          "oklch(72.0% 0.0745 124.16)",
+          "oklch(84.0% 0.0561 124.16)",
+          "oklch(95.0% 0.0347 124.16)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Sign-in Display",
+        "purpose": "Responsive sign-in story headline."
+      },
+      "headline": {
+        "displayName": "Page Headline",
+        "purpose": "Workspace page titles; smaller on phones."
+      },
+      "title": {
+        "displayName": "Panel Title",
+        "purpose": "Working panel and selected-record headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Default text and form fields."
+      },
+      "label": {
+        "displayName": "Control Label",
+        "purpose": "Field labels and primary/secondary buttons."
+      },
+      "metric": {
+        "displayName": "Financial Metric",
+        "purpose": "Plain summary amounts with tabular numerals."
+      }
+    },
+    "shadows": [
+      {
+        "name": "drawer-edge",
+        "value": "-8px 0 35px #0c273b14",
+        "purpose": "The modal transaction drawer; ordinary panels stay flat."
+      }
+    ],
+    "motion": [
+      {
+        "name": "control-feedback",
+        "value": "background-color 0.15s, transform 0.15s",
+        "purpose": "Button hover and pressed feedback; disabled under reduced motion."
+      },
+      {
+        "name": "selection-scroll",
+        "value": "smooth",
+        "purpose": "Case selection at widths up to 960px; instant under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide-header",
+        "value": "1600px"
+      },
+      {
+        "name": "wrapped-navigation",
+        "value": "1180px"
+      },
+      {
+        "name": "stacked-workspace",
+        "value": "960px"
+      },
+      {
+        "name": "phone",
+        "value": "650px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "An enabled action; show only when the record and role permit it.",
+      "html": "<button class=\"ds-primary\" type=\"button\">Approve input order</button>",
+      "css": ".ds-primary{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1px solid transparent;border-radius:7px;padding:10px 15px;min-height:42px;cursor:pointer;text-decoration:none;transition:background-color .15s,transform .15s;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;line-height:1.5;background:var(--teal,#17627a);color:#fff;border-color:var(--teal,#17627a);}.ds-primary:hover:not(:disabled){background:var(--teal-hover,#104e62);}.ds-primary:focus-visible{outline:2px solid var(--teal,#17627a);outline-offset:3px;}.ds-primary:active:not(:disabled){transform:translateY(1px);}.ds-primary:disabled{opacity:.55;cursor:not-allowed;}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none;}}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "An enabled action; show only when the record and role permit it.",
+      "html": "<button class=\"ds-secondary\" type=\"button\">Review transaction</button>",
+      "css": ".ds-secondary{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1px solid transparent;border-radius:7px;padding:10px 15px;min-height:42px;cursor:pointer;text-decoration:none;transition:background-color .15s,transform .15s;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;line-height:1.5;background:var(--surface,#fff);color:var(--ink,#17343c);border-color:var(--control,#afc2c9);}.ds-secondary:hover:not(:disabled){background:var(--soft,#e9f3f5);}.ds-secondary:focus-visible{outline:2px solid var(--teal,#17627a);outline-offset:3px;}.ds-secondary:active:not(:disabled){transform:translateY(1px);}.ds-secondary:disabled{opacity:.55;cursor:not-allowed;}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none;}}"
+    },
+    {
+      "name": "Text Action",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "Compact access to a record or related task.",
+      "html": "<button class=\"ds-text\" type=\"button\">View transaction <svg aria-hidden=\"true\" width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14m-6-6 6 6-6 6\"/></svg></button>",
+      "css": ".ds-text{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:34px;padding:3px;color:var(--teal,#17627a);background:none;border:0;cursor:pointer;font:400 12px/1.5 \"DM Sans\",sans-serif;white-space:nowrap;}.ds-text:hover{text-decoration:underline;}.ds-text:focus-visible{outline:2px solid var(--teal,#17627a);outline-offset:3px;}@media(max-width:650px){.ds-text{min-height:44px;}}"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "A labelled field with the shared border, caret, and focus treatment.",
+      "html": "<label class=\"ds-label\" for=\"ds-reference\">Invoice reference</label><input class=\"ds-field\" id=\"ds-reference\" placeholder=\"Enter invoice reference\"/>",
+      "css": ".ds-label{display:block;margin:15px 0 7px;color:var(--ink,#17343c);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;line-height:1.5;}.ds-field{border:1px solid var(--control,#afc2c9);border-radius:6px;padding:10px 12px;color:var(--ink,#17343c);background:var(--surface,#fff);caret-color:var(--teal,#17627a);font:400 14px/1.5 \"DM Sans\",sans-serif;min-width:0;}.ds-field::placeholder{color:var(--muted,#526a72);opacity:1;}.ds-field:focus-visible{outline:2px solid var(--teal,#17627a);outline-offset:3px;}"
+    },
+    {
+      "name": "Workspace Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Teal navigation with an active item and a contrast-aware focus outline.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Workspace\"><button class=\"ds-nav-item ds-nav-active\" type=\"button\" aria-current=\"page\">Overview</button><button class=\"ds-nav-item\" type=\"button\">Farmers</button><button class=\"ds-nav-item\" type=\"button\">Notifications</button></nav>",
+      "css": ".ds-nav{display:flex;gap:8px;padding:14px;background:var(--teal-dark,#123f4c);overflow-x:auto;}.ds-nav-item{display:flex;align-items:center;gap:7px;padding:10px 12px;border:0;border-radius:6px;background:none;color:var(--nav-muted,#c4dce3);font:400 13px/1.5 \"DM Sans\",sans-serif;white-space:nowrap;cursor:pointer;}.ds-nav-active{color:var(--nav-active,#d5ecac);background:#ffffff0d;}.ds-nav-item:hover{background:#ffffff16;color:white;}.ds-nav-item:focus-visible{outline:2px solid var(--nav-active,#d5ecac);outline-offset:3px;}@media(max-width:650px){.ds-nav{gap:0;}.ds-nav-item{min-height:44px;padding:12px 9px;}}"
+    },
+    {
+      "name": "Transaction Status",
+      "kind": "chip",
+      "refersTo": "status",
+      "description": "A readable state label with a semantic fill and current-color dot.",
+      "html": "<div class=\"ds-status-row\"><span class=\"ds-status ds-wait\"><span aria-hidden=\"true\"></span>Awaiting payment</span><span class=\"ds-status ds-review\"><span aria-hidden=\"true\"></span>Payment review</span><span class=\"ds-status ds-done\"><span aria-hidden=\"true\"></span>Collected</span></div>",
+      "css": ".ds-status-row{display:flex;flex-wrap:wrap;gap:8px;}.ds-status{display:inline-flex;align-items:center;gap:5px;font:400 12px/1.4 \"DM Sans\",sans-serif;white-space:nowrap;border-radius:5px;padding:5px 7px;color:var(--teal,#17627a);background:var(--soft,#e9f3f5);}.ds-status>span{width:4px;height:4px;border-radius:50%;background:currentColor;}.ds-wait{color:var(--attention-ink,#73500e);background:var(--attention-bg,#fff3d9);}.ds-review{color:var(--danger-ink,#8d3826);background:var(--danger-bg,#fff0ed);}.ds-done{color:var(--success-ink,#375b22);background:var(--success-bg,#edf5e7);}"
+    },
+    {
+      "name": "Working Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "A flat bordered surface for a focused operational task.",
+      "html": "<section class=\"ds-panel\"><h2 class=\"ds-panel-title\">Input requests</h2><p class=\"ds-panel-copy\">Select a request to inspect its items and next transaction step.</p></section>",
+      "css": ".ds-panel{padding:22px;background:var(--surface,#fff);border:1px solid var(--line,#d5e1e5);border-radius:var(--radius,10px);color:var(--ink,#17343c);}.ds-panel-title{margin:0;font:700 17px/1.4 Manrope,sans-serif;letter-spacing:-.015em;}.ds-panel-copy{margin:8px 0 0;color:var(--muted,#526a72);font:400 13px/1.5 \"DM Sans\",sans-serif;}@media(max-width:650px){.ds-panel{padding:18px;}}"
+    },
+    {
+      "name": "Credit Destination Bar",
+      "kind": "custom",
+      "refersTo": "credit-track",
+      "description": "An illustrative preview of the reconciled, labelled allocation graphic; production values come from scoped records.",
+      "html": "<section class=\"ds-credit\"><h2 class=\"ds-credit-title\">Where credit stands</h2><div class=\"ds-track\" role=\"img\" aria-label=\"Illustrative preview: Available 50 percent. Reserved 30 percent. Paid to suppliers 20 percent.\"><span class=\"ds-available\"></span><span class=\"ds-reserved\"></span><span class=\"ds-paid\"></span></div><div class=\"ds-legend\"><span>Available · 50%</span><span>Reserved · 30%</span><span>Paid to suppliers · 20%</span></div><p class=\"ds-preview-note\">Illustrative component preview</p></section>",
+      "css": ".ds-credit{padding:22px;border:1px solid var(--line,#d5e1e5);border-radius:var(--radius,10px);background:var(--surface,#fff);color:var(--ink,#17343c);font:400 13px/1.5 \"DM Sans\",sans-serif;}.ds-credit-title{margin:0 0 18px;font:700 17px/1.4 Manrope,sans-serif;letter-spacing:-.015em;}.ds-track{display:flex;gap:3px;height:23px;border-radius:5px;overflow:hidden;background:var(--soft,#e9f3f5);}.ds-track>span{flex-basis:0;flex-shrink:0;}.ds-available{flex-grow:5;background:var(--teal,#17627a);}.ds-reserved{flex-grow:3;background:var(--reserved,#4c86b7);}.ds-paid{flex-grow:2;background:var(--paid,#6e9544);}.ds-legend{display:flex;gap:24px;flex-wrap:wrap;margin-top:14px;color:var(--muted,#526a72);}.ds-preview-note{margin:12px 0 0;color:var(--muted,#526a72);font-size:12px;}@media(prefers-reduced-motion:reduce){.ds-track>span{transition:none;}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Waterline",
+    "overview": "Waterline makes agricultural input finance readable through a deep teal navigation band, a pale blue ground, and white working surfaces. Compact typography and clearly separated records support repeated operational work. Color locates available credit, reservations, payments, and exceptions; outline icons identify actions and transaction stages.\n\nThe system is calm, practical, and explicit about evidence. Amounts, state labels, and the next permitted action carry the hierarchy. Mode disclosures remain part of the interface: simulated records, PayPal sandbox verification, and unavailable upstream evidence retain their distinct meanings. There are no shipping raster assets; diagrams are rendered from scoped application data.",
+    "keyCharacteristics": [
+      "Teal navigation and actions over a cool, pale ground.",
+      "Flat white work surfaces with fine borders and modest rounding.",
+      "Compact DM Sans text paired with Manrope headings and amounts.",
+      "Labelled, reconciled financial graphics and explicit transaction stages.",
+      "Responsive work queues with keyboard focus and reduced-motion support."
+    ],
+    "rules": [
+      {
+        "name": "The Labelled Color Rule",
+        "body": "Pair financial and status colors with readable labels and amounts; the hue alone never establishes a transaction fact.",
+        "section": "colors"
+      },
+      {
+        "name": "The Amount Alignment Rule",
+        "body": "Right-align comparable table amounts and preserve tabular numerals in metrics, balances, and financial columns.",
+        "section": "typography"
+      },
+      {
+        "name": "The Working Surface Rule",
+        "body": "Keep ordinary work panels flat; reserve structural shadow for the modal drawer.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** use teal for the shared navigation/action language, blue for reservations, and leaf green for paid amounts.",
+      "**Do** pair status color and graphic segments with readable text and amounts.",
+      "**Do** preserve tabular numerals and comparable amount alignment.",
+      "**Do** keep ordinary panels flat and use the drawer shadow only for modal depth.",
+      "**Do** carry visible keyboard focus, accessible icon names, and reduced-motion behavior into new components.",
+      "**Do** retain explicit simulation, sandbox, manual-handoff, and unavailable-evidence labels wherever they qualify a record."
+    ],
+    "donts": [
+      "**Don't** give ordinary operational panels decorative lift or use gradients in place of the established flat surfaces.",
+      "**Don't** substitute decorative imagery for the labelled financial graphic or actual transaction records.",
+      "**Don't** treat an AI recommendation, lender authorization, invoice, payment, and collection as interchangeable visual states.",
+      "**Don't** turn illustrative values, synthetic histories, or unavailable graph evidence into claims of live verified credit intelligence.",
+      "**Don't** conceal payment mode or imply production readiness through a success treatment."
+    ]
+  }
+}
