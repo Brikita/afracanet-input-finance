@@ -47,11 +47,16 @@ class Handoff(BaseModel):
             raise ValueError("Must not be blank")
         return value
 
-    @field_validator("approved_at", "expires_at")
+    @field_validator("approved_at", "expires_at", mode="before")
     @classmethod
     def timezone_required(cls, value):
-        if value.tzinfo is None:
-            raise ValueError("Use a timestamp with a timezone")
+        if isinstance(value, str):
+            try:
+                value = datetime.fromisoformat(value)
+            except ValueError as exc:
+                raise ValueError("Use an ISO timestamp with a timezone") from exc
+        if not isinstance(value, datetime) or value.tzinfo is None:
+            raise ValueError("Use an ISO timestamp with a timezone")
         return value.astimezone(timezone.utc)
 
     @model_validator(mode="after")

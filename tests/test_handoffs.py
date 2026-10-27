@@ -84,6 +84,7 @@ def test_handoff_routes_require_the_lender_role(client, persona):
     {"limit_cents": True}, {"limit_cents": "18000"}, {"limit_cents": 18000.5}, {"limit_cents": 0},
     {"schema_version": True}, {"schema_version": 2}, {"approved_by": " "},
     {"approved_at": "2026-01-01T12:00:00"}, {"data_provenance": "verified"}, {"ai_recommendation": "approve"},
+    {"approved_at": 1700000000}, {"approved_at": "1700000000"},
 ])
 def test_handoff_rejects_recommendations_currency_coercion_and_unknown_fields(client, change):
     lender, body = linked(client)
