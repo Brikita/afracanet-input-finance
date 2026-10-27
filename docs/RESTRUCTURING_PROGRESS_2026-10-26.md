@@ -6,6 +6,14 @@ visual direction; cross-module integration remains unfinished.
 
 ## 27 October update
 
+The [reviewed lender decision handoff](APPROVAL_HANDOFF.md) is now implemented
+in the execution module: explicit farmer mapping, form/file preview, lender
+confirmation, persistent source/audit references, safe replay, revision checks,
+and revocation. Approval HTTP routes have their own module. This completes the
+manual receiver workflow; authenticated automatic transfer from credit
+intelligence remains outstanding. Current verification is 124 backend/data tests,
+six browser journeys, and a passing frontend build.
+
 The user selected **Waterline** after requesting color, useful icons, and
 visualizations. Its working React implementation replaces the previous shell
 and lender overview, with shared styling across farmer, dealer, management,

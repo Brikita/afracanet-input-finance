@@ -15,8 +15,12 @@ one product story. This module starts with lender-approved credit and has no
 underwriting, Neo4j, or GDS runtime dependency. Its implementation was developed
 independently for the execution workflow.
 
-**Integration status:** lender approvals can be imported through the existing CSV
-preview/import flow. Automatic transfer from the AI portal is not implemented.
+**Integration status:** a reviewed decision handoff now retains explicit farmer
+mapping, source application, officer/provenance claims, lender confirmation, and
+revocation history. It preserves reserved/paid credit and protects against replay
+or stale updates. See [the handoff workflow and API](docs/APPROVAL_HANDOFF.md).
+CSV import remains available for unlinked allocations. Automatic transfer from
+the AI portal is not implemented.
 The reviewed AI approval endpoint does not yet provide the amount, expiry, and
 authorization needed for that transfer. See the [unified platform brief](docs/PLATFORM.md)
 for the product narrative, module boundary, and concrete connection plan.

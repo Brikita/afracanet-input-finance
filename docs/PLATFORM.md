@@ -80,9 +80,13 @@ The proposed handoff contains:
 | `decision`                       | An explicit lender approval, not the AI verdict          |
 | `data_provenance`                | Whether upstream assessment used real or fallback inputs |
 
-This is a proposed contract, not a currently implemented API. Add validation,
-lender authentication, stable retry keys, replay handling, and persistence before
-exposing a direct integration. Never accept model prose as authorization.
+The input-finance receiver now implements a versioned **manual lender review**
+of this decision, with explicit mapping, validation, persistence, retry/ordering
+checks, balance-preserving updates, and revocation. See
+[the implemented contract](APPROVAL_HANDOFF.md). Source officer and provenance
+remain file claims, and receiving sessions remain demonstration identities.
+This is not authenticated automatic transfer from the AI portal. Never accept
+model prose as authorization.
 
 ### 2. Use the existing manual import as the first demonstrable bridge
 
@@ -90,9 +94,10 @@ The lender reviews the decision, assigns an illustrative USD sandbox allocation,
 and imports the existing CSV columns:
 `farmer_id,name,location,limit_cents,expires_at,approval_reference`.
 
-This format does not carry every proposed contract field. An explicit handoff
-record must retain the source application, officer, mapping, and provenance.
-Label the bridge as manual until a tested automatic adapter replaces it.
+This CSV format does not carry every contract field. The reviewed handoff now
+retains the source application, officer, mapping, and provenance separately.
+Linked allocations must be changed through that handoff, not overwritten by CSV.
+The bridge is labelled manual until a tested automatic adapter replaces it.
 
 Keep a stable allocation reference: an update must preserve spent/reserved credit.
 Do not convert a historic KES amount into USD by relabelling its currency. Set an

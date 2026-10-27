@@ -7,6 +7,10 @@
 - `services/orders.py`: scoped order access, presentation, and reservation helpers.
 - `db.py`: database metadata, engine, and existing demonstration initialization.
 - `management.py`: approval imports and catalogue management.
+- `api/approvals.py`: lender-only routes for CSV import, farmer mappings, decision
+  preview/authorization, history, and revocation.
+- `handoffs.py`: versioned reviewed-decision contract, replay/order checks,
+  allocation updates, revocation, and immutable order-audit linkage.
 - `paypal.py`, `assistant.py`, `notifications.py`: integration behavior.
 
 Transaction helpers use the caller's existing transaction. Keep provider network

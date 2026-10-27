@@ -3,6 +3,12 @@
 Draft for flow confirmation, 26 October 2026. This describes planned work, not
 completed implementation or an approved visual direction.
 
+27 October checkpoint: the user selected Waterline, now implemented and reviewed
+for the input-finance workspace. The [manual lender decision handoff](APPROVAL_HANDOFF.md)
+also has a working receiver and lender review flow. The remainder of this brief
+retains the broader plan; graph loading, automatic cross-module transfer, further
+repository extraction, and the marketing page remain unfinished.
+
 ## Outcome
 
 One recognizable AFRACANet product, with a public explanation of the service and
