@@ -311,6 +311,16 @@ test('lender filters cases, respects issue holds, and closes details by keyboard
     page.getByRole('button', { name: 'Approve input order' }),
   ).toHaveCount(0)
   await page.getByLabel('Filter requests by status').selectOption('all')
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.getByRole('button', { name: `Select ${reference}` }).focus()
+  await page.keyboard.press('Enter')
+  await expect(page.locator('.selected-record')).toBeFocused()
+  await page.keyboard.press('Tab')
+  expect(
+    await page.evaluate(() =>
+      Boolean(document.activeElement?.closest('.selected-record')),
+    ),
+  ).toBe(true)
   await expect(
     page
       .locator('.selected-record')

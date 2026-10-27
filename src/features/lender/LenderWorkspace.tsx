@@ -125,15 +125,16 @@ export function LenderWorkspace({
   function choose(order: Order) {
     setPicked(order.id)
     if (window.matchMedia('(max-width: 960px)').matches) {
-      requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        detailRef.current?.focus({ preventScroll: true })
         detailRef.current?.scrollIntoView({
           behavior: window.matchMedia('(prefers-reduced-motion: reduce)')
             .matches
             ? 'instant'
             : 'smooth',
           block: 'start',
-        }),
-      )
+        })
+      })
     }
   }
 
@@ -307,6 +308,7 @@ export function LenderWorkspace({
           className="selected-record"
           ref={detailRef}
           aria-labelledby="selected-title"
+          tabIndex={-1}
         >
           {current ? (
             <>
