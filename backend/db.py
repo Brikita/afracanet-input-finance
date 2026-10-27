@@ -84,6 +84,37 @@ management_events = Table(
     Column("detail", JSON, nullable=False),
     Column("created_at", String, nullable=False),
 )
+approval_mappings = Table(
+    "approval_mappings", metadata,
+    Column("id", String, primary_key=True),
+    Column("lender_id", String, nullable=False, index=True),
+    Column("source_system", String, nullable=False),
+    Column("source_farmer_id", String, nullable=False),
+    Column("farmer_id", ForeignKey("farmers.id"), nullable=False),
+    Column("recorded_by", String, nullable=False),
+    Column("created_at", String, nullable=False),
+    UniqueConstraint("lender_id", "source_system", "source_farmer_id"),
+    UniqueConstraint("lender_id", "source_system", "farmer_id"),
+)
+approval_handoffs = Table(
+    "approval_handoffs", metadata,
+    Column("id", String, primary_key=True),
+    Column("mapping_id", ForeignKey("approval_mappings.id"), nullable=False),
+    Column("lender_id", String, nullable=False, index=True),
+    Column("farmer_id", ForeignKey("farmers.id"), nullable=False, index=True),
+    Column("source_system", String, nullable=False),
+    Column("approval_reference", String, nullable=False),
+    Column("approved_at", String, nullable=False),
+    Column("payload_hash", String, nullable=False),
+    Column("payload", JSON, nullable=False),
+    Column("transfer_method", String, nullable=False),
+    Column("recorded_by", String, nullable=False),
+    Column("received_at", String, nullable=False),
+    Column("revoked_at", String),
+    Column("revoked_by", String),
+    Column("revocation_reason", Text),
+    UniqueConstraint("lender_id", "source_system", "approval_reference"),
+)
 issues = Table(
     "order_issues", metadata,
     Column("id", Integer, Identity(), primary_key=True),

@@ -97,9 +97,14 @@ def import_approvals(body, user):
     # Apply revalidates everything in one transaction; previews cannot promise later availability.
     with db.engine.begin() as conn:
         for entry in sorted(parsed, key=lambda item: item.farmer_id):
-            existing = conn.execute(select(db.farmers).where(db.farmers.c.id == entry.farmer_id)).mappings().first()
+            existing = conn.execute(select(db.farmers).where(db.farmers.c.id == entry.farmer_id).with_for_update()).mappings().first()
             if existing and existing["lender_id"] != user["subject"]:
                 raise HTTPException(403, "An approval belongs to another lender.")
+            linked = conn.execute(select(db.approval_handoffs.c.id).where(
+                db.approval_handoffs.c.farmer_id == entry.farmer_id,
+            ).limit(1)).first()
+            if linked:
+                raise HTTPException(409, "This allocation has a linked lender decision. Use a new reviewed handoff to change it.")
             committed = (existing["reserved_cents"] + existing["spent_cents"]) if existing else 0
             if entry.limit_cents < committed:
                 raise HTTPException(409, f"{entry.farmer_id}: limit cannot be below reserved and already paid credit ({committed} cents).")
@@ -113,6 +118,9 @@ def import_approvals(body, user):
             if existing:
                 changed = conn.execute(update(db.farmers).where(
                     db.farmers.c.id == entry.farmer_id, db.farmers.c.lender_id == user["subject"],
+                    db.farmers.c.limit_cents == existing["limit_cents"],
+                    db.farmers.c.expires_at == existing["expires_at"],
+                    db.farmers.c.approval_reference == existing["approval_reference"],
                     db.farmers.c.reserved_cents + db.farmers.c.spent_cents <= entry.limit_cents,
                 ).values(**values))
                 if changed.rowcount != 1:

@@ -14,9 +14,10 @@ from sqlalchemy import insert, select, update
 from sqlalchemy.exc import IntegrityError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-from . import assistant, db, management, notifications
+from . import assistant, db, handoffs, management, notifications
 from .config import ROOT, settings
 from .auth import actor, require, scoped_orders
+from .api.approvals import router as approvals_router
 from .schemas import (Login, ItemRequest, OrderRequest, AssistantRequest, CollectionRequest, RecoveryRequest, IssueRequest, IssueResolution)
 from .services.orders import (get_order, serialize_order, require_no_issues, transition, release_reservations)
 from .paypal import PayPal, PaymentError, cancelled_without_payment, matching_invoice, payment_link, verified_payment
@@ -37,6 +38,7 @@ async def lifespan(app):
 
 
 app = FastAPI(title="AFRACANet Input Finance", version="0.1.0", lifespan=lifespan)
+app.include_router(approvals_router)
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.allowed_hosts)
 
 
@@ -138,12 +140,6 @@ def state(user=Depends(actor)):
     }
 
 
-@app.post("/api/approvals/import")
-def approval_import(body: management.ApprovalImport, user=Depends(actor)):
-    require(user, "lender")
-    return management.import_approvals(body, user)
-
-
 @app.put("/api/products/{product_id}")
 def product_save(product_id: str, body: management.ProductEdit, user=Depends(actor)):
     require(user, "supplier")
@@ -239,7 +235,8 @@ def create_order(body: OrderRequest, user=Depends(actor)):
             created_at=db.now(), updated_at=db.now(),
         )).inserted_primary_key[0]
         db.record(conn, order_id, user["subject"], "REQUESTED",
-                  "Farmer confirmed catalogue items and total. Credit and inventory reserved.")
+                  "Farmer confirmed catalogue items and total. Credit and inventory reserved."
+                  + handoffs.allocation_trace(conn, user["subject"]))
         return serialize_order(get_order(conn, order_id, user), user)
 
 
@@ -253,7 +250,7 @@ def approve(order_id: int, user=Depends(actor)):
         if order["status"] != "REQUESTED":
             raise HTTPException(409, "Only a requested order can be approved.")
         require_no_issues(conn, order_id)
-        approval = conn.execute(select(db.farmers).where(db.farmers.c.id == order["farmer_id"])).mappings().one()
+        approval = conn.execute(select(db.farmers).where(db.farmers.c.id == order["farmer_id"]).with_for_update()).mappings().one()
         if approval["expires_at"] <= db.now():
             raise HTTPException(409, "The farmer's credit approval has expired.")
         transition(conn, order, "REQUESTED", "APPROVED")
@@ -291,7 +288,7 @@ def invoice(order_id: int, user=Depends(actor)):
             raise HTTPException(409, "This order uses a different payment mode. Create a new order.")
         approval = conn.execute(select(db.farmers.c.expires_at).where(
             db.farmers.c.id == order["farmer_id"],
-        )).scalar_one()
+        ).with_for_update()).scalar_one()
         if approval <= db.now():
             raise HTTPException(409, "The farmer's credit approval has expired.")
         transition(conn, order, "APPROVED", "INVOICING")
