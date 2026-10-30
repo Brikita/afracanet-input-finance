@@ -30,7 +30,10 @@ and the [public-context/labelled-replay pack](datasets/README.md).
 
 The [redesign and restructuring brief](docs/REDESIGN_AND_RESTRUCTURE.md) tracks
 the new UX work. Frontend domain/transport/feature modules and backend
-validation/authentication/transaction helpers now have explicit boundaries;
+validation/authentication/transaction helpers now have explicit boundaries.
+The execution-module restructure separates routes, contracts, services, provider
+adapters, feature screens, and ordered styles. See the
+[restructure record](docs/RESTRUCTURE_2026-10-30.md);
 the selected Waterline direction is implemented in the working input-finance
 workspace. It includes a scoped credit breakdown, searchable request queue,
 selected-case actions, and responsive role screens. See the

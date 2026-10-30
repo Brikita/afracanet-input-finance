@@ -46,13 +46,20 @@ jobs:
       - name: Install backend
         run: |
           python -m venv .venv
-          .venv/bin/python -m pip install -r backend/requirements.lock.txt
+          .venv/bin/python -m pip install -r backend/requirements-dev.txt
+      - name: Check backend structure and formatting
+        run: |
+          .venv/bin/python -m ruff check --select F,I backend
+          .venv/bin/python -m ruff format --check backend
       - name: Check transaction integrity
         run: .venv/bin/python -m pytest -q
       - name: Install frontend
         run: npm ci
       - name: Build frontend
-        run: npm run build
+        run: |
+          npm run check:types
+          npm run check:format
+          npm run build
       - name: Install browser
         run: npx playwright install --with-deps chromium
       - name: Check browser journey

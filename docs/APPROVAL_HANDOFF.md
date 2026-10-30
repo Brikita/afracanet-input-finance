@@ -51,7 +51,7 @@ code; it does not establish individual production officer authority.
 
 Opaque application/farmer references use letters, digits, underscores, periods,
 colons, or hyphens and begin with a letter or digit. Unknown fields and amount
-coercion are rejected. The executable schema is in `backend/handoffs.py` and the
+coercion are rejected. The executable schema is in `backend/contracts/handoffs.py` and the
 API's `/openapi.json`; this document does not override it.
 
 The preview returns `allocation_revision`, current and committed amounts,
