@@ -2,8 +2,8 @@ import { Link } from "@tanstack/react-router";
 import { Sprout, Home, List } from "lucide-react";
 
 const navItems = [
-  { to: "/", label: "Underwriting Dashboard", icon: Home },
-  { to: "/history", label: "Transaction Ledger", icon: List },
+  { to: "/", label: "Lender review", icon: Home },
+  { to: "/history", label: "Decision history", icon: List },
 ] as const;
 
 export function AppSidebar() {
