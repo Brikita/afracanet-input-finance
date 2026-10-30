@@ -255,6 +255,11 @@ test('mobile farmer experience fits without page overflow and prevents overspend
     .getByRole('button', { name: 'Add DAP fertilizer 50 kg bag' })
     .click()
   await page.getByLabel('Quantity for DAP fertilizer 50 kg bag').fill('2')
+  await page.getByRole('button', { name: 'My requests', exact: true }).click()
+  await page.getByRole('button', { name: 'My inputs', exact: true }).click()
+  await expect(
+    page.getByLabel('Quantity for DAP fertilizer 50 kg bag'),
+  ).toHaveValue('2')
   await expect(
     page.getByText(
       'This order exceeds your available credit. Reduce the quantity.',
@@ -278,7 +283,9 @@ test('lender imports an approval and dealer maintains catalogue on mobile', asyn
 }) => {
   await page.goto('/')
   await page.getByRole('button', { name: 'Open workspace' }).click()
-  await page.getByRole('button', { name: 'Credit allocations' }).click()
+  await page
+    .getByRole('button', { name: 'Credit allocations', exact: true })
+    .click()
   const expiry = new Date(Date.now() + 60 * 86400000).toISOString()
   await page
     .getByLabel('Or paste approval CSV')

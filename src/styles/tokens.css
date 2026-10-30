@@ -1,0 +1,29 @@
+:root {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--ground);
+  font-synthesis: none;
+  --ground: #eaf1f3;
+  --surface: #fff;
+  --ink: #17343c;
+  --muted: #526a72;
+  --teal: #17627a;
+  --teal-dark: #123f4c;
+  --teal-hover: #104e62;
+  --soft: #e9f3f5;
+  --line: #d5e1e5;
+  --control: #afc2c9;
+  --reserved: #4c86b7;
+  --paid: #6e9544;
+  --attention-bg: #fff3d9;
+  --attention-ink: #73500e;
+  --danger-bg: #fff0ed;
+  --danger-ink: #8d3826;
+  --success-bg: #edf5e7;
+  --success-ink: #375b22;
+  --radius: 10px;
+  --green: var(--teal);
+  --border: var(--line);
+}
