@@ -1,28 +1,27 @@
 from fastapi import APIRouter, Depends
+
 from ..auth import actor
-from ..schemas import Login
+from ..contracts.requests import Login
 from ..services import sessions
 
 router = APIRouter(prefix="/api", tags=["sessions"])
 
 
-@router.get('/personas')
+@router.get("/personas")
 def personas():
     return sessions.personas()
 
 
-@router.get('/participants')
+@router.get("/participants")
 def participant_choices(user=Depends(actor)):
     return sessions.participant_choices(user)
 
 
-@router.post('/session')
+@router.post("/session")
 def login(body: Login):
     return sessions.login(body)
 
 
-@router.delete('/session')
+@router.delete("/session")
 def logout(user=Depends(actor)):
     return sessions.logout(user)
-
-

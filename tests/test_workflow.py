@@ -11,7 +11,7 @@ from sqlalchemy.schema import CreateSchema, DropSchema
 from backend import db
 from backend.config import settings
 from backend.main import app
-from backend.paypal import PaymentError, verified_payment
+from backend.integrations.paypal import PaymentError, verified_payment
 
 
 @pytest.fixture
@@ -185,7 +185,7 @@ def test_uncertain_invoice_never_retries_automatically(client, monkeypatch):
     assert client.post(f"/api/orders/{order_id}/approve", headers=lender).status_code == 200
     def fail(*args):
         raise PaymentError("Connection outcome uncertain.")
-    monkeypatch.setattr("backend.paypal.PayPal.create", fail)
+    monkeypatch.setattr("backend.integrations.paypal.PayPal.create", fail)
     assert client.post(f"/api/orders/{order_id}/invoice", headers=supplier).status_code == 502
     assert client.post(f"/api/orders/{order_id}/invoice", headers=supplier).status_code == 409
     data = client.get("/api/state", headers=farmer).json()
@@ -219,7 +219,7 @@ def test_payment_verification_accepts_full_paypal_payment():
 
 def test_invalid_webhook_cannot_confirm_payment(client, monkeypatch):
     monkeypatch.setattr(settings, "payment_mode", "sandbox")
-    monkeypatch.setattr("backend.paypal.PayPal.verify", lambda *args: False)
+    monkeypatch.setattr("backend.integrations.paypal.PayPal.verify", lambda *args: False)
     assert client.post("/api/webhooks/paypal", json={"id": "WH-FAKE", "event_type": "INVOICING.INVOICE.PAID",
                                                    "resource": {"id": "INV2-TEST"}}).status_code == 401
     with db.engine.connect() as conn:
@@ -231,11 +231,11 @@ def test_verified_webhook_replay_funds_once(client, monkeypatch):
     monkeypatch.setattr(settings, "payment_mode", "sandbox")
     order_id = request(client, farmer).json()["id"]
     assert client.post(f"/api/orders/{order_id}/approve", headers=lender).status_code == 200
-    monkeypatch.setattr("backend.paypal.PayPal.create", lambda *args: "INV2-TEST")
-    monkeypatch.setattr("backend.paypal.PayPal.send", lambda *args: "https://www.sandbox.paypal.com/invoice/p/#test")
+    monkeypatch.setattr("backend.integrations.paypal.PayPal.create", lambda *args: "INV2-TEST")
+    monkeypatch.setattr("backend.integrations.paypal.PayPal.send", lambda *args: "https://www.sandbox.paypal.com/invoice/p/#test")
     assert client.post(f"/api/orders/{order_id}/invoice", headers=supplier).status_code == 200
-    monkeypatch.setattr("backend.paypal.PayPal.verify", lambda *args: True)
-    monkeypatch.setattr("backend.paypal.PayPal.get", lambda *args: valid_invoice())
+    monkeypatch.setattr("backend.integrations.paypal.PayPal.verify", lambda *args: True)
+    monkeypatch.setattr("backend.integrations.paypal.PayPal.get", lambda *args: valid_invoice())
     event = {"id": "WH-REPLAY", "event_type": "INVOICING.INVOICE.PAID", "resource": {"invoice": {"id": "INV2-TEST"}}}
     assert client.post("/api/webhooks/paypal", json=event).status_code == 200
     assert client.post("/api/webhooks/paypal", json=event).json()["duplicate"]

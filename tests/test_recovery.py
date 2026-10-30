@@ -5,7 +5,7 @@ from sqlalchemy import update
 
 from backend import db
 from backend.config import settings
-from backend.paypal import PaymentError, payment_link
+from backend.integrations.paypal import PaymentError, payment_link
 from test_workflow import auth, client, request, valid_invoice
 
 
@@ -36,11 +36,11 @@ def remote_invoice(order_id, status="SENT"):
 
 def test_recovers_missing_reference_without_creating_an_invoice(client, monkeypatch):
     order_id, farmer, lender, supplier = stranded(client, monkeypatch, saved=False)
-    monkeypatch.setattr("backend.paypal.PayPal.get", lambda *args: remote_invoice(order_id))
+    monkeypatch.setattr("backend.integrations.paypal.PayPal.get", lambda *args: remote_invoice(order_id))
     def forbidden(*args):
         pytest.fail("Recovery must never create or send an invoice")
-    monkeypatch.setattr("backend.paypal.PayPal.create", forbidden)
-    monkeypatch.setattr("backend.paypal.PayPal.send", forbidden)
+    monkeypatch.setattr("backend.integrations.paypal.PayPal.create", forbidden)
+    monkeypatch.setattr("backend.integrations.paypal.PayPal.send", forbidden)
     assert client.post(f"/api/orders/{order_id}/recover-invoice", headers=supplier, json={"invoice_id": "INV2-TEST"}).status_code == 200
     state = client.get("/api/state", headers=lender).json()
     assert state["orders"][0]["status"] == "AWAITING_PAYMENT"
@@ -58,7 +58,7 @@ def test_recovery_rejects_mismatched_invoice(client, monkeypatch, field):
     if field == "lender": remote["primary_recipients"][0]["billing_info"]["email_address"] = "other@example.test"
     if field == "id": remote["id"] = "INV2-OTHER"
     if field == "currency": remote["amount"]["currency_code"] = "EUR"
-    monkeypatch.setattr("backend.paypal.PayPal.get", lambda *args: remote)
+    monkeypatch.setattr("backend.integrations.paypal.PayPal.get", lambda *args: remote)
     assert client.post(f"/api/orders/{order_id}/recover-invoice", headers=supplier, json={"invoice_id": "INV2-TEST"}).status_code == 409
     assert client.get("/api/state", headers=farmer).json()["orders"][0]["invoice_id"] is None
 
@@ -66,7 +66,7 @@ def test_recovery_rejects_mismatched_invoice(client, monkeypatch, field):
 def test_recovered_payment_funds_once_and_draft_holds_credit(client, monkeypatch):
     order_id, farmer, lender, supplier = stranded(client, monkeypatch)
     remote = remote_invoice(order_id, "DRAFT")
-    monkeypatch.setattr("backend.paypal.PayPal.get", lambda *args: remote)
+    monkeypatch.setattr("backend.integrations.paypal.PayPal.get", lambda *args: remote)
     result = client.post(f"/api/orders/{order_id}/recover-invoice", headers=supplier, json={})
     assert result.status_code == 200 and "draft linked" in result.json()["message"]
     assert client.get("/api/state", headers=farmer).json()["farmers"][0]["reserved_cents"] == 9000
@@ -83,7 +83,7 @@ def test_cancelled_invoice_only_releases_after_zero_payment_verified(client, mon
     remote = remote_invoice(order_id, "CANCELLED")
     remote["due_amount"] = {"currency_code": "USD", "value": "90.00"}
     remote["payments"]["transactions"] = [{"type": "PAYPAL", "amount": {"currency_code": "USD", "value": "10.00"}}]
-    monkeypatch.setattr("backend.paypal.PayPal.get", lambda *args: remote)
+    monkeypatch.setattr("backend.integrations.paypal.PayPal.get", lambda *args: remote)
     assert client.post(f"/api/orders/{order_id}/recover-invoice", headers=supplier, json={}).status_code == 200
     assert client.get("/api/state", headers=farmer).json()["farmers"][0]["reserved_cents"] == 9000
     remote["payments"]["transactions"] = []
@@ -105,7 +105,7 @@ def test_recovery_blocks_active_invoice_and_cross_role_and_replacement(client, m
     assert client.post(path, headers=supplier, json={}).status_code == 409
     with db.engine.begin() as conn:
         conn.execute(update(db.orders).where(db.orders.c.id == order_id).values(updated_at=(datetime.now(timezone.utc) - timedelta(minutes=3)).isoformat()))
-    monkeypatch.setattr("backend.paypal.PayPal.get", lambda *args: remote_invoice(order_id))
+    monkeypatch.setattr("backend.integrations.paypal.PayPal.get", lambda *args: remote_invoice(order_id))
     assert client.post(path, headers=supplier, json={}).status_code == 200
 
 
@@ -114,13 +114,13 @@ def test_invoice_send_failure_cannot_regress_a_concurrent_verified_payment(clien
     order_id, farmer, lender, supplier = stranded(client, monkeypatch)
     with db.engine.begin() as conn:
         conn.execute(update(db.orders).where(db.orders.c.id == order_id).values(status="APPROVED", invoice_id=None))
-    monkeypatch.setattr("backend.paypal.PayPal.create", lambda *args: "INV2-TEST")
+    monkeypatch.setattr("backend.integrations.paypal.PayPal.create", lambda *args: "INV2-TEST")
     def paid_then_disconnected(self, invoice_id):
         with db.engine.begin() as conn:
             order = dict(conn.execute(db.orders.select().where(db.orders.c.id == order_id)).mappings().one())
             assert fund(conn, order, "VERIFIED-WEBHOOK-TX", "paypal-webhook")
         raise PaymentError("Response lost after sending.")
-    monkeypatch.setattr("backend.paypal.PayPal.send", paid_then_disconnected)
+    monkeypatch.setattr("backend.integrations.paypal.PayPal.send", paid_then_disconnected)
     assert client.post(f"/api/orders/{order_id}/invoice", headers=supplier).status_code == 502
     state = client.get("/api/state", headers=farmer).json()
     assert state["orders"][0]["status"] == "READY_FOR_COLLECTION"
@@ -136,7 +136,7 @@ def test_recovery_rejects_unsafe_payment_links(url):
 @pytest.mark.parametrize("change", ["duplicate-reference", "refund", "null-amount", "null-payments", "invalid-transaction", "null-refunds"])
 def test_payment_verification_rejects_duplicate_or_malformed_records(change):
     from copy import deepcopy
-    from backend.paypal import verified_payment
+    from backend.integrations.paypal import verified_payment
     remote = valid_invoice()
     if change == "duplicate-reference":
         remote["payments"]["transactions"][0]["amount"]["value"] = "45.00"

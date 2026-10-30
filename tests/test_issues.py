@@ -72,7 +72,7 @@ def test_incoming_real_payment_is_reconciled_even_when_issue_is_open(client, mon
     with db.engine.begin() as conn:
         conn.execute(update(db.orders).where(db.orders.c.id == order_id).values(payment_mode="sandbox", invoice_id="INV2-TEST", payment_url="https://www.sandbox.paypal.com/invoice/p/#test"))
     monkeypatch.setattr(settings, "payment_mode", "sandbox")
-    monkeypatch.setattr("backend.paypal.PayPal.get", lambda *args: valid_invoice())
+    monkeypatch.setattr("backend.integrations.paypal.PayPal.get", lambda *args: valid_invoice())
     assert client.post(f"/api/orders/{order_id}/reconcile", headers=lender).json()["confirmed"]
     assert client.post(f"/api/orders/{order_id}/reconcile", headers=lender).json()["confirmed"]
     state = client.get("/api/state", headers=farmer).json()

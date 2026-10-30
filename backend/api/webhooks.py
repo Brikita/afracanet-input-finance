@@ -1,13 +1,15 @@
 import json
+
 from fastapi import APIRouter, HTTPException, Request
 from starlette.concurrency import run_in_threadpool
+
 from ..config import settings
 from ..services.webhooks import process_webhook
 
 router = APIRouter(prefix="/api", tags=["webhooks"])
 
 
-@router.post('/webhooks/paypal')
+@router.post("/webhooks/paypal")
 async def paypal_webhook(request: Request):
     if settings.payment_mode != "sandbox":
         raise HTTPException(403, "PayPal webhooks are disabled in simulated mode.")

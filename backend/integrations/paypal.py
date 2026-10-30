@@ -2,7 +2,7 @@ from decimal import Decimal, InvalidOperation
 
 import httpx
 
-from .config import settings
+from ..config import settings
 
 BASE = "https://api-m.sandbox.paypal.com"
 
@@ -13,18 +13,29 @@ class PaymentError(Exception):
 
 def payment_link(invoice):
     from urllib.parse import urlparse
+
     detail = invoice.get("detail") if isinstance(invoice, dict) else None
     metadata = detail.get("metadata") if isinstance(detail, dict) else None
     url = metadata.get("recipient_view_url") if isinstance(metadata, dict) else None
     if not isinstance(url, str):
-        raise PaymentError("PayPal did not return a recipient payment link. Review the invoice.")
+        raise PaymentError(
+            "PayPal did not return a recipient payment link. Review the invoice."
+        )
     try:
         parsed = urlparse(url)
-        valid = parsed.scheme == "https" and parsed.hostname in {"www.sandbox.paypal.com", "sandbox.paypal.com"} and not parsed.username and not parsed.password and parsed.port in {None, 443}
+        valid = (
+            parsed.scheme == "https"
+            and parsed.hostname in {"www.sandbox.paypal.com", "sandbox.paypal.com"}
+            and not parsed.username
+            and not parsed.password
+            and parsed.port in {None, 443}
+        )
     except ValueError:
         valid = False
     if not valid:
-        raise PaymentError("PayPal returned a non-sandbox payment link. Review the invoice.")
+        raise PaymentError(
+            "PayPal returned a non-sandbox payment link. Review the invoice."
+        )
     return url
 
 
@@ -36,10 +47,15 @@ def matching_invoice(invoice, order):
     amount = invoice.get("amount", {})
     recipients = invoice.get("primary_recipients", [])
     invoicer = invoice.get("invoicer", {})
-    if (not isinstance(detail, dict) or not isinstance(amount, dict)
-            or not isinstance(invoicer, dict) or not isinstance(recipients, list)
-            or len(recipients) != 1 or not isinstance(recipients[0], dict)
-            or not isinstance(recipients[0].get("billing_info"), dict)):
+    if (
+        not isinstance(detail, dict)
+        or not isinstance(amount, dict)
+        or not isinstance(invoicer, dict)
+        or not isinstance(recipients, list)
+        or len(recipients) != 1
+        or not isinstance(recipients[0], dict)
+        or not isinstance(recipients[0].get("billing_info"), dict)
+    ):
         return False
     merchant = invoicer.get("email_address")
     lender = recipients[0]["billing_info"].get("email_address")
@@ -51,7 +67,8 @@ def matching_invoice(invoice, order):
         and detail.get("reference") == f"AFRACANet order {order['id']}"
         and amount.get("currency_code") == order["currency"]
         and cents(amount.get("value")) == order["amount_cents"]
-        and bool(settings.paypal_merchant) and bool(settings.paypal_lender)
+        and bool(settings.paypal_merchant)
+        and bool(settings.paypal_lender)
         and merchant.casefold() == settings.paypal_merchant.casefold()
         and lender.casefold() == settings.paypal_lender.casefold()
     )
@@ -66,11 +83,14 @@ def cancelled_without_payment(invoice, order):
         return False
     if not isinstance(payments.get("paid_amount", {}), dict):
         return False
-    return (invoice.get("status") == "CANCELLED" and not payments.get("transactions")
-            and not refunds.get("transactions")
-            and cents(payments.get("paid_amount", {}).get("value", "0")) == 0
-            and due.get("currency_code") == order["currency"]
-            and cents(due.get("value")) == order["amount_cents"])
+    return (
+        invoice.get("status") == "CANCELLED"
+        and not payments.get("transactions")
+        and not refunds.get("transactions")
+        and cents(payments.get("paid_amount", {}).get("value", "0")) == 0
+        and due.get("currency_code") == order["currency"]
+        and cents(due.get("value")) == order["amount_cents"]
+    )
 
 
 class PayPal:
@@ -84,22 +104,32 @@ class PayPal:
                 data={"grant_type": "client_credentials"},
             )
             if response.status_code != 200:
-                raise PaymentError("PayPal sandbox authentication failed. Check server configuration.")
+                raise PaymentError(
+                    "PayPal sandbox authentication failed. Check server configuration."
+                )
             return response.json()["access_token"]
 
     def request(self, method, path, payload=None):
         try:
             with httpx.Client(timeout=25) as client:
                 response = client.request(
-                    method, BASE + path,
-                    headers={"Authorization": f"Bearer {self.token()}", "Content-Type": "application/json"},
+                    method,
+                    BASE + path,
+                    headers={
+                        "Authorization": f"Bearer {self.token()}",
+                        "Content-Type": "application/json",
+                    },
                     json=payload,
                 )
                 if not response.is_success:
-                    raise PaymentError("PayPal could not complete this action. Operator review is required.")
+                    raise PaymentError(
+                        "PayPal could not complete this action. Operator review is required."
+                    )
                 return response.json() if response.content else {}
         except (httpx.HTTPError, KeyError, ValueError) as exc:
-            raise PaymentError("PayPal could not be reached or returned an unexpected response.") from exc
+            raise PaymentError(
+                "PayPal could not be reached or returned an unexpected response."
+            ) from exc
 
     def create(self, order):
         payload = {
@@ -111,30 +141,52 @@ class PayPal:
                 "payment_term": {"term_type": "DUE_ON_RECEIPT"},
             },
             "invoicer": {"email_address": settings.paypal_merchant},
-            "primary_recipients": [{"billing_info": {"email_address": settings.paypal_lender}}],
+            "primary_recipients": [
+                {"billing_info": {"email_address": settings.paypal_lender}}
+            ],
             "items": [
-                {"name": item["name"], "description": item["unit"],
-                 "quantity": str(item["quantity"]),
-                 "unit_amount": {"currency_code": order["currency"], "value": f"{item['price_cents'] / 100:.2f}"}}
+                {
+                    "name": item["name"],
+                    "description": item["unit"],
+                    "quantity": str(item["quantity"]),
+                    "unit_amount": {
+                        "currency_code": order["currency"],
+                        "value": f"{item['price_cents'] / 100:.2f}",
+                    },
+                }
                 for item in order["items"]
             ],
-            "configuration": {"partial_payment": {"allow_partial_payment": False}, "allow_tip": False},
+            "configuration": {
+                "partial_payment": {"allow_partial_payment": False},
+                "allow_tip": False,
+            },
         }
         result = self.request("POST", "/v2/invoicing/invoices", payload)
         invoice_id = result.get("id")
         if not invoice_id:
             invoice_id = next(
-                (link["href"].rstrip("/").split("/")[-1]
-                 for link in result.get("links", []) if link.get("rel") == "self"), None,
+                (
+                    link["href"].rstrip("/").split("/")[-1]
+                    for link in result.get("links", [])
+                    if link.get("rel") == "self"
+                ),
+                None,
             )
         if not invoice_id or not invoice_id.startswith("INV2-"):
-            raise PaymentError("PayPal did not return a valid invoice reference. Review before retrying.")
+            raise PaymentError(
+                "PayPal did not return a valid invoice reference. Review before retrying."
+            )
         return invoice_id
 
     def send(self, invoice_id):
-        self.request("POST", f"/v2/invoicing/invoices/{invoice_id}/send", {
-            "send_to_recipient": True, "send_to_invoicer": False,
-        })
+        self.request(
+            "POST",
+            f"/v2/invoicing/invoices/{invoice_id}/send",
+            {
+                "send_to_recipient": True,
+                "send_to_invoicer": False,
+            },
+        )
         details = self.get(invoice_id)
         return payment_link(details)
 
@@ -150,19 +202,27 @@ class PayPal:
             "transmission_id": headers.get("paypal-transmission-id"),
             "transmission_sig": headers.get("paypal-transmission-sig"),
             "transmission_time": headers.get("paypal-transmission-time"),
-            "webhook_id": settings.paypal_webhook, "webhook_event": event,
+            "webhook_id": settings.paypal_webhook,
+            "webhook_event": event,
         }
         if not all(payload[key] for key in payload):
             return False
-        return self.request("POST", "/v1/notifications/verify-webhook-signature", payload).get(
-            "verification_status"
-        ) == "SUCCESS"
+        return (
+            self.request(
+                "POST", "/v1/notifications/verify-webhook-signature", payload
+            ).get("verification_status")
+            == "SUCCESS"
+        )
 
 
 def cents(amount):
     try:
         value = Decimal(str(amount))
-        if not value.is_finite() or value < 0 or value * 100 != (value * 100).to_integral_value():
+        if (
+            not value.is_finite()
+            or value < 0
+            or value * 100 != (value * 100).to_integral_value()
+        ):
             return None
         return int(value * 100)
     except (InvalidOperation, ValueError, TypeError):
@@ -176,22 +236,39 @@ def verified_payment(invoice, order):
     amount = invoice.get("amount", {})
     if invoice.get("id") != order["invoice_id"] or invoice.get("status") != "PAID":
         return None
-    if not isinstance(amount, dict) or amount.get("currency_code") != order["currency"] or cents(amount.get("value")) != order["amount_cents"]:
+    if (
+        not isinstance(amount, dict)
+        or amount.get("currency_code") != order["currency"]
+        or cents(amount.get("value")) != order["amount_cents"]
+    ):
         return None
     payments, refunds = invoice.get("payments", {}), invoice.get("refunds", {})
-    if not isinstance(payments, dict) or not isinstance(refunds, dict) or refunds.get("transactions"):
+    if (
+        not isinstance(payments, dict)
+        or not isinstance(refunds, dict)
+        or refunds.get("transactions")
+    ):
         return None
     transactions = payments.get("transactions", [])
-    if not isinstance(transactions, list) or any(not isinstance(tx, dict) for tx in transactions):
+    if not isinstance(transactions, list) or any(
+        not isinstance(tx, dict) for tx in transactions
+    ):
         return None
     legitimate = [
-        tx for tx in transactions
-        if tx.get("type") == "PAYPAL" and isinstance(tx.get("payment_id"), str) and tx["payment_id"]
+        tx
+        for tx in transactions
+        if tx.get("type") == "PAYPAL"
+        and isinstance(tx.get("payment_id"), str)
+        and tx["payment_id"]
         and isinstance(tx.get("amount"), dict)
         and tx.get("amount", {}).get("currency_code") == order["currency"]
         and cents(tx.get("amount", {}).get("value")) is not None
     ]
     # Refunded invoices and partially paid invoices fail the status check above.
-    if len({tx["payment_id"] for tx in legitimate}) != len(legitimate) or sum(cents(tx["amount"]["value"]) for tx in legitimate) != order["amount_cents"]:
+    if (
+        len({tx["payment_id"] for tx in legitimate}) != len(legitimate)
+        or sum(cents(tx["amount"]["value"]) for tx in legitimate)
+        != order["amount_cents"]
+    ):
         return None
     return ",".join(sorted({tx["payment_id"] for tx in legitimate}))

@@ -4,7 +4,7 @@ from pathlib import Path
 import httpx
 import pytest
 
-from backend import assistant
+from backend.integrations import assistant
 from backend.config import settings
 from scripts.evaluate_assistant import evaluate, score
 from test_workflow import client, auth

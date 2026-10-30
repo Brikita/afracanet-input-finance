@@ -1,4 +1,5 @@
 """Application composition. Feature routes and transaction services own behavior."""
+
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -8,9 +9,20 @@ from sqlalchemy.exc import IntegrityError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from . import db
+from .api import (
+    approvals,
+    catalogue,
+    issues,
+    notifications,
+    orders,
+    payments,
+    reconciliation,
+    sessions,
+    webhooks,
+    workspace,
+)
 from .config import ROOT, settings
-from .paypal import PaymentError
-from .api import approvals, catalogue, issues, notifications, orders, payments, reconciliation, sessions, webhooks, workspace
+from .integrations.paypal import PaymentError
 
 
 @asynccontextmanager
@@ -22,13 +34,29 @@ async def lifespan(app):
 
 app = FastAPI(title="AFRACANet Input Finance", version="0.1.0", lifespan=lifespan)
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.allowed_hosts)
-for routes in (approvals, catalogue, issues, notifications, orders, payments, reconciliation, sessions, webhooks, workspace):
+for routes in (
+    approvals,
+    catalogue,
+    issues,
+    notifications,
+    orders,
+    payments,
+    reconciliation,
+    sessions,
+    webhooks,
+    workspace,
+):
     app.include_router(routes.router)
 
 
 @app.exception_handler(IntegrityError)
 async def database_conflict(request, exc):
-    return JSONResponse(status_code=409, content={"detail": "A concurrent request changed this record. Refresh and retry."})
+    return JSONResponse(
+        status_code=409,
+        content={
+            "detail": "A concurrent request changed this record. Refresh and retry."
+        },
+    )
 
 
 @app.exception_handler(PaymentError)
