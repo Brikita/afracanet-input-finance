@@ -12,6 +12,7 @@ from . import db
 from .api import (
     approvals,
     catalogue,
+    credit_delivery,
     issues,
     notifications,
     orders,
@@ -37,6 +38,7 @@ app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.allowed_hosts)
 for routes in (
     approvals,
     catalogue,
+    credit_delivery,
     issues,
     notifications,
     orders,

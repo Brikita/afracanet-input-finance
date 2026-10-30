@@ -138,6 +138,33 @@ approval_handoffs = Table(
     Column("revocation_reason", Text),
     UniqueConstraint("lender_id", "source_system", "approval_reference"),
 )
+workspace_participants = Table(
+    "workspace_participants",
+    metadata,
+    Column("id", String, primary_key=True),
+    Column("role", String, nullable=False),
+    Column("name", String, nullable=False),
+    Column("source_kind", String, nullable=False),
+    CheckConstraint("role IN ('lender','supplier')"),
+)
+credit_receipts = Table(
+    "credit_delivery_receipts",
+    metadata,
+    Column("event_id", String, primary_key=True),
+    Column("lender_id", String, nullable=False),
+    Column("body_hash", String, nullable=False),
+    Column("response", JSON, nullable=False),
+    Column("received_at", String, nullable=False),
+)
+credit_revocations = Table(
+    "credit_revocations",
+    metadata,
+    Column("lender_id", String, primary_key=True),
+    Column("approval_reference", String, primary_key=True),
+    Column("reason", Text, nullable=False),
+    Column("officer_id", String, nullable=False),
+    Column("received_at", String, nullable=False),
+)
 issues = Table(
     "order_issues",
     metadata,

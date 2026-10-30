@@ -23,6 +23,17 @@ def participant(persona):
     if persona in PERSONAS and PERSONAS[persona][0] != "farmer":
         return PERSONAS[persona]
     with db.engine.connect() as conn:
+        organization = (
+            conn.execute(
+                select(db.workspace_participants).where(
+                    db.workspace_participants.c.id == persona
+                )
+            )
+            .mappings()
+            .first()
+        )
+        if organization:
+            return organization["role"], organization["name"]
         name = conn.execute(
             select(db.farmers.c.name).where(db.farmers.c.id == persona)
         ).scalar_one_or_none()
@@ -39,11 +50,24 @@ def participant_choices(user):
             .mappings()
             .all()
         )
-    return [
-        {"id": key, "name": value[1]}
-        for key, value in PERSONAS.items()
-        if value[0] != "farmer"
-    ] + [dict(row) for row in farmers]
+        organizations = (
+            conn.execute(
+                select(
+                    db.workspace_participants.c.id, db.workspace_participants.c.name
+                ).order_by(db.workspace_participants.c.name)
+            )
+            .mappings()
+            .all()
+        )
+    return (
+        [
+            {"id": key, "name": value[1]}
+            for key, value in PERSONAS.items()
+            if value[0] != "farmer"
+        ]
+        + [dict(row) for row in organizations]
+        + [dict(row) for row in farmers]
+    )
 
 
 def login(body: Login):

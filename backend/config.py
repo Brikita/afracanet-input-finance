@@ -11,6 +11,7 @@ class Settings:
     database_url = os.getenv(
         "DATABASE_URL", f"sqlite:///{ROOT / 'data' / 'afracanet.db'}"
     )
+    credit_trust_file = os.getenv("CREDIT_TRUST_FILE", "")
     payment_mode = os.getenv("PAYMENT_MODE", "mock")
     ai_mode = os.getenv("AI_MODE", "demo")
     access_code = os.getenv("DEMO_ACCESS_CODE", "afracanet-demo")

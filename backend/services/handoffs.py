@@ -186,76 +186,86 @@ def apply(body, user):
     decision = body.handoff
     check_lender(decision, user)
     with db.engine.begin() as conn:
-        mapping, farmer = mapped_farmer(conn, decision, user, lock=True)
-        existing = existing_handoff(conn, decision, user)
-        # Exact retries never restore an old limit, extend expiry, or undo revocation.
-        if existing:
-            return {
-                "record": dict(existing),
-                "already_recorded": True,
-                "message": "Decision already recorded. The current allocation was not changed.",
-            }
-        if body.allocation_revision != allocation_revision(farmer):
-            raise HTTPException(
-                409, "The allocation changed after preview. Review the decision again."
-            )
-        validate_current(conn, decision, farmer)
-        changed = conn.execute(
-            update(db.farmers)
-            .where(
-                db.farmers.c.id == farmer["id"],
-                db.farmers.c.lender_id == user["subject"],
-                db.farmers.c.limit_cents == farmer["limit_cents"],
-                db.farmers.c.approval_reference == farmer["approval_reference"],
-                db.farmers.c.expires_at == farmer["expires_at"],
-                db.farmers.c.reserved_cents + db.farmers.c.spent_cents
-                <= decision.limit_cents,
-            )
-            .values(
-                limit_cents=decision.limit_cents,
-                expires_at=decision.expires_at.isoformat(),
-                approval_reference=decision.approval_reference,
-            )
-        )
-        if changed.rowcount != 1:
-            raise HTTPException(
-                409, "Credit changed during confirmation. Preview and retry."
-            )
-        values = {
-            "id": str(uuid.uuid4()),
-            "mapping_id": mapping["id"],
-            "lender_id": user["subject"],
-            "farmer_id": decision.farmer_id,
-            "source_system": decision.source_system,
-            "approval_reference": decision.approval_reference,
-            "approved_at": decision.approved_at.isoformat(),
-            "payload_hash": payload_hash(decision),
-            "payload": decision.model_dump(mode="json"),
-            "transfer_method": "manual_lender_review",
-            "recorded_by": user["subject"],
-            "received_at": db.now(),
-            "revoked_at": None,
-            "revoked_by": None,
-            "revocation_reason": None,
-        }
-        conn.execute(insert(db.approval_handoffs).values(**values))
-        log(
-            conn,
-            user,
-            "APPROVAL_HANDOFF_RECORDED",
-            {
-                "handoff_id": values["id"],
-                "approval_reference": decision.approval_reference,
-                "farmer_id": decision.farmer_id,
-                "source_authentication": "not_verified",
-                "transfer_method": values["transfer_method"],
-            },
-        )
+        return apply_in_transaction(conn, body, user)
+
+
+def apply_in_transaction(conn, body, user, *, authenticated=False):
+    decision = body.handoff
+    check_lender(decision, user)
+    mapping, farmer = mapped_farmer(conn, decision, user, lock=True)
+    existing = existing_handoff(conn, decision, user)
+    # Exact retries never restore an old limit, extend expiry, or undo revocation.
+    if existing:
         return {
-            "record": values,
-            "already_recorded": False,
-            "message": "Lender-reviewed decision recorded. Reserved and paid credit were preserved.",
+            "record": dict(existing),
+            "already_recorded": True,
+            "message": "Decision already recorded. The current allocation was not changed.",
         }
+    if not authenticated and body.allocation_revision != allocation_revision(farmer):
+        raise HTTPException(
+            409, "The allocation changed after preview. Review the decision again."
+        )
+    validate_current(conn, decision, farmer)
+    changed = conn.execute(
+        update(db.farmers)
+        .where(
+            db.farmers.c.id == farmer["id"],
+            db.farmers.c.lender_id == user["subject"],
+            db.farmers.c.limit_cents == farmer["limit_cents"],
+            db.farmers.c.approval_reference == farmer["approval_reference"],
+            db.farmers.c.expires_at == farmer["expires_at"],
+            db.farmers.c.reserved_cents + db.farmers.c.spent_cents
+            <= decision.limit_cents,
+        )
+        .values(
+            limit_cents=decision.limit_cents,
+            expires_at=decision.expires_at.isoformat(),
+            approval_reference=decision.approval_reference,
+        )
+    )
+    if changed.rowcount != 1:
+        raise HTTPException(
+            409, "Credit changed during confirmation. Preview and retry."
+        )
+    values = {
+        "id": str(uuid.uuid4()),
+        "mapping_id": mapping["id"],
+        "lender_id": user["subject"],
+        "farmer_id": decision.farmer_id,
+        "source_system": decision.source_system,
+        "approval_reference": decision.approval_reference,
+        "approved_at": decision.approved_at.isoformat(),
+        "payload_hash": payload_hash(decision),
+        "payload": decision.model_dump(mode="json"),
+        "transfer_method": "signed_lender_decision"
+        if authenticated
+        else "manual_lender_review",
+        "recorded_by": user["subject"],
+        "received_at": db.now(),
+        "revoked_at": None,
+        "revoked_by": None,
+        "revocation_reason": None,
+    }
+    conn.execute(insert(db.approval_handoffs).values(**values))
+    log(
+        conn,
+        user,
+        "APPROVAL_HANDOFF_RECORDED",
+        {
+            "handoff_id": values["id"],
+            "approval_reference": decision.approval_reference,
+            "farmer_id": decision.farmer_id,
+            "source_authentication": "signed_service"
+            if authenticated
+            else "not_verified",
+            "transfer_method": values["transfer_method"],
+        },
+    )
+    return {
+        "record": values,
+        "already_recorded": False,
+        "message": "Lender-reviewed decision recorded. Reserved and paid credit were preserved.",
+    }
 
 
 def history(user):
@@ -295,59 +305,63 @@ def allocation_trace(conn, farmer_id):
     if linked:
         detail += (
             f" Reviewed handoff: {linked['id']}; source application: "
-            f"{linked['payload']['source_application_id']}; manual lender review; source file not independently authenticated."
+            f"{linked['payload']['source_application_id']}; transfer method: {linked['transfer_method']}."
         )
     return detail
 
 
 def revoke(handoff_id, body, user):
     with db.engine.begin() as conn:
-        row = (
-            conn.execute(
-                select(db.approval_handoffs).where(
-                    db.approval_handoffs.c.id == handoff_id,
-                    db.approval_handoffs.c.lender_id == user["subject"],
-                )
-            )
-            .mappings()
-            .first()
-        )
-        if not row:
-            raise HTTPException(404, "Decision not found in your lender workspace.")
-        # Use the same farmer lock order as apply; re-read the revocation after it.
-        conn.execute(
-            select(db.farmers.c.id)
-            .where(db.farmers.c.id == row["farmer_id"])
-            .with_for_update()
-        ).first()
-        changed = conn.execute(
-            update(db.approval_handoffs)
-            .where(
-                db.approval_handoffs.c.id == handoff_id,
-                db.approval_handoffs.c.revoked_at.is_(None),
-            )
-            .values(
-                revoked_at=db.now(),
-                revoked_by=user["subject"],
-                revocation_reason=body.reason,
-            )
-        )
-        if changed.rowcount == 1:
-            conn.execute(
-                update(db.farmers)
-                .where(
-                    db.farmers.c.id == row["farmer_id"],
-                    db.farmers.c.lender_id == user["subject"],
-                    db.farmers.c.approval_reference == row["approval_reference"],
-                )
-                .values(expires_at=db.now())
-            )
-            log(
-                conn,
-                user,
-                "APPROVAL_HANDOFF_REVOKED",
-                {"handoff_id": handoff_id, "reason": body.reason},
-            )
+        revoke_in_transaction(conn, handoff_id, body, user)
     return {
         "message": "Decision revoked. New requests and further approvals/invoicing are blocked for its current allocation. Existing invoices and payments need separate reconciliation; paid credit and collection records are preserved."
     }
+
+
+def revoke_in_transaction(conn, handoff_id, body, user):
+    row = (
+        conn.execute(
+            select(db.approval_handoffs).where(
+                db.approval_handoffs.c.id == handoff_id,
+                db.approval_handoffs.c.lender_id == user["subject"],
+            )
+        )
+        .mappings()
+        .first()
+    )
+    if not row:
+        raise HTTPException(404, "Decision not found in your lender workspace.")
+    # Use the same farmer lock order as apply; re-read the revocation after it.
+    conn.execute(
+        select(db.farmers.c.id)
+        .where(db.farmers.c.id == row["farmer_id"])
+        .with_for_update()
+    ).first()
+    changed = conn.execute(
+        update(db.approval_handoffs)
+        .where(
+            db.approval_handoffs.c.id == handoff_id,
+            db.approval_handoffs.c.revoked_at.is_(None),
+        )
+        .values(
+            revoked_at=db.now(),
+            revoked_by=user["subject"],
+            revocation_reason=body.reason,
+        )
+    )
+    if changed.rowcount == 1:
+        conn.execute(
+            update(db.farmers)
+            .where(
+                db.farmers.c.id == row["farmer_id"],
+                db.farmers.c.lender_id == user["subject"],
+                db.farmers.c.approval_reference == row["approval_reference"],
+            )
+            .values(expires_at=db.now())
+        )
+        log(
+            conn,
+            user,
+            "APPROVAL_HANDOFF_REVOKED",
+            {"handoff_id": handoff_id, "reason": body.reason},
+        )
