@@ -4,3 +4,10 @@ __pycache__/
 /node_modules/
 .wrangler/
 .output/
+data/
+.pytest_cache/
+*.db
+*.sqlite
+*.log
+.env.*
+!.env.example
