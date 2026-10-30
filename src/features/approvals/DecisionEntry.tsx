@@ -21,6 +21,7 @@ export function DecisionEntry({
   onEdit,
   onError,
 }: Props) {
+  const names = new Map(farmers.map((farmer) => [farmer.id, farmer.name]))
   const [form, setForm] = useState({
     mapping: '',
     application: '',
@@ -85,9 +86,8 @@ export function DecisionEntry({
             <option value="">Choose a confirmed link</option>
             {mappings.map((mapping) => (
               <option key={mapping.id} value={mapping.id}>
-                {farmers.find((farmer) => farmer.id === mapping.farmer_id)
-                  ?.name ?? mapping.farmer_id}{' '}
-                · {mapping.source_farmer_id}
+                {names.get(mapping.farmer_id) ?? mapping.farmer_id} ·{' '}
+                {mapping.source_farmer_id}
               </option>
             ))}
           </select>

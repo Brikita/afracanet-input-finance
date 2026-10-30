@@ -186,3 +186,17 @@
   line-height: 1.7;
   overflow-wrap: anywhere;
 }
+
+.management-search {
+  padding: 0 22px;
+  align-items: center;
+}
+.management-search label {
+  display: grid;
+  gap: 7px;
+  flex: 1 1 220px;
+}
+.management-search .management-buttons {
+  align-items: center;
+  margin: 0;
+}

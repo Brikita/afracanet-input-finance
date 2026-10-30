@@ -18,7 +18,11 @@ export function useWorkspace() {
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
   const [busy, setBusy] = useState(false)
-  const [tab, setTab] = useState('overview')
+  const [tab, setTab] = useState(
+    new URLSearchParams(window.location.search).has('approval')
+      ? 'people'
+      : 'overview',
+  )
   const [selected, setSelected] = useState<number | null>(null)
 
   const [choices, setChoices] =
@@ -77,7 +81,11 @@ export function useWorkspace() {
       setState(null)
       setSelected(null)
 
-      setTab('overview')
+      setTab(
+        new URLSearchParams(window.location.search).has('approval')
+          ? 'people'
+          : 'overview',
+      )
       setNotice('')
     } catch (err) {
       activeToken.current = session?.token ?? null

@@ -50,8 +50,8 @@ export function DecisionHistory({
     <section className="handoff-step" aria-labelledby="handoff-history-heading">
       <h3 id="handoff-history-heading">Recorded lender decisions</h3>
       <p className="muted">
-        Latest 100 decisions in this lender workspace. These are manually
-        reviewed records; the source file is not independently authenticated.
+        Latest 100 decisions in this lender workspace. Each record identifies
+        whether it arrived through signed delivery or manual lender review.
       </p>
       {records.length === 0 && (
         <p className="fine-print">
@@ -66,7 +66,14 @@ export function DecisionHistory({
         const expired =
           new Date(record.payload.expires_at).getTime() <= Date.now()
         return (
-          <details className="handoff-history-record" key={record.id}>
+          <details
+            className="handoff-history-record"
+            key={record.id}
+            open={
+              new URLSearchParams(window.location.search).get('approval') ===
+                record.approval_reference || undefined
+            }
+          >
             <summary>
               <strong>{record.approval_reference}</strong>
               <span>
@@ -85,6 +92,14 @@ export function DecisionHistory({
                 <dd>{record.farmer_id}</dd>
               </div>
               <div>
+                <dt>Transfer method</dt>
+                <dd>
+                  {record.transfer_method === 'signed_lender_decision'
+                    ? 'Signed lender service'
+                    : 'Manual review · source file not authenticated'}
+                </dd>
+              </div>
+              <div>
                 <dt>Source application</dt>
                 <dd>{record.payload.source_application_id}</dd>
               </div>
@@ -97,15 +112,19 @@ export function DecisionHistory({
                 <dd>{money(record.payload.limit_cents)} USD</dd>
               </div>
               <div>
-                <dt>Provenance (file claim)</dt>
+                <dt>Evidence provenance</dt>
                 <dd>{record.payload.data_provenance}</dd>
               </div>
               <div>
-                <dt>Source officer (file claim)</dt>
+                <dt>Source officer</dt>
                 <dd>{record.payload.approved_by}</dd>
               </div>
               <div>
-                <dt>Confirmed here by</dt>
+                <dt>
+                  {record.transfer_method === 'signed_lender_decision'
+                    ? 'Receiving lender'
+                    : 'Confirmed here by'}
+                </dt>
                 <dd>{record.recorded_by}</dd>
               </div>
               <div>

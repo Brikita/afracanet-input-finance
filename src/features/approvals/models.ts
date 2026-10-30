@@ -37,7 +37,7 @@ export type HandoffRecord = {
   farmer_id: string
   approval_reference: string
   payload: Decision
-  transfer_method: 'manual_lender_review'
+  transfer_method: 'manual_lender_review' | 'signed_lender_decision'
   recorded_by: string
   received_at: string
   revoked_at: string | null

@@ -23,6 +23,10 @@ export function ApprovalHandoff({
   const [mappings, setMappings] = useState<FarmerMapping[]>([])
   const [records, setRecords] = useState<HandoffRecord[]>([])
   const [loading, setLoading] = useState(true)
+  const reference = new URLSearchParams(window.location.search).get('approval')
+  const historyPath =
+    '/approval-handoffs' +
+    (reference ? '?reference=' + encodeURIComponent(reference) : '')
   const [loadError, setLoadError] = useState('')
   const requester = useRef(request)
   requester.current = request
@@ -33,7 +37,7 @@ export function ApprovalHandoff({
     try {
       const [mapped, history] = await Promise.all([
         requester.current<FarmerMapping[]>('/approval-mappings'),
-        requester.current<HandoffRecord[]>('/approval-handoffs'),
+        requester.current<HandoffRecord[]>(historyPath),
       ])
       setMappings(mapped)
       setRecords(history)
@@ -48,7 +52,7 @@ export function ApprovalHandoff({
     let active = true
     Promise.all([
       requester.current<FarmerMapping[]>('/approval-mappings'),
-      requester.current<HandoffRecord[]>('/approval-handoffs'),
+      requester.current<HandoffRecord[]>(historyPath),
     ])
       .then(([mapped, history]) => {
         if (active) {
@@ -75,23 +79,22 @@ export function ApprovalHandoff({
     <div className="management-panel handoff-workspace">
       <div className="management-heading">
         <div>
-          <h3>Link a credit decision</h3>
+          <h3>Credit decisions</h3>
           <p className="muted">
-            Confirm the farmer, review the lender decision, then authorize its
-            allocation here.
+            Follow a signed lender decision or review a manual handoff.
           </p>
         </div>
         <Link2 size={19} aria-hidden="true" />
       </div>
       <p className="handoff-disclosure">
-        Manual lender review. Automatic transfer from credit intelligence is not
-        connected. A file does not authenticate its sender or authorize credit
-        by itself.
+        Signed service deliveries record authorized decisions automatically.
+        Manual files require separate lender review and do not authenticate
+        their sender.
       </p>
       <p className="fine-print">
-        Signed-in lender: {lenderId}. This prototype uses demonstration
-        sessions; the source officer identity remains a claim in the reviewed
-        file.
+        Signed-in lender: {lenderId}. This workspace uses demonstration
+        sessions. Signed records identify the sending lender service; manual
+        files retain their source officer as a claim.
       </p>
       {loadError && (
         <div className="alert error" role="alert">
@@ -106,6 +109,23 @@ export function ApprovalHandoff({
           Loading farmer links and decisions…
         </p>
       )}
+      <DecisionHistory
+        records={records}
+        farmers={farmers}
+        request={request}
+        onSaved={saved}
+      />
+      <p>
+        <a
+          className="text-button"
+          href={
+            import.meta.env.VITE_CREDIT_WORKSPACE_URL ||
+            'http://127.0.0.1:5174/'
+          }
+        >
+          Open credit intelligence
+        </a>
+      </p>
       <MappingForm
         farmers={farmers}
         mappings={mappings}
@@ -116,12 +136,6 @@ export function ApprovalHandoff({
         farmers={farmers}
         mappings={mappings}
         lenderId={lenderId}
-        request={request}
-        onSaved={saved}
-      />
-      <DecisionHistory
-        records={records}
-        farmers={farmers}
         request={request}
         onSaved={saved}
       />

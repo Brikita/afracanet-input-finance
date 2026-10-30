@@ -15,6 +15,6 @@ with tempfile.TemporaryDirectory(prefix="afracanet-ui-") as directory:
     }
     result = subprocess.run([
         sys.executable, "-m", "uvicorn", "backend.main:app",
-        "--host", "127.0.0.1", "--port", "8001",
+        "--host", "127.0.0.1", "--port", os.getenv("UI_TEST_API_PORT", "8001"),
     ], env=environment)
     sys.exit(result.returncode)

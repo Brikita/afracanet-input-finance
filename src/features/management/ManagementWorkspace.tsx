@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { State } from '../../domain/models'
 import type { Requester } from '../../lib/api'
 import { ApprovalImport } from '../approvals/ApprovalImport'
@@ -17,16 +18,26 @@ export function ManagementWorkspace({
   onParticipantsChanged: () => Promise<void>
 }) {
   const role = state.user.role
+  const [query, setQuery] = useState('')
+  const [page, setPage] = useState(0)
+  const matches = state.farmers.filter((f) =>
+    [f.id, f.name, f.approval_reference].some((value) =>
+      value?.toLowerCase().includes(query.toLowerCase()),
+    ),
+  )
+  const lastPage = Math.max(0, Math.ceil(matches.length / 50) - 1)
+  const currentPage = Math.min(page, lastPage)
+  const visibleFarmers = matches.slice(currentPage * 50, currentPage * 50 + 50)
   return (
     <section className="panel transaction-panel">
       <div className="section-title">
         <div>
           <h2>
-            {role === 'lender' ? 'Pre-approved farmers' : 'Approved catalogue'}
+            {role === 'lender' ? 'Farmer credit records' : 'Approved catalogue'}
           </h2>
           <p className="muted">
             {role === 'lender'
-              ? 'Approvals supplied by the lender. Credit scoring is external.'
+              ? 'Profiles and lender-authorized allocations. Credit intelligence is managed separately.'
               : 'Illustrative inventory and prices. Reservations prevent concurrent over-ordering.'}
           </p>
         </div>
@@ -57,6 +68,44 @@ export function ManagementWorkspace({
           onSaved={onSaved}
         />
       )}
+      {role === 'lender' && (
+        <div className="management-heading management-search">
+          <label className="input-label">
+            Find farmer record
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value)
+                setPage(0)
+              }}
+              placeholder="Name, farmer ID, or approval reference"
+            />
+          </label>
+          <p className="muted">
+            {matches.length.toLocaleString()} matching records · 50 per page
+          </p>
+          <div className="management-buttons">
+            <button
+              className="button secondary"
+              disabled={currentPage === 0}
+              onClick={() => setPage(currentPage - 1)}
+            >
+              Previous
+            </button>
+            <span>
+              Page {currentPage + 1} of {lastPage + 1}
+            </span>
+            <button
+              className="button secondary"
+              disabled={currentPage === lastPage}
+              onClick={() => setPage(currentPage + 1)}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
       <div className="table-scroll">
         <table className="management-table">
           {role === 'lender' ? (
@@ -72,7 +121,7 @@ export function ManagementWorkspace({
                 </tr>
               </thead>
               <tbody>
-                {state.farmers.map((f) => (
+                {visibleFarmers.map((f) => (
                   <tr key={f.id}>
                     <td>
                       <strong>{f.name}</strong>
