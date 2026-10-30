@@ -9,7 +9,7 @@ app = Flask(__name__)
 # --- Africa's Talking Initialization ---
 # The username MUST be 'sandbox' for testing
 AT_USERNAME = "sandbox"
-AT_API_KEY = "REMOVED_HISTORICAL_CREDENTIAL"
+AT_API_KEY = os.getenv("AFRICASTALKING_API_KEY", "")
 
 africastalking.initialize(AT_USERNAME, AT_API_KEY)
 sms = africastalking.SMS
