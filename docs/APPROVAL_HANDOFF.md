@@ -1,9 +1,10 @@
 # Reviewed lender decision handoff
 
-Implemented 27 October 2026 in the input-finance module. This is a **manual,
-lender-reviewed bridge**. Automatic export from the credit-intelligence portal,
-authenticated service-to-service transfer, and production officer identities
-remain outstanding. A prepared file is data, not a trusted sender or approval.
+This document describes the **manual lender-reviewed fallback**, implemented
+27 October 2026. A separate signed service channel was added on 30 October;
+see [the connected-platform report](CONNECTED_PLATFORM_2026-10-30.md).
+Manual files do not authenticate their sender. Production identity integration
+remains separate from the local prototype accounts.
 
 ## Operator journey
 

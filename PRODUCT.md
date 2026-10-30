@@ -26,10 +26,13 @@ Commercial differentiation and impact remain hypotheses to validate with partner
 
 ## Operating Context
 
-The credit-intelligence and input-finance repositories remain modular. A trusted
-automated approval handoff is planned; current CSV allocation import is manual.
-The execution app uses React/TypeScript, FastAPI, and SQLAlchemy. Initial
-demonstrations use fictional participants and illustrative USD allocations.
+The credit-intelligence and input-finance repositories remain modular. Individual
+local officer decisions now pass through a signed automatic handoff with durable
+delivery receipts, explicit farmer mappings, retries and revocation. Manual
+review and CSV import remain separate fallback paths. The execution app uses
+React/TypeScript, FastAPI and SQLAlchemy. Receiving browser sessions remain
+labelled shared-code demonstrations; production identity integration is further
+work. Demonstrations use fictional participants and illustrative USD allocations.
 
 ## Capabilities and Constraints
 
@@ -52,11 +55,17 @@ mobile layouts prioritize the work queue. See docs/WATERLINE.md.
 
 ## Evidence on Hand
 
-Working execution code and automated journey checks; a small labelled replay
-pack in datasets/replay; attributed public weather snapshots in datasets/public.
-There is no partner dataset, proven customer impact, or validated predictive
-credit model available for claims. Existing upstream example graph data remains
-illustrative. Larger synthetic generation is planned.
+Working execution code, signed connection checks and isolated browser journeys;
+a labelled 10,000-farmer, 24-month authored history loaded into isolated Neo4j and
+PostgreSQL stores, with matching farmer/lender IDs across both working modules.
+The connected graph has 928,163 nodes and 1,886,728 relationships, including
+60 attributed public reanalysis records attached only to reference regions.
+Historical replay approvals/payments do not activate execution credit or establish
+provider payment evidence. Active imported profiles start at zero credit.
+There is no partner dataset, proven customer impact or validated predictive
+credit model available for claims. GDS has not been run on this development pack;
+provider credentials and live integration verification remain outstanding.
+See docs/CONNECTED_PLATFORM_2026-10-30.md and datasets/reports/connected-v1-*.
 
 ## Product Principles
 

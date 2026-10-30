@@ -15,18 +15,13 @@ one product story. This module starts with lender-approved credit and has no
 underwriting, Neo4j, or GDS runtime dependency. Its implementation was developed
 independently for the execution workflow.
 
-**Integration status:** a reviewed decision handoff now retains explicit farmer
-mapping, source application, officer/provenance claims, lender confirmation, and
-revocation history. It preserves reserved/paid credit and protects against replay
-or stale updates. See [the handoff workflow and API](docs/APPROVAL_HANDOFF.md).
-CSV import remains available for unlinked allocations. Automatic transfer from
-the AI portal is not implemented.
-The reviewed AI approval endpoint does not yet provide the amount, expiry, and
-authorization needed for that transfer. See the [unified platform brief](docs/PLATFORM.md)
-for the product narrative, module boundary, and concrete connection plan.
-For the current backlog and data-sourcing options, see the
-[26 October status and data report](docs/STATUS_AND_DATA_PLAN_2026-10-26.md)
-and the [public-context/labelled-replay pack](datasets/README.md).
+**Integration status:** the credit module now persists applications and individual
+local officer decisions, then sends signed, retryable approvals and revocations.
+This module verifies the sender's configured public key, lender/officer scope,
+explicit farmer mapping and decision terms before activating credit. Manual
+review and CSV import remain distinct fallback paths. See the
+[connected-platform report](docs/CONNECTED_PLATFORM_2026-10-30.md) for setup,
+verification and remaining work, and the [manual handoff reference](docs/APPROVAL_HANDOFF.md).
 
 The [redesign and restructuring brief](docs/REDESIGN_AND_RESTRUCTURE.md) tracks
 the new UX work. Frontend domain/transport/feature modules and backend
@@ -43,7 +38,9 @@ and [backend layout](backend/README.md).
 For larger isolated graph and relational scenarios, use the
 [scalable synthetic generator](datasets/SYNTHETIC.md). The development profile
 contains 10,000 farmers and 24 months of authored history. Generated database and
-CSV artifacts remain outside Git and are not automatically loaded into the apps.
+CSV artifacts remain outside Git. The local connected development setup now loads
+the pack into isolated Neo4j and PostgreSQL stores, while starting active
+execution credit at zero; fresh checkouts still use the small demo until explicitly loaded.
 
 ## Current status
 
