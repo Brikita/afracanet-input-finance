@@ -39,8 +39,8 @@ def apply(body: handoff_contracts.HandoffApply, user=Depends(lender)):
 
 
 @router.get("/approval-handoffs")
-def history(user=Depends(lender)):
-    return handoffs.history(user)
+def history(reference: str | None = None, user=Depends(lender)):
+    return handoffs.history(user, reference)
 
 
 @router.post("/approval-handoffs/{handoff_id}/revoke")

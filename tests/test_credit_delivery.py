@@ -82,3 +82,11 @@ def test_concurrent_deliveries_record_one_handoff(client, channel):
 def test_channel_disabled_without_trust_file(client, monkeypatch):
     monkeypatch.setattr(settings, "credit_trust_file", "")
     assert client.post("/api/credit-deliveries", json={}).status_code == 503
+
+
+def test_manual_fallback_cannot_restore_a_known_revoked_source_decision(client, channel):
+    from test_handoffs import preview
+    lender, event, send = channel
+    revoke = {**event, "event_id": str(uuid.uuid4()), "kind": "revocation", "handoff": None, "reason": "Lender withdrew authorization"}
+    assert send(revoke).status_code == 200
+    assert preview(client, lender, event["handoff"]).status_code == 409

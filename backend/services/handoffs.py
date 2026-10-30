@@ -6,7 +6,7 @@ import uuid
 from datetime import datetime, timezone
 
 from fastapi import HTTPException
-from sqlalchemy import insert, select, update
+from sqlalchemy import insert, select, text, update
 
 from .. import db
 from .audit import log
@@ -79,6 +79,16 @@ def existing_handoff(conn, body, user):
 
 
 def validate_current(conn, body, farmer):
+    revoked = conn.execute(
+        select(db.credit_revocations.c.approval_reference).where(
+            db.credit_revocations.c.lender_id == body.lender_id,
+            db.credit_revocations.c.approval_reference == body.approval_reference,
+        )
+    ).first()
+    if revoked:
+        raise HTTPException(
+            409, "This source decision was revoked. Obtain a new lender decision."
+        )
     now = datetime.now(timezone.utc)
     if body.approved_at > now or body.expires_at <= now:
         raise HTTPException(422, "Use an existing lender decision and a future expiry.")
@@ -189,9 +199,25 @@ def apply(body, user):
         return apply_in_transaction(conn, body, user)
 
 
+def lock_decision_reference(conn, lender_id, reference):
+    if conn.dialect.name == "postgresql":
+        lock_id = int.from_bytes(
+            hashlib.sha256((lender_id + "\0" + reference).encode()).digest()[:8],
+            "big",
+            signed=True,
+        )
+        conn.execute(text("SELECT pg_advisory_xact_lock(:key)"), {"key": lock_id})
+    elif (
+        conn.dialect.name == "sqlite"
+        and not conn.connection.driver_connection.in_transaction
+    ):
+        conn.exec_driver_sql("BEGIN IMMEDIATE")
+
+
 def apply_in_transaction(conn, body, user, *, authenticated=False):
     decision = body.handoff
     check_lender(decision, user)
+    lock_decision_reference(conn, decision.lender_id, decision.approval_reference)
     mapping, farmer = mapped_farmer(conn, decision, user, lock=True)
     existing = existing_handoff(conn, decision, user)
     # Exact retries never restore an old limit, extend expiry, or undo revocation.
@@ -268,7 +294,7 @@ def apply_in_transaction(conn, body, user, *, authenticated=False):
     }
 
 
-def history(user):
+def history(user, reference=None):
     with db.engine.connect() as conn:
         return [
             dict(row)
@@ -276,6 +302,11 @@ def history(user):
                 select(db.approval_handoffs)
                 .where(
                     db.approval_handoffs.c.lender_id == user["subject"],
+                    *(
+                        [db.approval_handoffs.c.approval_reference == reference]
+                        if reference
+                        else []
+                    ),
                 )
                 .order_by(db.approval_handoffs.c.received_at.desc())
                 .limit(100)
