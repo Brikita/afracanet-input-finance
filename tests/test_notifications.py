@@ -171,7 +171,7 @@ def test_recovered_unpaid_cancellation_queues_a_farmer_update(client, monkeypatc
     order_id, farmer, lender, supplier = stranded(client, monkeypatch)
     remote = remote_invoice(order_id, "CANCELLED")
     remote["due_amount"] = {"currency_code": "USD", "value": "90.00"}
-    monkeypatch.setattr("backend.main.PayPal.get", lambda *args: remote)
+    monkeypatch.setattr("backend.paypal.PayPal.get", lambda *args: remote)
     assert client.post(f"/api/orders/{order_id}/recover-invoice", headers=supplier, json={}).status_code == 200
     notifications.dispatch_pending()
     messages = client.get("/api/sms", headers=farmer).json()["messages"]
