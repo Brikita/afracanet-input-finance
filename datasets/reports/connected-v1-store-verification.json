@@ -1,0 +1,34 @@
+{
+  "result": "passed",
+  "farmer_count": 10000,
+  "farmer_lender_id_sha256": {
+    "replay": "6a6828b2140ecc13fd321a99da288100850fa777f24e7fc87b2c597691c50e4a",
+    "execution": "6a6828b2140ecc13fd321a99da288100850fa777f24e7fc87b2c597691c50e4a",
+    "workflow": "6a6828b2140ecc13fd321a99da288100850fa777f24e7fc87b2c597691c50e4a",
+    "graph": "6a6828b2140ecc13fd321a99da288100850fa777f24e7fc87b2c597691c50e4a"
+  },
+  "products_verified": 60,
+  "inventory_rows_verified": 60,
+  "graph_nodes": 928163,
+  "graph_relationships": 1886728,
+  "public_weather_records": 60,
+  "historical_loans_minor_KES": {
+    "principal": 52610400000,
+    "repaid": 49963800000,
+    "outstanding": 2646600000
+  },
+  "initial_execution_balances_minor_USD": {
+    "farmers": 10000,
+    "limit_cents": 0,
+    "reserved_cents": 0,
+    "spent_cents": 0
+  },
+  "replay_reader_has_no_insert_permission": true,
+  "graph_query_benchmark": {
+    "samples": 50,
+    "median_ms": 14.81,
+    "p95_ms": 88.98,
+    "scope": "Local indexed farmer neighborhood queries; no production throughput claim."
+  },
+  "gds_algorithms_run": false
+}

@@ -1,0 +1,12 @@
+{
+  "result": "passed",
+  "modules": 2,
+  "signed_deliveries": 2,
+  "lost_acknowledgment_retry": "passed",
+  "duplicate_allocations": 0,
+  "unpaid_collection_blocked": true,
+  "revocation_blocks_new_orders": true,
+  "paid_collection_preserved": true,
+  "payment_mode": "explicit_simulation",
+  "real_provider_calls": 0
+}

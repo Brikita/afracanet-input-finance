@@ -1,0 +1,28 @@
+{
+  "source_kind": "synthetic_replay",
+  "cases": {
+    "PENDING": 5000,
+    "REJECTED": 2500,
+    "REPLAY_APPROVED": 2500
+  },
+  "inventory_products": 60,
+  "boundary": "Current review cohorts supplement historical approvals. Historical replay payments are not provider evidence. Active execution starts with zero credit and fresh stock.",
+  "base_manifest_sha256": "327a8d7381c41861d1b0da2fa095a0000274663af87aceba4e9fb0d6d0a76cb4",
+  "files": [
+    {
+      "file": "workflow-nodes.csv",
+      "bytes": 2435352,
+      "sha256": "4f9b67a2a6cf1bb3fd1ca47a3cedfd8d76526b57158c414f18c6936e19f890cc"
+    },
+    {
+      "file": "workflow-relationships.csv",
+      "bytes": 829182,
+      "sha256": "e3b5130bb865936064e35c8e58be3c131459228a2fae0155f98f89240e091ff0"
+    },
+    {
+      "file": "workflow.sqlite",
+      "bytes": 5672960,
+      "sha256": "00ac7be8b3bef6f55bc1226ece39674dd68f13e19704b09511b5c44549351400"
+    }
+  ]
+}

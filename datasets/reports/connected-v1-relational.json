@@ -1,0 +1,35 @@
+{
+  "counts": {
+    "entities": 918043,
+    "relationships": 1876548,
+    "loans": 12496,
+    "installments": 74976,
+    "ledger": 784656,
+    "allocations": 10000,
+    "input_orders": 10000,
+    "review_cases": 10000,
+    "inventory": 60
+  },
+  "totals_minor_units": {
+    "loans": {
+      "principal_minor": 52610400000,
+      "repaid_minor": 49963800000,
+      "outstanding_minor": 2646600000
+    },
+    "ledger": {
+      "amount_minor": 209387166000
+    },
+    "allocations": {
+      "limit_minor": 216465000,
+      "reserved_minor": 56826000,
+      "spent_minor": 22923000
+    },
+    "input_orders": {
+      "amount_minor": 91156500,
+      "replay_paid_minor": 28597500
+    }
+  },
+  "manifest_sha256": "327a8d7381c41861d1b0da2fa095a0000274663af87aceba4e9fb0d6d0a76cb4",
+  "seconds": 349.93,
+  "source_kind": "synthetic_replay"
+}
