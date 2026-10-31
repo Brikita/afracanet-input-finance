@@ -1,4 +1,4 @@
-# Provider checks — 31 October 2026
+# Provider checks â€” 31 October 2026
 
 The input-finance backend now runs locally with `PAYMENT_MODE=sandbox` and
 `AI_MODE=gemini`. Credentials and the generated workspace access code stay in
@@ -30,10 +30,16 @@ sent; no second invoice was created. Regression coverage includes malformed and
 non-sandbox invoice links.
 
 The configured webhook ID belongs to the same REST app, uses HTTPS, and includes
-`INVOICING.INVOICE.PAID`. Receiving and verifying an actual payment webhook is
-still untested. PayPal lists a matching invoice-paid event; that alone does not
-prove delivery to this app. This payment was confirmed by authenticated manual
-reconciliation, not by a verified incoming webhook.
+`INVOICING.INVOICE.PAID`. A genuine event was subsequently resent by PayPal to
+an isolated callback-only listener and its signature verified through PayPal.
+Repeated delivery preserved one event receipt and one payment effect. The
+payment had already been confirmed by authenticated manual reconciliation;
+the callback check did not initiate a payment or first confirm its state.
+[Sanitized callback evidence](../datasets/reports/paypal-callback-2026-10-31.json).
+
+The temporary Cloudflare URL exposes only `/health` and `/api/webhooks/paypal`.
+It is not stable hosting. See [callback setup](CALLBACK_SETUP.md) before restarting
+or replacing it. Physical collection has not been recorded in this provider fixture.
 
 Use a separate `PAYPAL_INVOICE_PREFIX` for each database sharing a sandbox app.
 Keep a store's prefix unchanged once it has invoices. The empty main local store
@@ -73,14 +79,18 @@ The farmer must confirm the proposed order.
 
 ## Remaining provider evidence
 
-- Verify the signed webhook reaches this application and is processed once.
 - Exercise paid recovery, cancellation and refund scenarios against the provider.
-- Configure/evaluate the credit module's summary separately and verify SMS if retained.
+- Broaden unseen-language request evaluation and independent review of AI summaries.
+- Verify SMS delivery if retained in the demonstration.
+- Replace the ephemeral callback with a stable hosted HTTPS endpoint.
 
-Local regression verification passed: **143 backend tests** and **six Edge browser
+Local regression verification passed: **145 backend tests** and **six Edge browser
 journeys** with isolated test data. The provider runner additionally passed
-actual paid reconciliation and duplicate-effect checks. Incoming webhook
-verification remains a separate outstanding check.
+actual paid reconciliation and duplicate-effect checks. The credit module's
+separate Gemini key produced three schema/citation-checked summaries; that small
+check is not an accuracy study. Its backend passed 16 tests. A connected Edge
+journey verified scoped evidence inspection, explicit lender authorization,
+signed delivery, independent receiving sign-in and revocation.
 
 Provider references: [Gemini pricing](https://ai.google.dev/gemini-api/docs/pricing),
 [PayPal invoicing quickstart](https://developer.paypal.com/api/invoicing),

@@ -1,10 +1,12 @@
 # Submission preparation
 
-Status: **not submitted; external PayPal and AI verification remains outstanding.**
+Status: **not submitted. PayPal sandbox payment, genuine callback and initial
+Gemini checks passed; hosting, video and submission packaging remain.**
+See [the current sprint evidence](SPRINT_RESULTS_2026-10-31.md).
 
 ## Unified project description draft
 
-**AFRACANet AI — from credit intelligence to agricultural inputs.**
+**AFRACANet AI â€” from credit intelligence to agricultural inputs.**
 
 AFRACANet AI brings credit assessment and input finance into one platform for
 farmers, agricultural lenders, and agro-dealers. Its credit-intelligence module
@@ -18,11 +20,13 @@ invoicing, verified payment reconciliation, collection controls, issue resolutio
 and bilingual request-assistance/SMS adapters. The intended combined experience
 connects the application, decision, payment, and handover through shared references.
 
-**Current evidence boundary:** these are two repositories within one product.
-The execution module has a tested local demonstration and a manual approval import.
-Automatic transfer from the AI portal, live provider verification, and a complete
-cross-module demonstration remain outstanding. The default payment/parser/SMS
-modes are simulations; describe the exact demonstrated mode in the final entry.
+**Current evidence boundary:** two repositories form one product. A lender-authorized
+signed service handoff, isolated connected browser journey and synthetic data
+stores are implemented. Actual Gemini request parsing and evidence summaries,
+an actual USD 18 PayPal sandbox payment and a genuine verified callback have
+separate check records. Do not present these separate fixtures as one real
+customer transaction. Collection is tested with labelled simulated payments;
+physical collection in the provider fixture has not been recorded.
 
 ## Existing work and new contributions
 
@@ -49,29 +53,30 @@ whether a change is significant. PayPal must be central to the project. See
 
 ## Demonstration sequence (approximately 2:40)
 
-- 0:00–0:15: One farmer journey, from access to credit to inputs.
-- 0:15–0:40: AI assessment in the officer portal and explicit lender decision.
-- 0:40–0:55: Show the allocation reaching input finance, labelling any manual import.
-- 0:55–1:15: Farmer request and clarification; confirm quote and reserve credit/stock.
-- 1:15–1:55: Dealer invoice; lender pays in PayPal sandbox; reconcile actual payment.
-- 1:55–2:20: Farmer collection code; dealer handover; show linked records and an issue hold.
-- 2:20–2:40: Customer evidence, commercial hypothesis, pilot ask, and new PayPal contribution.
+- 0:00â€“0:15: One farmer journey, from access to credit to inputs.
+- 0:15â€“0:40: AI assessment in the officer portal and explicit lender decision.
+- 0:40â€“0:55: Show the allocation reaching input finance, labelling any manual import.
+- 0:55â€“1:15: Farmer request and clarification; confirm quote and reserve credit/stock.
+- 1:15â€“1:55: Dealer invoice; lender pays in PayPal sandbox; reconcile actual payment.
+- 1:55â€“2:20: Farmer collection code; dealer handover; show linked records and an issue hold.
+- 2:20â€“2:40: Customer evidence, commercial hypothesis, pilot ask, and new PayPal contribution.
 
 ## Checklist
 
 - [x] Input-finance source repository and MIT license.
 - [ ] Prior-work/new-work disclosure and complete source licensing for both modules.
-- [ ] Lender-authorized approval handoff demonstrated across both modules.
+- [x] Lender-authorized approval handoff demonstrated across both modules.
 - [ ] One reproducible combined setup and shared-reference demonstration.
 - [x] Complete local setup instructions and runnable simulated workflow.
 - [x] Explicit distinction between demonstration and external integrations.
-- [ ] Real PayPal sandbox transaction recorded end-to-end.
-- [ ] Actual Gemini behavior and evaluation results.
+- [x] Real PayPal sandbox payment and genuine signed callback verified in an isolated fixture.
+- [x] Actual Gemini behavior and initial development-set/schema-citation results.
 - [ ] Judge instructions tested from a clean checkout.
 - [ ] Hosted demo or verified complete local-run route.
 - [ ] Public YouTube demonstration under three minutes.
 - [ ] Final tools/model disclosure and project description.
 - [ ] Devpost submission completed and verified.
 
-Internal submission target: 30 October 2026. Do not report completion until
+Early eligibility-review target: 5 November 2026 (confirm current organizer details
+before submission). Do not report completion until
 Devpost confirms the submitted entry and all required links are accessible.

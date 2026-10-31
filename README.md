@@ -225,7 +225,7 @@ docs/SUBMISSION.md    Demo outline and submission checklist
 Early eligibility-review submission target: **5 November 2026**
 ([organizer update](https://paypalaihackathon.devpost.com/updates)).
 
-1. Verify actual PayPal webhook delivery and broaden Gemini evaluation.
+1. Replace the verified ephemeral PayPal callback with stable HTTPS hosting and broaden independent AI evaluation.
 2. Verify the SMS sandbox channel and evaluate the workflow with real users.
 3. Validate PostgreSQL, improve hosted access, and prepare a hosted demonstration.
 4. Record the public demonstration, finalize evidence, and submit through Devpost.

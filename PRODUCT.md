@@ -41,7 +41,9 @@ credit/stock reservations, duplicate-event protection, and genuine provider
 payment verification. AI recommendations, lender approvals, payment, and
 collection are separate facts. Label simulation, public context, synthetic replay,
 and provider test modes. Do not claim escrow, guaranteed outcomes, or production
-readiness. Provider credentials and live integration checks remain outstanding.
+readiness. Local PayPal sandbox and Gemini credentials are configured. Actual provider
+checks are recorded in docs/PROVIDER_CHECKS_2026-10-31.md; hosting and broader
+independent evaluation remain outstanding.
 
 ## Brand Commitments
 
@@ -64,7 +66,9 @@ Historical replay approvals/payments do not activate execution credit or establi
 provider payment evidence. Active imported profiles start at zero credit.
 There is no partner dataset, proven customer impact or validated predictive
 credit model available for claims. GDS has not been run on this development pack;
-provider credentials and live integration verification remain outstanding.
+actual provider checks are recorded separately from synthetic replay. A USD 18
+sandbox payment and genuine signed callback were verified in an isolated fixture.
+Physical collection has not been recorded.
 See docs/CONNECTED_PLATFORM_2026-10-30.md and datasets/reports/connected-v1-*.
 
 ## Product Principles
