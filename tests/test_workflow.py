@@ -30,6 +30,7 @@ def client(tmp_path, monkeypatch):
     monkeypatch.setattr(settings, "ai_mode", "demo")
     monkeypatch.setattr(settings, "sms_mode", "demo")
     monkeypatch.setattr(settings, "access_code", "afracanet-demo")
+    monkeypatch.setattr(settings, "paypal_invoice_prefix", "AFC")
     try:
         with TestClient(app) as result:
             yield result

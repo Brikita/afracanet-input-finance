@@ -1,4 +1,6 @@
+import re
 from decimal import Decimal, InvalidOperation
+from urllib.parse import urlparse
 
 import httpx
 
@@ -11,9 +13,50 @@ class PaymentError(Exception):
     pass
 
 
-def payment_link(invoice):
-    from urllib.parse import urlparse
+def invoice_number(order_id):
+    prefix = settings.paypal_invoice_prefix
+    if not re.fullmatch(r"[A-Z0-9-]{1,12}", prefix):
+        raise PaymentError(
+            "Use an invoice prefix of 1–12 uppercase letters, digits, or hyphens."
+        )
+    return f"{prefix}-{order_id:06d}"
 
+
+def invoice_reference(result):
+    """PayPal returns either an invoice representation or a minimal self link."""
+    if isinstance(result, dict):
+        identifier = result.get("id")
+        if isinstance(identifier, str) and re.fullmatch(
+            r"INV2-[A-Z0-9-]{4,100}", identifier
+        ):
+            return identifier
+        links = result.get("links", [])
+        links = links if isinstance(links, list) else []
+        for link in [result, *links]:
+            if not isinstance(link, dict) or link.get("rel") != "self":
+                continue
+            href = link.get("href")
+            if not isinstance(href, str):
+                continue
+            try:
+                parsed = urlparse(href)
+                identifier = parsed.path.removeprefix("/v2/invoicing/invoices/")
+                if (
+                    parsed.scheme == "https"
+                    and parsed.netloc == "api-m.sandbox.paypal.com"
+                    and not parsed.query
+                    and not parsed.fragment
+                    and re.fullmatch(r"INV2-[A-Z0-9-]{4,100}", identifier)
+                ):
+                    return identifier
+            except ValueError:
+                continue
+    raise PaymentError(
+        "PayPal did not return a valid invoice reference. Review before retrying."
+    )
+
+
+def payment_link(invoice):
     detail = invoice.get("detail") if isinstance(invoice, dict) else None
     metadata = detail.get("metadata") if isinstance(detail, dict) else None
     url = metadata.get("recipient_view_url") if isinstance(metadata, dict) else None
@@ -63,7 +106,7 @@ def matching_invoice(invoice, order):
         return False
     return (
         invoice.get("id") == order["invoice_id"]
-        and detail.get("invoice_number") == f"AFC-{order['id']:06d}"
+        and detail.get("invoice_number") == invoice_number(order["id"])
         and detail.get("reference") == f"AFRACANet order {order['id']}"
         and amount.get("currency_code") == order["currency"]
         and cents(amount.get("value")) == order["amount_cents"]
@@ -134,7 +177,7 @@ class PayPal:
     def create(self, order):
         payload = {
             "detail": {
-                "invoice_number": f"AFC-{order['id']:06d}",
+                "invoice_number": invoice_number(order["id"]),
                 "currency_code": order["currency"],
                 "reference": f"AFRACANet order {order['id']}",
                 "note": "Sandbox demonstration: approved agricultural input finance.",
@@ -162,21 +205,7 @@ class PayPal:
             },
         }
         result = self.request("POST", "/v2/invoicing/invoices", payload)
-        invoice_id = result.get("id")
-        if not invoice_id:
-            invoice_id = next(
-                (
-                    link["href"].rstrip("/").split("/")[-1]
-                    for link in result.get("links", [])
-                    if link.get("rel") == "self"
-                ),
-                None,
-            )
-        if not invoice_id or not invoice_id.startswith("INV2-"):
-            raise PaymentError(
-                "PayPal did not return a valid invoice reference. Review before retrying."
-            )
-        return invoice_id
+        return invoice_reference(result)
 
     def send(self, invoice_id):
         self.request(
