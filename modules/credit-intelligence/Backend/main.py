@@ -19,7 +19,7 @@ from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 
 load_dotenv(Path(__file__).resolve().parents[1] / ".env")
-from . import delivery, graph_context, identity, store, workflow
+from . import advisory, delivery, graph_context, identity, store, workflow
 
 
 async def worker():
@@ -255,52 +255,22 @@ def retry(identifier: str, officer=Depends(identity.actor)):
 
 
 @app.get("/api/applications/{identifier}/context")
-def context(identifier: str, officer=Depends(identity.actor)):
+def context(
+    identifier: str, relationship: str | None = None, officer=Depends(identity.actor)
+):
     with store.engine.connect() as conn:
         application = workflow.scoped_application(conn, identifier, officer)
-    return graph_context.context(application["farmer_id"], officer["lender_id"])
+    return graph_context.context(
+        application["farmer_id"], officer["lender_id"], relationship
+    )
 
 
 @app.post("/api/applications/{identifier}/recommendation")
 def recommend(identifier: str, officer=Depends(identity.actor)):
-    evidence = context(identifier, officer)
-    if not os.getenv("FEATHERLESS_API_KEY") or not os.getenv(
-        "CREDIT_RECOMMENDATION_MODEL"
-    ):
-        raise HTTPException(
-            503,
-            "AI provider is not configured. Graph context remains available; no fallback recommendation was generated.",
-        )
-    from openai import OpenAI
-
-    try:
-        client = OpenAI(
-            base_url=os.getenv("FEATHERLESS_BASE_URL", "https://api.featherless.ai/v1"),
-            api_key=os.environ["FEATHERLESS_API_KEY"],
-            timeout=25,
-        )
-        result = client.chat.completions.create(
-            model=os.environ["CREDIT_RECOMMENDATION_MODEL"],
-            messages=[
-                {
-                    "role": "system",
-                    "content": "Summarize this agricultural graph evidence, its missingness and provenance. This is advisory only. Never claim lender approval, credit disbursement, verified payment or collection readiness. Synthetic data cannot support validated creditworthiness. Do not invent a score.",
-                },
-                {"role": "user", "content": json.dumps(evidence)},
-            ],
-            max_tokens=500,
-        )
-        text = result.choices[0].message.content
-    except Exception:
-        raise HTTPException(
-            502, "Recommendation provider unavailable. No decision was made."
-        ) from None
-    response = {
-        "text": text,
-        "model": os.environ["CREDIT_RECOMMENDATION_MODEL"],
-        "provenance": evidence["provenance"],
-        "authority": "advisory_only",
-    }
+    evidence = context(identifier, officer=officer)
+    with store.engine.connect() as conn:
+        application = workflow.scoped_application(conn, identifier, officer)
+    response = advisory.summarize(evidence, application["provenance"])
     with store.engine.begin() as conn:
         conn.execute(
             store.evaluations.insert().values(
@@ -312,6 +282,15 @@ def recommend(identifier: str, officer=Depends(identity.actor)):
             )
         )
     return response
+
+
+@app.get("/api/applications/{identifier}/evidence/{record_id}")
+def evidence_record(identifier: str, record_id: str, officer=Depends(identity.actor)):
+    with store.engine.connect() as conn:
+        application = workflow.scoped_application(conn, identifier, officer)
+    return graph_context.record(
+        application["farmer_id"], officer["lender_id"], record_id
+    )
 
 
 # Unauthenticated legacy financial endpoints are retired, not silently kept active.

@@ -6,6 +6,38 @@ import psycopg
 from fastapi import HTTPException
 
 
+def farmer_history(farmer_id, lender_id):
+    url = os.getenv("REPLAY_DATABASE_URL", "")
+    if not url:
+        return {
+            "available": False,
+            "reason": "Replay history connection is not configured.",
+        }
+    try:
+        with psycopg.connect(
+            url, connect_timeout=5, options="-c default_transaction_read_only=on"
+        ) as conn:
+            row = conn.execute(
+                "SELECT count(*),coalesce(sum(l.principal_minor),0),coalesce(sum(l.repaid_minor),0),coalesce(sum(l.outstanding_minor),0) FROM replay.loans l JOIN replay.entities e ON e.id=l.farmer_id WHERE e.id=%s AND e.tenant_id=%s",
+                (farmer_id, lender_id),
+            ).fetchone()
+        return {
+            "available": True,
+            "source_kind": "synthetic_replay",
+            "currency": "KES",
+            "loan_count": row[0],
+            "principal_minor": row[1],
+            "repaid_minor": row[2],
+            "outstanding_minor": row[3],
+            "observed_real_outcomes": False,
+        }
+    except Exception:
+        return {
+            "available": False,
+            "reason": "Replay history is unavailable; no totals were substituted.",
+        }
+
+
 def summary(lender_id):
     url = os.getenv("REPLAY_DATABASE_URL", "")
     if not url:
