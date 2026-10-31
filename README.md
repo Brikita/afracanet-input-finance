@@ -56,7 +56,10 @@ The local demonstration works without service credentials. It includes:
 
 **Default payments are simulated and the default parser is deterministic.**
 No money moves and no AI model is called in the default walkthrough.
-External PayPal and Gemini adapters still require credential-based verification.
+PayPal sandbox authentication, invoice creation, sending, and draft recovery have
+been checked with actual API calls. Buyer payment and webhook delivery are still
+pending. Gemini passed 24/24 synthetic development cases on 31 October 2026;
+this is not a production accuracy claim. See the [provider check record](docs/PROVIDER_CHECKS_2026-10-31.md).
 This version is a development prototype, not a submitted entry or a live lending service.
 
 ## Run locally
@@ -159,15 +162,15 @@ from PayPal's dashboard, then recover again. A cancelled invoice releases
 reservations only when its provider records also establish zero payment and the
 full original amount still due. Partial payments, refunds, uncertain or missing
 records remain held for operator review; automated refunds are not implemented.
-The recovery adapter is covered by controlled-response tests and still needs
-live sandbox validation. See PayPal's [invoice details reference](https://developer.paypal.com/api/invoicing/v2/invoices-get).
+Draft recovery has been verified against an actual sandbox invoice. Paid-payment
+recovery, refunds, and cancellation still need provider-based validation. See PayPal's [invoice details reference](https://developer.paypal.com/api/invoicing/v2/invoices-get).
 
 ## Connect Gemini
 
 ```dotenv
 AI_MODE=gemini
 GEMINI_API_KEY=<your-key>
-GEMINI_MODEL=gemini-2.5-flash
+GEMINI_MODEL=gemini-3.5-flash-lite
 ```
 
 Restart the backend. Request interpretation calls Gemini with a structured
@@ -219,9 +222,10 @@ docs/SUBMISSION.md    Demo outline and submission checklist
 
 ## Next delivery gates
 
-Internal submission target: **30 October 2026**.
+Early eligibility-review submission target: **5 November 2026**
+([organizer update](https://paypalaihackathon.devpost.com/updates)).
 
-1. Verify real PayPal sandbox payment and Gemini interpretation.
+1. Complete the PayPal sandbox buyer payment and verify webhook delivery; broaden Gemini evaluation.
 2. Verify the SMS sandbox channel and evaluate the workflow with real users.
 3. Validate PostgreSQL, improve hosted access, and prepare a hosted demonstration.
 4. Record the public demonstration, finalize evidence, and submit through Devpost.
@@ -323,13 +327,15 @@ actual clarification with no proposed items.
 # Calls the configured model using your local key; start with a small check.
 .\.venv\Scripts\python.exe scripts/evaluate_assistant.py --mode gemini --limit 4
 # Full labelled set after configuration is verified.
-.\.venv\Scripts\python.exe scripts/evaluate_assistant.py --mode gemini
+.\.venv\Scripts\python.exe scripts/evaluate_assistant.py --mode gemini --interval 3
 ```
 
 Reports are saved under ignored `data/evaluations/` with mode/model, per-case
 results, timing, and language/category breakdowns. The command exits with code 1
 when a case fails. Demo baseline scores are never labelled as Gemini performance.
-Gemini has not yet been evaluated with live credentials.
+Gemini 3.5 Flash-Lite passed 24/24 cases with actual API calls on 31 October 2026.
+The [recorded results](evaluations/results/gemini-2026-10-31.json) are a small
+development-set check; they do not establish reliability on unseen farmer requests.
 
 The demo parser is deliberately limited to one supported catalogue item at a time.
 It asks for missing quantities and unknown products instead of using pack weight
