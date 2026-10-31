@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link } from "@tanstack/react-router";
 import { RefreshCw, LogOut } from "lucide-react";
 import { api, type Officer, type Workspace } from "./api";
 import { CaseReview } from "./CaseReview";
@@ -8,6 +7,7 @@ import "./credit.css";
 
 export function CreditWorkspace({ history = false }: { history?: boolean }) {
   const [ready, setReady] = useState(false);
+  const [mobileCase, setMobileCase] = useState(false);
   const requestVersion = useRef(0);
   const [officer, setOfficer] = useState<Officer | null>(null);
   const [account, setAccount] = useState("");
@@ -93,7 +93,7 @@ export function CreditWorkspace({ history = false }: { history?: boolean }) {
       <header className="credit-heading">
         <div>
           <h1>{history ? "Decision history" : "Lender review"}</h1>
-          <p>AFRACANet AI · Credit intelligence and input finance</p>
+          <p>Evidence, lender decisions, and input finance.</p>
         </div>
         {officer && (
           <button onClick={() => void signOut()}>
@@ -101,10 +101,6 @@ export function CreditWorkspace({ history = false }: { history?: boolean }) {
           </button>
         )}
       </header>
-      <nav className="credit-mobile-nav" aria-label="Credit workspace navigation">
-        <Link to="/">Lender review</Link>
-        <Link to="/history">Decision history</Link>
-      </nav>
       {!officer ? (
         <section className="credit-signin">
           <h2>Sign in as a lender officer</h2>
@@ -162,8 +158,8 @@ export function CreditWorkspace({ history = false }: { history?: boolean }) {
             </p>
           )}
           <p className="credit-boundary">
-            Approval permits an input request. Verified supplier payment is required before
-            collection. Synthetic histories remain labelled replay evidence.
+            Review evidence before authorizing credit. Supplier payment is verified before
+            collection.
           </p>
           <div className="credit-counts" aria-label="Applications in this lender workspace">
             {state ? (
@@ -177,61 +173,63 @@ export function CreditWorkspace({ history = false }: { history?: boolean }) {
               <span>Loading applications…</span>
             )}
           </div>
-          <details className="credit-new">
-            <summary>Create an application</summary>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                setBusy(true);
-                setError("");
-                void api<{ id: string }>("/applications", officer, {
-                  farmer_id: farmer,
-                  input_farmer_id: inputFarmer,
-                  provenance,
-                  request_id: requestId,
-                })
-                  .then(async (result) => {
-                    setSelected(result.id);
-                    setFilter("PENDING");
-                    setQuery("");
-                    setFarmer("");
-                    setInputFarmer("");
-                    setRequestId(crypto.randomUUID());
-                    await refresh();
+          <div className="credit-tools">
+            <details className="credit-new">
+              <summary>Create an application</summary>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setBusy(true);
+                  setError("");
+                  void api<{ id: string }>("/applications", officer, {
+                    farmer_id: farmer,
+                    input_farmer_id: inputFarmer,
+                    provenance,
+                    request_id: requestId,
                   })
-                  .catch((err) => setError(err.message))
-                  .finally(() => setBusy(false));
-              }}
-            >
-              <div className="credit-form-grid">
-                <label>
-                  Credit-module farmer ID
-                  <input required value={farmer} onChange={(e) => setFarmer(e.target.value)} />
-                </label>
-                <label>
-                  Input-finance farmer ID
-                  <input
-                    required
-                    value={inputFarmer}
-                    onChange={(e) => setInputFarmer(e.target.value)}
-                  />
-                </label>
-                <label>
-                  Evidence provenance
-                  <select value={provenance} onChange={(e) => setProvenance(e.target.value)}>
-                    <option value="synthetic">Synthetic</option>
-                    <option value="real">Real</option>
-                    <option value="mixed">Mixed</option>
-                    <option value="unavailable">Unavailable</option>
-                  </select>
-                </label>
-              </div>
-              <p>Confirm both IDs against the receiving lender’s mapping before approving.</p>
-              <button disabled={busy}>{busy ? "Creating…" : "Create application"}</button>
-            </form>
-          </details>
-          <ReplayRegistry key={officer.officer_id} officer={officer} />
-          <div className="credit-layout">
+                    .then(async (result) => {
+                      setSelected(result.id);
+                      setFilter("PENDING");
+                      setQuery("");
+                      setFarmer("");
+                      setInputFarmer("");
+                      setRequestId(crypto.randomUUID());
+                      await refresh();
+                    })
+                    .catch((err) => setError(err.message))
+                    .finally(() => setBusy(false));
+                }}
+              >
+                <div className="credit-form-grid">
+                  <label>
+                    Credit-module farmer ID
+                    <input required value={farmer} onChange={(e) => setFarmer(e.target.value)} />
+                  </label>
+                  <label>
+                    Input-finance farmer ID
+                    <input
+                      required
+                      value={inputFarmer}
+                      onChange={(e) => setInputFarmer(e.target.value)}
+                    />
+                  </label>
+                  <label>
+                    Evidence provenance
+                    <select value={provenance} onChange={(e) => setProvenance(e.target.value)}>
+                      <option value="synthetic">Synthetic</option>
+                      <option value="real">Real</option>
+                      <option value="mixed">Mixed</option>
+                      <option value="unavailable">Unavailable</option>
+                    </select>
+                  </label>
+                </div>
+                <p>Confirm both IDs against the receiving lender’s mapping before approving.</p>
+                <button disabled={busy}>{busy ? "Creating…" : "Create application"}</button>
+              </form>
+            </details>
+            <ReplayRegistry key={officer.officer_id} officer={officer} />
+          </div>
+          <div className="credit-layout" data-mobile-case={mobileCase}>
             <section className="credit-queue" aria-labelledby="queue-heading">
               <h2 id="queue-heading">Applications</h2>
               <label>
@@ -255,7 +253,10 @@ export function CreditWorkspace({ history = false }: { history?: boolean }) {
                   <button
                     key={a.id}
                     aria-pressed={a.id === selected}
-                    onClick={() => setSelected(a.id)}
+                    onClick={() => {
+                      setSelected(a.id);
+                      setMobileCase(true);
+                    }}
                   >
                     <strong>{a.farmer_id}</strong>
                     <span>
@@ -269,25 +270,30 @@ export function CreditWorkspace({ history = false }: { history?: boolean }) {
                 <p>No matching applications. Change the search or create an application.</p>
               )}
             </section>
-            {application ? (
-              <CaseReview
-                key={application.id}
-                application={application}
-                officer={officer}
-                decision={decision}
-                deliveries={state?.deliveries.filter((d) => d.decision_id === decision?.id) || []}
-                inputUrl={state?.input_finance_url || "http://127.0.0.1:5173/"}
-                refresh={refresh}
-              />
-            ) : (
-              <section className="credit-case credit-empty">
-                <h2>Select an application to review</h2>
-                <p>
-                  Open a farmer’s case to inspect graph evidence, record a lender decision, and
-                  follow its delivery to input finance.
-                </p>
-              </section>
-            )}
+            <div className="credit-selection">
+              <button className="credit-back" onClick={() => setMobileCase(false)}>
+                Back to applications
+              </button>
+              {application ? (
+                <CaseReview
+                  key={application.id}
+                  application={application}
+                  officer={officer}
+                  decision={decision}
+                  deliveries={state?.deliveries.filter((d) => d.decision_id === decision?.id) || []}
+                  inputUrl={state?.input_finance_url || "http://127.0.0.1:5173/"}
+                  refresh={refresh}
+                />
+              ) : (
+                <section className="credit-case credit-empty">
+                  <h2>Select an application to review</h2>
+                  <p>
+                    Open a farmer’s case to inspect graph evidence, record a lender decision, and
+                    follow its delivery to input finance.
+                  </p>
+                </section>
+              )}
+            </div>
           </div>
         </>
       )}

@@ -11,3 +11,8 @@ data/
 *.log
 .env.*
 !.env.example
+
+.impeccable/
+.taste-skill/
+
+.tanstack/

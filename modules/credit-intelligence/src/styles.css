@@ -1,6 +1,12 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+@import "@fontsource/dm-sans/400.css";
+@import "@fontsource/dm-sans/500.css";
+@import "@fontsource/dm-sans/600.css";
+@import "@fontsource/manrope/600.css";
+@import "@fontsource/manrope/700.css";
+@import "./styles/platform.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -31,34 +37,33 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Manrope", sans-serif;
+  --font-sans: "DM Sans", sans-serif;
 }
 
 :root {
-  --radius: 0.75rem;
-  --background: oklch(0.985 0.005 145);
-  --foreground: oklch(0.27 0.03 155);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.27 0.03 155);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.27 0.03 155);
-  --primary: oklch(0.42 0.09 155);
-  --primary-foreground: oklch(0.985 0.01 145);
-  --secondary: oklch(0.95 0.01 155);
-  --secondary-foreground: oklch(0.35 0.05 155);
-  --muted: oklch(0.96 0.008 150);
-  --muted-foreground: oklch(0.52 0.02 155);
-  --accent: oklch(0.93 0.04 150);
-  --accent-foreground: oklch(0.32 0.06 155);
-  --destructive: oklch(0.55 0.2 25);
-  --destructive-foreground: oklch(0.99 0.01 25);
-  --success: oklch(0.55 0.13 150);
-  --success-foreground: oklch(0.99 0.01 145);
-  --border: oklch(0.91 0.01 155);
-  --input: oklch(0.91 0.01 155);
-  --ring: oklch(0.42 0.09 155);
-  --slate: oklch(0.45 0.02 250);
+  --radius: 0.625rem;
+  --background: #eaf1f3;
+  --foreground: #17343c;
+  --card: #fff;
+  --card-foreground: #17343c;
+  --popover: #fff;
+  --popover-foreground: #17343c;
+  --primary: #17627a;
+  --primary-foreground: #fff;
+  --secondary: #e9f3f5;
+  --secondary-foreground: #17343c;
+  --muted: #eaf1f3;
+  --muted-foreground: #526a72;
+  --accent: #e9f3f5;
+  --accent-foreground: #123f4c;
+  --destructive: #8d3826;
+  --destructive-foreground: #fff;
+  --success: #375b22;
+  --success-foreground: #edf5e7;
+  --border: #d5e1e5;
+  --input: #afc2c9;
+  --ring: #17627a;
 }
 
 @layer base {

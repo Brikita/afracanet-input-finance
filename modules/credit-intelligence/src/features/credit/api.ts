@@ -49,7 +49,25 @@ export type Context = {
   relationship_count: number;
   provenance: string;
   explanation: string;
+  relationship_types: { relationship: string; count: number }[];
+  repayment_history: {
+    available: boolean;
+    reason?: string;
+    currency?: string;
+    loan_count?: number;
+    principal_minor?: number;
+    repaid_minor?: number;
+    outstanding_minor?: number;
+  };
   neighbors: { id: string; relationship: string; labels: string[] }[];
+};
+export type Advice = {
+  headline: string;
+  observations: { text: string; evidence_ids: string[] }[];
+  missing_evidence: string[];
+  model: string;
+  provider: string;
+  sources: { id: string; label: string; value: unknown }[];
 };
 const base = import.meta.env.VITE_CREDIT_API_URL || "http://127.0.0.1:8001";
 export async function api<T>(

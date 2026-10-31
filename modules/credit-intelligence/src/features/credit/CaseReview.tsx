@@ -7,7 +7,10 @@ import {
   type Decision,
   type Delivery,
   type Officer,
+  type Advice,
 } from "./api";
+
+import { GraphEvidence } from "./GraphEvidence";
 
 type Props = {
   application: Application;
@@ -26,7 +29,8 @@ export function CaseReview({
   refresh,
 }: Props) {
   const [context, setContext] = useState<Context | null>(null);
-  const [advice, setAdvice] = useState("");
+  const [advice, setAdvice] = useState<Advice | null>(null);
+  const [connection, setConnection] = useState("");
   const [revocationReason, setRevocationReason] = useState("");
   const [reason, setReason] = useState("");
   const [limit, setLimit] = useState("");
@@ -111,12 +115,12 @@ export function CaseReview({
             disabled={busy}
             onClick={() =>
               void act(async () => {
-                const result = await api<{ text: string }>(
+                const result = await api<Advice>(
                   `/applications/${application.id}/recommendation`,
                   officer,
                   {},
                 );
-                setAdvice(result.text);
+                setAdvice(result);
               })
             }
           >
@@ -124,60 +128,63 @@ export function CaseReview({
           </button>
         </div>
         {context && (
-          <>
-            <p>
-              <strong>{context.profile.display_name}</strong> ·{" "}
-              {context.relationship_count.toLocaleString()} graph relationships ·{" "}
-              {context.provenance}
-            </p>
-            <p>{context.explanation}</p>
-            {context.public_weather_context.length > 0 && (
-              <div className="credit-public-context">
-                <h4>Public weather at a reference point</h4>
-                <p>
-                  {context.public_weather_context[0].reference_point} ·{" "}
-                  {context.public_weather_context.length} daily records ·{" "}
-                  {context.public_weather_context
-                    .reduce((total, row) => total + row.precipitation_mm, 0)
-                    .toFixed(1)}{" "}
-                  mm total precipitation
-                </p>
-                <p>{context.public_weather_context[0].limits}</p>
-                <p>
-                  {context.public_weather_context[0].attribution}{" "}
-                  <a href="https://open-meteo.com/en/docs/historical-weather-api">
-                    Source documentation
-                  </a>{" "}
-                  · CC BY 4.0
-                </p>
-              </div>
-            )}
-            <div className="credit-table-wrap">
-              <table>
-                <caption>Up to 40 connected records</caption>
-                <thead>
-                  <tr>
-                    <th>Record</th>
-                    <th>Connection</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {context.neighbors.map((n, i) => (
-                    <tr key={n.id + i}>
-                      <td>{n.id}</td>
-                      <td>{n.relationship.replaceAll("_", " ").toLowerCase()}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </>
+          <GraphEvidence
+            context={context}
+            applicationId={application.id}
+            officer={officer}
+            busy={busy}
+            filter={connection}
+            onFilter={(value) => {
+              setConnection(value);
+              void act(async () =>
+                setContext(
+                  await api<Context>(
+                    `/applications/${application.id}/context${value ? "?relationship=" + encodeURIComponent(value) : ""}`,
+                    officer,
+                  ),
+                ),
+              );
+            }}
+          />
         )}
         {advice && (
-          <div className="credit-advice">
+          <section className="credit-advice" aria-label="AI evidence summary">
             <h4>AI summary · advisory only</h4>
-            <p>{advice}</p>
-          </div>
+            <p>
+              <strong>{advice.headline}</strong>
+            </p>
+            <ul>
+              {advice.observations.map((row, i) => (
+                <li key={i}>
+                  {row.text}
+                  <small>
+                    Evidence:{" "}
+                    {row.evidence_ids
+                      .map((id) => advice.sources.find((source) => source.id === id)?.label || id)
+                      .join("; ")}
+                  </small>
+                </li>
+              ))}
+            </ul>
+            <h4>Evidence still missing</h4>
+            <ul>
+              {advice.missing_evidence.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+            <p>
+              {advice.provider} · {advice.model}. The lender records the decision separately.
+            </p>
+            <details>
+              <summary>Inspect the facts supplied to AI</summary>
+              {advice.sources.map((source) => (
+                <div key={source.id}>
+                  <h4>{source.label}</h4>
+                  <pre>{JSON.stringify(source.value, null, 2)}</pre>
+                </div>
+              ))}
+            </details>
+          </section>
         )}
       </div>
       {error && (

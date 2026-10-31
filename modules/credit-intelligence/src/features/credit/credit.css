@@ -9,17 +9,20 @@
   line-height: 1.6;
 }
 .credit-workspace h1 {
+  font-family: var(--font-display);
   font-size: 30px;
   font-weight: 700;
   letter-spacing: -0.025em;
   line-height: 1.25;
 }
 .credit-workspace h2 {
+  font-family: var(--font-display);
   font-size: 20px;
   font-weight: 650;
   line-height: 1.4;
 }
 .credit-workspace h3 {
+  font-family: var(--font-display);
   font-size: 16px;
   font-weight: 650;
   margin: 0 0 8px;
@@ -327,20 +330,299 @@
   width: 38%;
 }
 
-.credit-mobile-nav {
+.credit-workspace {
+  max-width: 1500px;
+}
+.credit-heading {
+  margin-bottom: 18px;
+}
+.credit-heading p {
+  margin-bottom: 0;
+}
+.credit-scope {
+  padding: 10px 0;
+}
+.credit-boundary {
+  margin-block: 10px;
+  padding-block: 4px;
+}
+.credit-counts {
+  gap: 16px 28px;
+  margin-block: 14px 20px;
+}
+.credit-counts span {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  color: var(--muted-foreground);
+}
+.credit-counts strong {
+  color: var(--foreground);
+  font-family: var(--font-display);
+  font-size: 26px;
+}
+.credit-tools {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  margin-bottom: 20px;
+}
+.credit-tools > .credit-new {
+  margin: 0;
+}
+.credit-tools > .credit-new[open] {
+  grid-column: 1 / -1;
+}
+.credit-layout {
+  grid-template-columns: minmax(270px, 320px) minmax(0, 1fr);
+  gap: 20px;
+}
+.credit-queue h2 {
+  font-size: 19px;
+}
+.credit-queue-list {
+  max-height: 620px;
+}
+.credit-workspace .credit-queue-list button {
+  background: transparent;
+}
+.credit-workspace .credit-queue-list button[aria-pressed="true"] {
+  background: var(--secondary);
+}
+.credit-selection {
+  min-width: 0;
+}
+.credit-workspace .credit-back {
   display: none;
 }
-@media (max-width: 767px) {
-  .credit-mobile-nav {
-    display: flex;
-    gap: 16px;
-    margin: 0 0 20px;
-    flex-wrap: wrap;
+.credit-workspace :is(h4, summary) {
+  line-height: 1.5;
+}
+.credit-workspace h4 {
+  font-weight: 600;
+}
+.credit-workspace button {
+  min-height: 44px;
+}
+.credit-workspace p {
+  max-width: 75ch;
+}
+.credit-workspace :is(input, textarea)::placeholder {
+  color: var(--muted-foreground);
+  opacity: 1;
+}
+.credit-workspace :is(input, textarea, select) {
+  scroll-margin-top: 20px;
+}
+.credit-workspace :is(button, a) {
+  transition:
+    background-color 140ms ease-out,
+    color 140ms ease-out;
+}
+.credit-workspace .credit-advice {
+  background: var(--secondary);
+  padding: 18px;
+  border-radius: 8px;
+}
+.credit-advice ul {
+  padding-left: 22px;
+  list-style: disc;
+  margin-block: 12px;
+}
+.credit-advice li {
+  margin-block: 10px;
+}
+.credit-advice li small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted-foreground);
+}
+.credit-advice pre {
+  max-width: 100%;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+  margin-block: 8px 18px;
+}
+.evidence-heading,
+.evidence-record header {
+  display: flex;
+  gap: 12px;
+  align-items: start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.evidence-heading h4 {
+  font-family: var(--font-display);
+  font-size: 18px;
+}
+.evidence-heading p {
+  margin-bottom: 0;
+}
+.evidence-overview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-block: 20px;
+}
+.evidence-overview section {
+  min-width: 0;
+}
+.credit-workspace .evidence-reset {
+  padding: 6px 0;
+  color: var(--primary);
+  border: 0;
+  background: transparent;
+}
+.credit-workspace .evidence-connection {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 12px;
+  row-gap: 7px;
+  width: 100%;
+  padding: 10px 8px;
+  border: 0;
+  text-align: left;
+  border-radius: 5px;
+  font-size: 13px;
+}
+.evidence-connection strong {
+  font-weight: 600;
+}
+.credit-workspace .evidence-connection[aria-pressed="true"] {
+  background: var(--secondary);
+}
+.evidence-bar {
+  grid-column: 1 / -1;
+  display: block;
+  height: 5px;
+  background: var(--background);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.evidence-bar i {
+  display: block;
+  height: 100%;
+  background: var(--primary);
+  border-radius: inherit;
+}
+.evidence-balances {
+  margin-block: 18px;
+}
+.evidence-balances > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-block: 14px;
+}
+.evidence-balances dt {
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+.evidence-balances dd {
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
+}
+.credit-workspace .evidence-record-link {
+  justify-content: space-between;
+  text-align: left;
+  font-size: inherit;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 4px 0;
+  color: var(--primary);
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.evidence-record-link svg {
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+.evidence-record {
+  background: var(--secondary);
+  padding: 18px;
+  margin-top: 16px;
+  border-radius: 8px;
+}
+.evidence-record .credit-facts {
+  margin-bottom: 0;
+}
+.evidence-record h4 {
+  overflow-wrap: anywhere;
+}
+.credit-public-context {
+  padding-block: 14px;
+  margin-block: 10px;
+}
+.credit-public-context summary {
+  cursor: pointer;
+  color: var(--primary);
+}
+.credit-public-context h4 {
+  margin-top: 16px;
+}
+@media (max-width: 1100px) {
+  .credit-layout {
+    grid-template-columns: 270px minmax(0, 1fr);
   }
-  .credit-mobile-nav a {
-    color: var(--primary);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    padding: 6px 0;
+  .evidence-overview {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+@media (max-width: 850px) {
+  .credit-layout {
+    display: block;
+  }
+  .credit-layout[data-mobile-case="true"] .credit-queue {
+    display: none;
+  }
+  .credit-layout[data-mobile-case="false"] .credit-selection {
+    display: none;
+  }
+  .credit-workspace .credit-back {
+    display: inline-flex;
+    margin-bottom: 14px;
+  }
+  .credit-tools {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .credit-counts strong {
+    font-size: 23px;
+  }
+  .credit-queue-list {
+    max-height: 440px;
+  }
+  .credit-scope {
+    gap: 8px;
+  }
+  .credit-heading {
+    gap: 12px;
+  }
+  .credit-heading h1 {
+    font-size: 28px;
+  }
+  .credit-facts {
+    gap: 12px;
+  }
+  .credit-workspace .credit-status {
+    font-size: 13px;
+  }
+  .evidence-overview {
+    grid-template-columns: 1fr;
+  }
+  .credit-workspace .evidence-connection {
+    font-size: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .credit-workspace :is(button, a) {
+    transition: none;
   }
 }

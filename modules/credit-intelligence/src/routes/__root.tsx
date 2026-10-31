@@ -6,13 +6,13 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { AppSidebar } from "../components/AppSidebar";
-import { Toaster } from "../components/ui/sonner";
+import { PlatformNavigation } from "../components/PlatformNavigation";
 
 function NotFoundComponent() {
   return (
@@ -36,7 +36,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
@@ -79,26 +79,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "AfracaNet AI" },
-      { name: "description", content: "Afracanet Loan Hub is a web dashboard for Kenyan SACCO loan officers to manage farmer loan applications." },
-      { name: "author", content: "Lovable" },
+      { title: "AFRACANet AI · Credit intelligence" },
+      {
+        name: "description",
+        content:
+          "Afracanet Loan Hub is a web dashboard for Kenyan SACCO loan officers to manage farmer loan applications.",
+      },
       { property: "og:title", content: "AfracaNet AI" },
-      { property: "og:description", content: "Afracanet Loan Hub is a web dashboard for Kenyan SACCO loan officers to manage farmer loan applications." },
+      {
+        property: "og:description",
+        content:
+          "Afracanet Loan Hub is a web dashboard for Kenyan SACCO loan officers to manage farmer loan applications.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "AfracaNet AI" },
-      { name: "twitter:description", content: "Afracanet Loan Hub is a web dashboard for Kenyan SACCO loan officers to manage farmer loan applications." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e68b7997-1a58-4d98-ba71-fdf608aeb6db/id-preview-62794c8c--b128b7ba-1c71-4fbe-ac85-f62134e5c9bf.lovable.app-1782590295584.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e68b7997-1a58-4d98-ba71-fdf608aeb6db/id-preview-62794c8c--b128b7ba-1c71-4fbe-ac85-f62134e5c9bf.lovable.app-1782590295584.png" },
+      {
+        name: "twitter:description",
+        content:
+          "Afracanet Loan Hub is a web dashboard for Kenyan SACCO loan officers to manage farmer loan applications.",
+      },
     ],
     links: [
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap",
-      },
       {
         rel: "stylesheet",
         href: appCss,
@@ -130,14 +132,13 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen w-full bg-background">
-        <AppSidebar />
+      <div className="credit-shell">
+        <PlatformNavigation />
         <div className="min-w-0 flex-1">
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
         </div>
       </div>
-      <Toaster />
     </QueryClientProvider>
   );
 }
