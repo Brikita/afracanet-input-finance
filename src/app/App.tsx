@@ -145,7 +145,7 @@ export function App() {
               />
             )}
             <footer className="page-footer">
-              <span>AFRACANet AI · Input Finance</span>
+              <a href="/about">AFRACANet AI · About the platform</a>
               <span>
                 Illustrative data · One lender, one dealer network · v0.1
               </span>

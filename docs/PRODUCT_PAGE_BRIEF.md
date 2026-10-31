@@ -45,3 +45,17 @@ paypal-callback-2026-10-31.json. No public raw provider identifiers, tokens,
 credentials, private officer identities or payment URLs. Verified amounts and
 sanitized evidence only. No production readiness, credit calibration, escrow,
 guaranteed delivery or proven customer impact claims.
+
+## Implementation checkpoint
+
+The user accepted the construction plan. The desktop first viewport is now
+implemented at `/about`, with a separate static-build entry at `/about.html`.
+Both routes use the same React component and make no authenticated, AI or payment
+API calls. The build, strict TypeScript/format checks and seven isolated Edge
+journeys passed. The existing transaction behavior is unchanged.
+
+The last measured comp comparison reached 89% overall but retained control/text
+vetoes. First-viewport visual calibration is pending. Remaining page sections,
+stage-inspection interaction, motion, responsive adaptation, final review and
+documentation are not complete. The local implementation is a reviewable draft,
+not the finished public page.

@@ -94,14 +94,14 @@ export function SignIn({
           <div className="demo-disclosure">
             <CircleHelp size={17} />
             <p>
-              All participants, approvals, and prices are illustrative. The
-              initial walkthrough simulates payments. PayPal sandbox and Gemini
-              modes require server configuration.
+              Participants and allocations are illustrative. The workspace
+              identifies its payment and AI modes. A sandbox payment is a
+              provider test; physical collection is recorded separately.
             </p>
           </div>
         </div>
         <footer>
-          AFRACANet AI <span>Input finance module · v0.1</span>
+          AFRACANet AI <a href="/about">About the platform</a>
         </footer>
       </section>
     </div>
