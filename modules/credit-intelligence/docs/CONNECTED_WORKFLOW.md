@@ -1,4 +1,4 @@
-# Connected credit workflow — 30 October 2026
+# Connected credit workflow â€” 30 October 2026
 
 AFRACANet AI is one product with separate credit-intelligence and input-finance
 modules. This module owns graph evidence, optional AI summaries, durable
@@ -29,9 +29,9 @@ cases, while rendering at most 100 matching rows. A selected case remains visibl
 after approval removes it from the pending queue. History is backed by actual
 decision records; the previous hardcoded disbursement ledger is removed.
 
-The existing green visual system is retained for this functional extension.
-Whole-platform visual unification with the input-finance Waterline system is a
-separate remaining design pass.
+The Waterline system is shared with input finance. The queue and selected case
+use one working pane on phones, with a visible return to applications. Evidence
+includes relationship filters, scoped source records and authored KES history.
 
 ## Authority and delivery
 
@@ -114,4 +114,7 @@ The sibling input-finance repository also provides:
   graph/public-context reads, approval delivery, a token-free continuation link,
   separate receiving sign-in and revocation; desktop/tablet/mobile captures.
 
-Real PayPal, AI-provider and telecom checks remain dependent on credentials.
+Actual Gemini evidence summaries are configured and initially checked separately
+from the browser fixture. PayPal payment/callback checks are recorded in the
+input-finance module; telecom delivery remains unverified. See
+[the current sprint record](SPRINT_2026-10-31.md).

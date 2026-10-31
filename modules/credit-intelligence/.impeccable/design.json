@@ -1,0 +1,379 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-31T15:54:50.500688+00:00",
+  "title": "Design System: AFRACANet AI — Waterline credit workspace",
+  "extensions": {
+    "colorMeta": {
+      "ground": {
+        "role": "neutral",
+        "displayName": "Pale Water",
+        "tonalRamp": [
+          "oklch(15% 0.0020 216.62)",
+          "oklch(27% 0.0052 216.62)",
+          "oklch(39% 0.0072 216.62)",
+          "oklch(51% 0.0080 216.62)",
+          "oklch(63% 0.0080 216.62)",
+          "oklch(75% 0.0064 216.62)",
+          "oklch(87% 0.0036 216.62)",
+          "oklch(95% 0.0012 216.62)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Working White",
+        "tonalRamp": [
+          "oklch(15% 0.0000 0.00)",
+          "oklch(27% 0.0000 0.00)",
+          "oklch(39% 0.0000 0.00)",
+          "oklch(51% 0.0000 0.00)",
+          "oklch(63% 0.0000 0.00)",
+          "oklch(75% 0.0000 0.00)",
+          "oklch(87% 0.0000 0.00)",
+          "oklch(95% 0.0000 0.00)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Deep Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0094 218.04)",
+          "oklch(27% 0.0244 218.04)",
+          "oklch(39% 0.0338 218.04)",
+          "oklch(51% 0.0376 218.04)",
+          "oklch(63% 0.0376 218.04)",
+          "oklch(75% 0.0301 218.04)",
+          "oklch(87% 0.0169 218.04)",
+          "oklch(95% 0.0056 218.04)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Slate Teal",
+        "tonalRamp": [
+          "oklch(15% 0.0078 220.21)",
+          "oklch(27% 0.0202 220.21)",
+          "oklch(39% 0.0280 220.21)",
+          "oklch(51% 0.0311 220.21)",
+          "oklch(63% 0.0311 220.21)",
+          "oklch(75% 0.0249 220.21)",
+          "oklch(87% 0.0140 220.21)",
+          "oklch(95% 0.0047 220.21)"
+        ]
+      },
+      "teal": {
+        "role": "primary",
+        "displayName": "Waterline Teal",
+        "tonalRamp": [
+          "oklch(15% 0.0198 224.54)",
+          "oklch(27% 0.0515 224.54)",
+          "oklch(39% 0.0713 224.54)",
+          "oklch(51% 0.0792 224.54)",
+          "oklch(63% 0.0792 224.54)",
+          "oklch(75% 0.0634 224.54)",
+          "oklch(87% 0.0356 224.54)",
+          "oklch(95% 0.0119 224.54)"
+        ]
+      },
+      "teal-dark": {
+        "role": "primary",
+        "displayName": "Deep Channel",
+        "tonalRamp": [
+          "oklch(15% 0.0132 220.76)",
+          "oklch(27% 0.0343 220.76)",
+          "oklch(39% 0.0475 220.76)",
+          "oklch(51% 0.0527 220.76)",
+          "oklch(63% 0.0527 220.76)",
+          "oklch(75% 0.0422 220.76)",
+          "oklch(87% 0.0237 220.76)",
+          "oklch(95% 0.0079 220.76)"
+        ]
+      },
+      "soft": {
+        "role": "neutral",
+        "displayName": "Mist",
+        "tonalRamp": [
+          "oklch(15% 0.0027 211.04)",
+          "oklch(27% 0.0071 211.04)",
+          "oklch(39% 0.0099 211.04)",
+          "oklch(51% 0.0110 211.04)",
+          "oklch(63% 0.0110 211.04)",
+          "oklch(75% 0.0088 211.04)",
+          "oklch(87% 0.0049 211.04)",
+          "oklch(95% 0.0016 211.04)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Fine Divider",
+        "tonalRamp": [
+          "oklch(15% 0.0035 219.63)",
+          "oklch(27% 0.0091 219.63)",
+          "oklch(39% 0.0126 219.63)",
+          "oklch(51% 0.0140 219.63)",
+          "oklch(63% 0.0140 219.63)",
+          "oklch(75% 0.0112 219.63)",
+          "oklch(87% 0.0063 219.63)",
+          "oklch(95% 0.0021 219.63)"
+        ]
+      },
+      "control": {
+        "role": "neutral",
+        "displayName": "Control Edge",
+        "tonalRamp": [
+          "oklch(15% 0.0058 221.88)",
+          "oklch(27% 0.0150 221.88)",
+          "oklch(39% 0.0207 221.88)",
+          "oklch(51% 0.0231 221.88)",
+          "oklch(63% 0.0231 221.88)",
+          "oklch(75% 0.0184 221.88)",
+          "oklch(87% 0.0104 221.88)",
+          "oklch(95% 0.0035 221.88)"
+        ]
+      },
+      "danger-bg": {
+        "role": "secondary",
+        "displayName": "Review Clay Surface",
+        "tonalRamp": [
+          "oklch(15% 0.0042 31.08)",
+          "oklch(27% 0.0109 31.08)",
+          "oklch(39% 0.0151 31.08)",
+          "oklch(51% 0.0168 31.08)",
+          "oklch(63% 0.0168 31.08)",
+          "oklch(75% 0.0134 31.08)",
+          "oklch(87% 0.0076 31.08)",
+          "oklch(95% 0.0025 31.08)"
+        ]
+      },
+      "danger-ink": {
+        "role": "secondary",
+        "displayName": "Review Clay",
+        "tonalRamp": [
+          "oklch(15% 0.0250 33.59)",
+          "oklch(27% 0.0650 33.59)",
+          "oklch(39% 0.0900 33.59)",
+          "oklch(51% 0.1000 33.59)",
+          "oklch(63% 0.1000 33.59)",
+          "oklch(75% 0.0800 33.59)",
+          "oklch(87% 0.0450 33.59)",
+          "oklch(95% 0.0150 33.59)"
+        ]
+      },
+      "success-bg": {
+        "role": "secondary",
+        "displayName": "Completion Surface",
+        "tonalRamp": [
+          "oklch(15% 0.0051 131.45)",
+          "oklch(27% 0.0132 131.45)",
+          "oklch(39% 0.0183 131.45)",
+          "oklch(51% 0.0203 131.45)",
+          "oklch(63% 0.0203 131.45)",
+          "oklch(75% 0.0163 131.45)",
+          "oklch(87% 0.0092 131.45)",
+          "oklch(95% 0.0031 131.45)"
+        ]
+      },
+      "success-ink": {
+        "role": "secondary",
+        "displayName": "Completion Green",
+        "tonalRamp": [
+          "oklch(15% 0.0237 135.55)",
+          "oklch(27% 0.0616 135.55)",
+          "oklch(39% 0.0853 135.55)",
+          "oklch(51% 0.0948 135.55)",
+          "oklch(63% 0.0948 135.55)",
+          "oklch(75% 0.0758 135.55)",
+          "oklch(87% 0.0427 135.55)",
+          "oklch(95% 0.0142 135.55)"
+        ]
+      },
+      "nav-muted": {
+        "role": "neutral",
+        "displayName": "Header Mist",
+        "tonalRamp": [
+          "oklch(15% 0.0068 217.17)",
+          "oklch(27% 0.0178 217.17)",
+          "oklch(39% 0.0246 217.17)",
+          "oklch(51% 0.0274 217.17)",
+          "oklch(63% 0.0274 217.17)",
+          "oklch(75% 0.0219 217.17)",
+          "oklch(87% 0.0123 217.17)",
+          "oklch(95% 0.0041 217.17)"
+        ]
+      },
+      "nav-active": {
+        "role": "neutral",
+        "displayName": "Header Leaf",
+        "tonalRamp": [
+          "oklch(15% 0.0218 124.16)",
+          "oklch(27% 0.0566 124.16)",
+          "oklch(39% 0.0784 124.16)",
+          "oklch(51% 0.0871 124.16)",
+          "oklch(63% 0.0871 124.16)",
+          "oklch(75% 0.0697 124.16)",
+          "oklch(87% 0.0392 124.16)",
+          "oklch(95% 0.0131 124.16)"
+        ]
+      },
+      "nav-hover": {
+        "role": "primary",
+        "displayName": "Header Channel",
+        "tonalRamp": [
+          "oklch(15% 0.0139 220.66)",
+          "oklch(27% 0.0361 220.66)",
+          "oklch(39% 0.0500 220.66)",
+          "oklch(51% 0.0555 220.66)",
+          "oklch(63% 0.0555 220.66)",
+          "oklch(75% 0.0444 220.66)",
+          "oklch(87% 0.0250 220.66)",
+          "oklch(95% 0.0083 220.66)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Workspace title",
+        "purpose": "Credit page title, with display-mobile below 850px."
+      },
+      "headline": {
+        "displayName": "Case heading",
+        "purpose": "Case and sign-in headings; source CSS requests weight 650."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "control-feedback",
+        "value": "background-color 140ms ease-out, color 140ms ease-out",
+        "purpose": "Workspace buttons and links; disabled by prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "credit-tablet",
+        "value": "1100px"
+      },
+      {
+        "name": "credit-mobile-case",
+        "value": "850px"
+      },
+      {
+        "name": "platform-mobile",
+        "value": "700px"
+      }
+    ],
+    "notes": [
+      "Palette ramps are synthesized OKLCH preview aids, not normative source colors or additional application tokens.",
+      "The relationship snippet uses an illustrative 40% width; the application computes category count / maximum retrieved category count.",
+      "Primary button background remains teal on hover under current source specificity."
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary decision",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Explicit lender action after authorization confirmation.",
+      "html": "<button class=\"ds-primary\">Approve and queue handoff</button>",
+      "css": ".ds-primary{font-family:var(--font-sans,\"DM Sans\",sans-serif);font-size:14px;line-height:1.6;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid var(--input,#afc2c9);border-radius:6px;font-weight:550;cursor:pointer;transition:background-color 140ms ease-out,color 140ms ease-out;background:var(--primary,#17627a);color:var(--primary-foreground,#fff);border-color:var(--primary,#17627a);}.ds-primary:hover{background:var(--primary,#17627a);}.ds-primary:focus-visible{outline:3px solid var(--primary,#17627a);outline-offset:3px;}.ds-primary:disabled{opacity:.55;cursor:wait;}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none;}}"
+    },
+    {
+      "name": "Secondary action",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Evidence retrieval and other ordinary workspace actions.",
+      "html": "<button class=\"ds-secondary\">Load graph context</button>",
+      "css": ".ds-secondary{font-family:var(--font-sans,\"DM Sans\",sans-serif);font-size:14px;line-height:1.6;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid var(--input,#afc2c9);border-radius:6px;font-weight:550;cursor:pointer;transition:background-color 140ms ease-out,color 140ms ease-out;background:var(--card,#fff);color:var(--foreground,#17343c);}.ds-secondary:hover{background:var(--secondary,#e9f3f5);}.ds-secondary:focus-visible{outline:3px solid var(--primary,#17627a);outline-offset:3px;}.ds-secondary:disabled{opacity:.55;cursor:wait;}@media(prefers-reduced-motion:reduce){.ds-secondary{transition:none;}}"
+    },
+    {
+      "name": "Labelled field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Plain working field with a readable label.",
+      "html": "<label class=\"ds-label\">Decision reason<input class=\"ds-input\" placeholder=\"Explain this decision\"></label>",
+      "css": ".ds-label{font-family:var(--font-sans,\"DM Sans\",sans-serif);font-size:14px;line-height:1.6;display:grid;gap:6px;font-weight:550;color:var(--foreground,#17343c);}.ds-input{font-family:var(--font-sans,\"DM Sans\",sans-serif);font-size:14px;line-height:1.6;width:100%;min-width:0;padding:9px 11px;border:1px solid var(--input,#afc2c9);background:var(--card,#fff);color:var(--foreground,#17343c);border-radius:6px;caret-color:var(--primary,#17627a);}.ds-input::placeholder{color:var(--muted-foreground,#526a72);opacity:1;}.ds-input:focus-visible{outline:3px solid var(--primary,#17627a);outline-offset:3px;}"
+    },
+    {
+      "name": "Credit navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Shared module navigation with active route and keyboard focus.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Credit workspace\"><a href=\"#review\" aria-current=\"page\">Lender review</a><a href=\"#history\">Decision history</a></nav>",
+      "css": ".ds-nav{font-family:var(--font-sans,\"DM Sans\",sans-serif);font-size:14px;line-height:1.6;display:flex;gap:6px;flex-wrap:wrap;background:#123f4c;padding:14px;}.ds-nav a{display:inline-flex;align-items:center;min-height:44px;padding:12px;color:#c4dce3;border-radius:6px;text-decoration:none;}.ds-nav a:hover{color:#fff;background:#1c4b59;}.ds-nav a[aria-current=\"page\"]{color:#d5ecac;background:#1c4b59;}.ds-nav a:focus-visible{outline:3px solid #d5ecac;outline-offset:3px;}"
+    },
+    {
+      "name": "Evidence status",
+      "kind": "chip",
+      "refersTo": "status",
+      "description": "Neutral evidence-role label, separate from approval.",
+      "html": "<span class=\"ds-status\">Retrieved evidence</span>",
+      "css": ".ds-status{font-family:var(--font-sans,\"DM Sans\",sans-serif);font-size:14px;line-height:1.6;display:inline-block;padding:4px 8px;background:var(--secondary,#e9f3f5);color:var(--foreground,#17343c);border-radius:4px;}"
+    },
+    {
+      "name": "Case panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Flat case working surface.",
+      "html": "<section class=\"ds-panel\"><h2>Evidence for this decision</h2><p>Graph evidence supports review. It does not authorize credit or establish payment.</p></section>",
+      "css": ".ds-panel{font-family:var(--font-sans,\"DM Sans\",sans-serif);font-size:14px;line-height:1.6;padding:22px;background:var(--card,#fff);color:var(--foreground,#17343c);border:1px solid var(--border,#d5e1e5);border-radius:12px;}.ds-panel h2{font-family:var(--font-display,Manrope,sans-serif);font-size:20px;font-weight:650;line-height:1.4;margin:0;}.ds-panel p{color:var(--muted-foreground,#526a72);max-width:75ch;margin:8px 0;}"
+    },
+    {
+      "name": "Relationship filter",
+      "kind": "custom",
+      "refersTo": "relationship",
+      "description": "Retrieved count bar with an explicit selectable category.",
+      "html": "<button class=\"ds-connection\" aria-pressed=\"true\"><span>has loan</span><strong>2</strong><span class=\"ds-track\" aria-hidden=\"true\"><i></i></span></button>",
+      "css": ".ds-connection{font-family:var(--font-sans,\"DM Sans\",sans-serif);font-size:14px;line-height:1.6;display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;row-gap:7px;width:100%;padding:10px 8px;border:0;text-align:left;border-radius:5px;font-size:13px;min-height:44px;cursor:pointer;color:var(--foreground,#17343c);background:var(--card,#fff);transition:background-color 140ms ease-out,color 140ms ease-out;}.ds-connection:hover,.ds-connection[aria-pressed=\"true\"]{background:var(--secondary,#e9f3f5);}.ds-connection strong{font-weight:600;}.ds-track{grid-column:1/-1;height:5px;background:var(--background,#eaf1f3);border-radius:3px;overflow:hidden;}.ds-track i{display:block;height:100%;width:40%;background:var(--primary,#17627a);border-radius:inherit;}.ds-connection:focus-visible{outline:3px solid var(--primary,#17627a);outline-offset:3px;}@media(prefers-reduced-motion:reduce){.ds-connection{transition:none;}}"
+    },
+    {
+      "name": "Source record inset",
+      "kind": "custom",
+      "refersTo": "source-record",
+      "description": "Inline inspection of an explicitly identified connected source record.",
+      "html": "<section class=\"ds-source\"><header><h4>Connected source record</h4><button aria-label=\"Close source record\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"m18 6-12 12M6 6l12 12\"/></svg></button></header><p>has loan · synthetic replay</p></section>",
+      "css": ".ds-source{font-family:var(--font-sans,\"DM Sans\",sans-serif);font-size:14px;line-height:1.6;background:var(--secondary,#e9f3f5);color:var(--foreground,#17343c);padding:18px;margin-top:16px;border-radius:8px;}.ds-source header{display:flex;justify-content:space-between;align-items:start;gap:12px;flex-wrap:wrap;}.ds-source h4{font-weight:600;line-height:1.5;margin:0;overflow-wrap:anywhere;}.ds-source p{color:var(--muted-foreground,#526a72);margin:8px 0;}.ds-source button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid var(--input,#afc2c9);border-radius:6px;font-weight:550;cursor:pointer;transition:background-color 140ms ease-out,color 140ms ease-out;background:var(--card,#fff);color:var(--foreground,#17343c);}.ds-source button:hover{background:var(--secondary,#e9f3f5);}.ds-source button:focus-visible{outline:3px solid var(--primary,#17627a);outline-offset:3px;}@media(prefers-reduced-motion:reduce){.ds-source button{transition:none;}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Waterline",
+    "overview": "Waterline makes agricultural finance readable through a deep teal navigation band, a pale blue ground, and white working surfaces. Compact typography and clearly separated records support repeated operational work. This credit extension preserves the user-selected world in [the shared direction](../Paypal/docs/WATERLINE.md) and applies it to evidence inspection and accountable lender review, as scoped in [the credit brief](docs/WATERLINE_CREDIT_BRIEF.md).\n\nThe system is calm, practical, and explicit about evidence. Retrieved relationships, authored balances, source records, advisory summaries, officer decisions, and delivery receipts retain separate labels. Outline SVG icons identify real actions. No raster asset ships in the credit interface; its relationship bars are rendered from retrieved counts. The execution module's allocation graphic and transaction drawer remain its own components rather than assumed features of this module.",
+    "keyCharacteristics": [
+      "Teal navigation and actions over a cool, pale ground.",
+      "Flat white work surfaces with fine borders and modest rounding.",
+      "DM Sans working text paired with Manrope headings and counts.",
+      "Labelled relationship filters leading to inspectable source records.",
+      "Responsive queue-to-case navigation with visible keyboard focus."
+    ],
+    "rules": [
+      {
+        "name": "The Labelled Color Rule",
+        "body": "Pair relationship and status colors with readable labels and counts; the hue alone never establishes a credit or transaction fact.",
+        "section": "colors"
+      },
+      {
+        "name": "The Amount Alignment Rule",
+        "body": "Preserve tabular numerals and right-align comparable balances, with their currency and synthetic-history qualifiers visible.",
+        "section": "typography"
+      },
+      {
+        "name": "The Working Surface Rule",
+        "body": "Keep ordinary work panels flat; use borders and tonal insets to distinguish nested evidence.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use teal for shared navigation, actions, and labelled relationship bars.",
+      "Do pair status and relationship colors with readable labels and counts.",
+      "Do preserve tabular numerals, currency labels, and comparable balance alignment.",
+      "Do keep working panels flat and use tonal insets for nested evidence.",
+      "Do carry visible keyboard focus, accessible action labels, and reduced-motion behavior into new components.",
+      "Do retain synthetic-data, public-context, advisory-only, and handoff qualifiers wherever they explain a record."
+    ],
+    "donts": [
+      "Don't give ordinary operational panels decorative lift or replace established flat surfaces with gradients.",
+      "Don't substitute decorative imagery for retrieved relationships or inspectable source records.",
+      "Don't treat a relationship count, AI summary, lender decision, payment, and collection as interchangeable facts.",
+      "Don't turn authored histories or public reference-point weather into calibrated risk scores or verified farmer outcomes.",
+      "Don't imply production readiness through a success treatment or a recorded delivery receipt."
+    ]
+  }
+}

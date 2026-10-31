@@ -1,4 +1,4 @@
-# AFRACANet AI — Credit Intelligence
+# AFRACANet AI â€” Credit Intelligence
 
 AFRACANet AI connects agricultural credit evidence, lender decisions, input
 finance, supplier payment and recorded collection. This repository owns credit
@@ -22,10 +22,16 @@ separately attributed public weather context. PostgreSQL stores the matching
 history. These datasets support workflow and load testing; they do not establish
 real creditworthiness, observed financial outcomes or payment evidence.
 
-No calibrated score or GDS result is invented when unavailable. Live AI-provider
-checks, verified USSD intake, production identity integration and whole-platform
-visual unification remain further work. PayPal sandbox checks belong to input
-finance and require its own credentials. No credentials are copied between repos.
+The Waterline interface now spans lender review, evidence, history and input-finance
+continuation. Actual Gemini summaries are evidence-cited and separately configured;
+three provider calls passed structured-output/citation checks. This does not
+validate accuracy, creditworthiness or model calibration. Source-record inspection
+and authored KES history remain available when AI is unavailable. PayPal sandbox
+payment/callback evidence belongs to input finance and uses its own credentials.
+
+See [the 31 October sprint record](docs/SPRINT_2026-10-31.md). Verified USSD intake,
+production identity, stable hosting and independent model evaluation remain work.
+No credentials are copied between repositories.
 
 Legacy graph/telecom/LLM research remains in `Backend/app.py`, `Backend/at.py`,
 `Backend/databaseSeed.py` and `Featherless_LLM/`. The active application does not
