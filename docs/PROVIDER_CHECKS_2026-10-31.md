@@ -9,9 +9,13 @@ change; credentials were not copied between repositories.
 
 Actual provider checks passed for OAuth authentication, Invoicing API access,
 draft creation, existing-draft recovery, invoice sending, and matching the
-invoice's supplier, buyer, reference, amount and currency. The current fixture
-is a single USD 18 invoice awaiting the buyer's sandbox payment. No real money
-has moved and no collection has been recorded.
+invoice's supplier, buyer, reference, amount and currency. The buyer completed
+the USD 18 sandbox payment, and actual PayPal payment records were verified.
+The local order is now `READY_FOR_COLLECTION`. Reserved credit is zero, spent
+credit is 1,800 cents, and exactly one `PAYMENT_CONFIRMED` event exists. Repeating
+reconciliation preserved the order, pickup code, credit, inventory and event
+count. No real money has moved and no collection has been recorded.
+[Sanitized payment-check evidence](../datasets/reports/paypal-sandbox-2026-10-31.json).
 
 The check uses its own persistent SQLite database under ignored
 `data/provider-checks/`. Its seeded credit and catalogue are explicitly synthetic
@@ -27,7 +31,9 @@ non-sandbox invoice links.
 
 The configured webhook ID belongs to the same REST app, uses HTTPS, and includes
 `INVOICING.INVOICE.PAID`. Receiving and verifying an actual payment webhook is
-still untested. Merely configuring the webhook is not delivery evidence.
+still untested. PayPal lists a matching invoice-paid event; that alone does not
+prove delivery to this app. This payment was confirmed by authenticated manual
+reconciliation, not by a verified incoming webhook.
 
 Use a separate `PAYPAL_INVOICE_PREFIX` for each database sharing a sandbox app.
 Keep a store's prefix unchanged once it has invoices. The empty main local store
@@ -67,17 +73,14 @@ The farmer must confirm the proposed order.
 
 ## Remaining provider evidence
 
-- Buyer completes the hosted invoice with the separate Personal sandbox account.
-- Verify actual PayPal payment records and safe duplicate reconciliation.
 - Verify the signed webhook reaches this application and is processed once.
 - Exercise paid recovery, cancellation and refund scenarios against the provider.
 - Configure/evaluate the credit module's summary separately and verify SMS if retained.
 
 Local regression verification passed: **143 backend tests** and **six Edge browser
-journeys** with isolated test data. The latest prompt changes also passed the
-23 focused assistant/invoice-response checks before the final namespace check
-was added. These automated workflow tests do not replace the outstanding buyer
-payment and webhook checks above.
+journeys** with isolated test data. The provider runner additionally passed
+actual paid reconciliation and duplicate-effect checks. Incoming webhook
+verification remains a separate outstanding check.
 
 Provider references: [Gemini pricing](https://ai.google.dev/gemini-api/docs/pricing),
 [PayPal invoicing quickstart](https://developer.paypal.com/api/invoicing),

@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-10-31T15:09:01.014296+00:00",
+  "scope": "Isolated synthetic credit fixture; actual PayPal sandbox API. No real money or collection.",
+  "amount_cents": 1800,
+  "currency": "USD",
+  "provider_status": "PAID",
+  "invoice_matches": true,
+  "payment_verified": true,
+  "repeat_reconciliation_unchanged": true,
+  "payment_confirmed_events": 1,
+  "reserved_cents": 0,
+  "spent_cents": 1800,
+  "order_status": "READY_FOR_COLLECTION",
+  "simulated_payment_disabled": true,
+  "confirmation_method": "Authenticated provider GET and local reconciliation; not an incoming webhook.",
+  "actual_webhook_delivery_verified": false
+}

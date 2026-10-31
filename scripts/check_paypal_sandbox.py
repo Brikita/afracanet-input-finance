@@ -13,7 +13,7 @@ from pathlib import Path
 
 import httpx
 from fastapi.testclient import TestClient
-from sqlalchemy import select
+from sqlalchemy import func, select
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -140,6 +140,59 @@ def run(create=False):
             result = require_success(
                 client.post(f"/api/orders/{identifier}/reconcile", headers=lender)
             )
+
+            def business_snapshot():
+                with db.engine.connect() as conn:
+                    current = dict(
+                        conn.execute(
+                            select(db.orders).where(db.orders.c.id == identifier)
+                        )
+                        .mappings()
+                        .one()
+                    )
+                    person = dict(
+                        conn.execute(
+                            select(db.farmers).where(
+                                db.farmers.c.id == current["farmer_id"]
+                            )
+                        )
+                        .mappings()
+                        .one()
+                    )
+                    stock = [
+                        tuple(row)
+                        for row in conn.execute(
+                            select(
+                                db.products.c.id,
+                                db.products.c.stock,
+                                db.products.c.reserved,
+                            ).order_by(db.products.c.id)
+                        )
+                    ]
+                    events = conn.execute(
+                        select(func.count())
+                        .select_from(db.audit)
+                        .where(
+                            db.audit.c.order_id == identifier,
+                            db.audit.c.action == "PAYMENT_CONFIRMED",
+                        )
+                    ).scalar_one()
+                return current, person, stock, events
+
+            before_repeat = business_snapshot()
+            repeated = require_success(
+                client.post(f"/api/orders/{identifier}/reconcile", headers=lender)
+            )
+            after_repeat = business_snapshot()
+            if (
+                before_repeat != after_repeat
+                or result["confirmed"] != repeated["confirmed"]
+            ):
+                raise ValueError("Repeated reconciliation changed business records.")
+            if result["confirmed"] and after_repeat[3] != 1:
+                raise ValueError(
+                    "A paid fixture must have exactly one payment-confirmed event."
+                )
             state = require_success(client.get("/api/state", headers=lender))
             order = next(row for row in state["orders"] if row["id"] == identifier)
             blocked = (
@@ -161,6 +214,10 @@ def run(create=False):
                 "provider_status": remote.get("status"),
                 "invoice_matches": True,
                 "payment_verified": result["confirmed"],
+                "repeat_reconciliation_unchanged": True,
+                "payment_confirmed_events": after_repeat[3],
+                "reserved_cents": after_repeat[1]["reserved_cents"],
+                "spent_cents": after_repeat[1]["spent_cents"],
                 "order_status": order["status"],
                 "simulated_payment_disabled": blocked,
                 "payment_url": order.get("payment_url"),

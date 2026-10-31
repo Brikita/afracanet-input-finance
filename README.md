@@ -57,8 +57,8 @@ The local demonstration works without service credentials. It includes:
 **Default payments are simulated and the default parser is deterministic.**
 No money moves and no AI model is called in the default walkthrough.
 PayPal sandbox authentication, invoice creation, sending, and draft recovery have
-been checked with actual API calls. Buyer payment and webhook delivery are still
-pending. Gemini passed 24/24 synthetic development cases on 31 October 2026;
+been checked with actual API calls. A USD 18 buyer sandbox payment was verified
+and reconciled exactly once. Webhook delivery remains unverified. Gemini passed 24/24 synthetic development cases on 31 October 2026;
 this is not a production accuracy claim. See the [provider check record](docs/PROVIDER_CHECKS_2026-10-31.md).
 This version is a development prototype, not a submitted entry or a live lending service.
 
@@ -225,7 +225,7 @@ docs/SUBMISSION.md    Demo outline and submission checklist
 Early eligibility-review submission target: **5 November 2026**
 ([organizer update](https://paypalaihackathon.devpost.com/updates)).
 
-1. Complete the PayPal sandbox buyer payment and verify webhook delivery; broaden Gemini evaluation.
+1. Verify actual PayPal webhook delivery and broaden Gemini evaluation.
 2. Verify the SMS sandbox channel and evaluate the workflow with real users.
 3. Validate PostgreSQL, improve hosted access, and prepare a hosted demonstration.
 4. Record the public demonstration, finalize evidence, and submit through Devpost.
