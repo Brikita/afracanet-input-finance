@@ -100,6 +100,34 @@ def test_real_case_does_not_send_data_to_the_prototype_provider(monkeypatch):
     assert error.value.status_code == 409 and not requests
 
 
+def test_minor_units_are_formatted_before_provider_and_wrong_scale_is_rejected(monkeypatch):
+    evidence = {
+        **EVIDENCE,
+        "repayment_history": {
+            "available": True,
+            "currency": "KES",
+            "loan_count": 2,
+            "principal_minor": 9600000,
+            "repaid_minor": 9600000,
+            "outstanding_minor": 0,
+        },
+    }
+    wrong = {
+        **VALID,
+        "observations": [
+            {"text": "Principal is KES 9,600,000.00.", "evidence_ids": ["repayment"]}
+        ],
+    }
+    captured = provider(monkeypatch, wrong)
+    with pytest.raises(HTTPException) as error:
+        advisory.summarize(evidence, "synthetic")
+    assert error.value.status_code == 502
+    facts = json.loads(captured[0]["contents"][0]["parts"][0]["text"])
+    history = next(f["value"] for f in facts if f["id"] == "repayment")
+    assert history["principal_amount"] == "KES 96,000.00"
+    assert "principal_minor" not in history
+
+
 def test_summary_and_evidence_routes_enforce_lender_scope(client, monkeypatch):
     case = application(client, auth(client))
 
