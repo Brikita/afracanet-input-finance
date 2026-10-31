@@ -32,6 +32,7 @@ export default defineConfig({
       env: {
         VITE_API_TARGET: 'http://127.0.0.1:18000',
         VITE_CREDIT_WORKSPACE_URL: 'http://127.0.0.1:15174/',
+        VITE_CACHE_DIR: 'node_modules/.vite-connected',
       },
       reuseExistingServer: false,
     },
@@ -40,7 +41,11 @@ export default defineConfig({
         'node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 15174 --strictPort',
       cwd: path.resolve('../afracanet-green-path'),
       url: 'http://127.0.0.1:15174',
-      env: { VITE_CREDIT_API_URL: 'http://127.0.0.1:18001' },
+      env: {
+        VITE_CREDIT_API_URL: 'http://127.0.0.1:18001',
+        VITE_CACHE_DIR: 'node_modules/.vite-connected',
+        VITE_INPUT_FINANCE_URL: 'http://127.0.0.1:15173/',
+      },
       reuseExistingServer: false,
       timeout: 45000,
     },

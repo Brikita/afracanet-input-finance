@@ -175,6 +175,8 @@ def run():
             "INPUT_FINANCE_BROWSER_URL": "http://127.0.0.1:15173/",
             "CREDIT_CORS_ORIGINS": "http://127.0.0.1:15174",
             "FEATHERLESS_API_KEY": "",
+            "GEMINI_API_KEY": "",
+            "CREDIT_AI_API_KEY": "",
         }
         children = []
         try:

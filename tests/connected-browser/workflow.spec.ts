@@ -12,6 +12,13 @@ test('officer review reaches input finance through signed delivery and renders a
   })
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto('http://127.0.0.1:15174/')
+  await expect(
+    page.getByRole('button', { name: 'Sign in', exact: true }),
+  ).toBeEnabled()
+  await page.screenshot({
+    path: path.resolve('.impeccable/review/sprint-credit-signin-desktop.png'),
+    fullPage: true,
+  })
   await page.getByLabel('Officer account').fill('browser-officer')
   await page
     .getByLabel('Password', { exact: true })
@@ -22,9 +29,22 @@ test('officer review reaches input finance through signed delivery and renders a
   await expect(
     page.getByText('Synthetic Farmer 000001', { exact: true }),
   ).toBeVisible()
+  await page
+    .locator('summary')
+    .filter({ hasText: 'Public weather at a reference point' })
+    .click()
   await expect(
     page.getByRole('heading', { name: 'Public weather at a reference point' }),
   ).toBeVisible()
+  await page.locator('.evidence-record-link').first().click()
+  await expect(
+    page.getByRole('region', { name: 'Connected source record' }),
+  ).toBeVisible()
+  await page.getByRole('button', { name: 'Close source record' }).click()
+  await page.getByRole('button', { name: 'Request AI summary' }).click()
+  await expect(page.getByRole('alert')).toContainText(
+    'Credit AI provider is not configured',
+  )
   await page.getByLabel('Allocation in USD cents').fill('18000')
   await page.getByLabel('Expiry date (UTC)').fill('2027-01-30')
   await page
@@ -54,7 +74,7 @@ test('officer review reaches input finance through signed delivery and renders a
     page.getByRole('heading', { name: 'Recorded lender decision' }),
   ).toBeVisible()
   await expect(
-    page.getByText('Approval · delivered', { exact: true }),
+    page.getByText('Approval Â· delivered', { exact: true }),
   ).toBeVisible({ timeout: 30000 })
   const destination = await page
     .getByRole('link', { name: 'Continue to input finance' })
@@ -120,7 +140,7 @@ test('officer review reaches input finance through signed delivery and renders a
     .fill('Withdraw this illustrative authorization.')
   await page.getByRole('button', { name: 'Revoke this approval' }).click()
   await expect(
-    page.getByText('Revocation · delivered', { exact: true }),
+    page.getByText('Revocation Â· delivered', { exact: true }),
   ).toBeVisible({ timeout: 30000 })
   await inputs.reload()
   await expect(inputs.getByText('Revoked', { exact: true })).toBeVisible()
