@@ -1,0 +1,12 @@
+{
+  "checked_at": "2026-10-31T15:25:46.928265+00:00",
+  "event_kind": "INVOICING.INVOICE.PAID",
+  "event_id_sha256": "633ca369316940cc3c450714c8e33bdf921c2ed7d8b00838b0c1b7f458421dd9",
+  "actual_paypal_resend": true,
+  "signature_verified_by_paypal": true,
+  "deduplicated_event_receipts": 1,
+  "payment_effects": 1,
+  "scope": "Genuine provider event delivered to callback-only isolated fixture; payment had already been reconciled. Repeated delivery did not duplicate effects. No new payment or collection.",
+  "ephemeral_callback": true,
+  "production_hosting": false
+}

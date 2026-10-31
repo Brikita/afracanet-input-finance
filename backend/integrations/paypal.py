@@ -225,6 +225,19 @@ class PayPal:
     def verify(self, headers, event):
         if not settings.paypal_webhook:
             return False
+        required = (
+            "paypal-auth-algo",
+            "paypal-cert-url",
+            "paypal-transmission-id",
+            "paypal-transmission-sig",
+            "paypal-transmission-time",
+        )
+        if any(
+            not isinstance(headers.get(name), str)
+            or not 1 <= len(headers[name]) <= 4096
+            for name in required
+        ):
+            return False
         payload = {
             "auth_algo": headers.get("paypal-auth-algo"),
             "cert_url": headers.get("paypal-cert-url"),
