@@ -1,0 +1,43 @@
+[
+  {
+    "file": "kenya-farming-group.jpg",
+    "title": "Women smallholder farmers in Kenya",
+    "creator": "McKay Savage",
+    "date": "2010-10-14",
+    "source": "https://commons.wikimedia.org/wiki/File:Women_smallholder_farmers_in_Kenya.jpg",
+    "license": "CC BY 2.0",
+    "license_url": "https://creativecommons.org/licenses/by/2.0/",
+    "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/02/Women_smallholder_farmers_in_Kenya.jpg/1280px-Women_smallholder_farmers_in_Kenya.jpg",
+    "sha256": "653f5c9be3893b961b325cbca9bb5a2b66fae1c7ce48500ce5a30ccce12713ae",
+    "bytes": 561458,
+    "changes": "Origin metadata embedded in JPEG COM; responsive CSS crop and scroll scale at display time. No generated or retouched imagery.",
+    "context": "Contextual photograph, not an AFRACANet customer or endorsement."
+  },
+  {
+    "file": "mount-kenya-farmer.jpg",
+    "title": "Woman farmer in Kenya",
+    "creator": "Neil Palmer / CIAT",
+    "date": "2010-10-15",
+    "source": "https://commons.wikimedia.org/wiki/File:Woman_farmer_in_Kenya.jpg",
+    "license": "CC BY-SA 2.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/2.0/",
+    "download": "https://upload.wikimedia.org/wikipedia/commons/3/39/Woman_farmer_in_Kenya.jpg",
+    "sha256": "ae7283113406b700df88e6f27e0625871237fd73e29aae4c36f49ce9fd339990",
+    "bytes": 1155409,
+    "changes": "Origin metadata embedded in JPEG COM; responsive CSS crop and scroll scale at display time. No generated or retouched imagery.",
+    "context": "Contextual photograph, not an AFRACANet customer or endorsement."
+  },
+  {
+    "file": "nairobi-market-vendor.jpg",
+    "title": "Smiling African Woman at Kenyan Market",
+    "creator": "Charles Lichinga",
+    "source": "https://www.pexels.com/photo/smiling-african-woman-at-kenyan-market-33569521/",
+    "license": "Pexels License",
+    "license_url": "https://www.pexels.com/license/",
+    "download": "https://images.pexels.com/photos/33569521/pexels-photo-33569521.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    "sha256": "68e022e5bf2cc748f40af549ac5f34f8e63f1ef105ddc94ec3a122e224f77b2b",
+    "bytes": 245811,
+    "changes": "Origin metadata embedded in JPEG COM; responsive CSS crop and scroll scale at display time. No generated or retouched imagery.",
+    "context": "Contextual photograph, not an AFRACANet customer or endorsement."
+  }
+]
