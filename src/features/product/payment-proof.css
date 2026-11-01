@@ -1,0 +1,235 @@
+.payment-proof-section {
+  margin: 0 4.36% 96px;
+  padding: 44px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+.payment-record-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 40px;
+}
+.payment-record-header h2 {
+  font-size: 27px;
+  line-height: 1.3;
+}
+.payment-record-header p {
+  color: var(--muted);
+  font-size: 16px;
+  margin-top: 12px;
+}
+.payment-provenance {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 14px;
+}
+.proof-amount {
+  flex-shrink: 0;
+}
+.proof-amount > span {
+  color: var(--muted);
+  font-size: 13px;
+}
+.proof-amount strong {
+  display: block;
+  font:
+    800 34px/1.4 Manrope,
+    sans-serif;
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+}
+.payment-stage-nav {
+  margin-top: 40px;
+}
+.payment-stage-nav ol {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 12px;
+}
+.payment-stage-nav button {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 8px 16px;
+  min-height: 100px;
+  width: 100%;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: center;
+}
+.payment-stage-nav button:hover {
+  background: #f2f7f8;
+}
+.payment-stage-nav button[aria-pressed='true'] {
+  background: #e9f3f6;
+}
+.payment-number {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #91a8b1;
+  border-radius: 50%;
+  font-size: 13px;
+  color: #526a72;
+}
+.payment-number.is-verified {
+  background: #e8f4ec;
+  border-color: #92baa0;
+  color: #216d39;
+}
+.payment-stage-evidence {
+  margin-top: 30px;
+  padding: 36px 28px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: start;
+  min-height: 275px;
+}
+.payment-focus-icon {
+  color: var(--teal);
+  margin-top: 7px;
+}
+.payment-focus-position {
+  color: var(--muted);
+  font-size: 12px;
+}
+.payment-stage-evidence h3 {
+  font-size: 25px;
+  line-height: 1.3;
+  margin: 7px 0 18px;
+}
+.payment-stage-evidence p {
+  color: #405e69;
+  font-size: 16px;
+  line-height: 1.7;
+  max-width: 65ch;
+}
+.payment-stage-evidence p + p {
+  margin-top: 14px;
+}
+.payment-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+.payment-verdict.verified {
+  color: #26723c;
+}
+.payment-record-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  padding: 28px 0 0;
+}
+.payment-record-facts dt {
+  font-size: 12px;
+  color: var(--muted);
+}
+.payment-record-facts dd {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 7px;
+  font-size: 14px;
+}
+.payment-record-note {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+  margin-top: 26px;
+  max-width: 85ch;
+}
+.payment-stage-select {
+  display: none;
+}
+@media (max-width: 1000px) {
+  .payment-proof-section {
+    padding: 32px;
+  }
+  .payment-record-header h2 {
+    font-size: 24px;
+  }
+  .payment-stage-nav ol {
+    gap: 4px;
+  }
+  .payment-stage-nav button {
+    font-size: 12px;
+  }
+  .payment-stage-evidence {
+    grid-template-columns: 36px 1fr;
+    padding: 28px 0;
+  }
+  .payment-verdict {
+    grid-column: 2;
+  }
+}
+@media (max-width: 600px) {
+  .payment-proof-section {
+    padding: 26px 20px;
+    margin: 0 5% 64px;
+  }
+  .payment-record-header {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .payment-record-header h2 {
+    font-size: 23px;
+  }
+  .payment-stage-nav {
+    display: none;
+  }
+  .payment-stage-select {
+    display: grid;
+    gap: 10px;
+    margin-top: 28px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .payment-stage-select select {
+    min-width: 0;
+    width: 100%;
+    min-height: 48px;
+    padding: 10px;
+    border: 1px solid var(--control);
+    border-radius: 7px;
+    color: var(--ink);
+    background: white;
+  }
+  .payment-stage-evidence {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 26px;
+    min-height: 0;
+  }
+  .payment-stage-evidence h3 {
+    font-size: 24px;
+  }
+  .payment-verdict {
+    grid-column: 1;
+  }
+  .payment-focus-icon {
+    width: 32px;
+    height: 32px;
+  }
+  .payment-record-facts {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+}
