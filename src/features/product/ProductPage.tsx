@@ -182,7 +182,7 @@ export function ProductPage() {
           input finance traceable.
         </p>
         <div>
-          <a href="https://github.com/Brikita/afracanet-green-path">
+          <a href="https://github.com/Brikita/afracanet-input-finance/tree/main/modules/credit-intelligence">
             Credit intelligence source
           </a>
           <a href="https://github.com/Brikita/afracanet-input-finance">

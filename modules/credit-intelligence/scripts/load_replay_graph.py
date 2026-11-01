@@ -28,7 +28,7 @@ def run(pack, overlay, neo4j_home, java_home, instance):
     root = Path(__file__).resolve().parents[1]
     if not re.fullmatch(r"[a-z][a-z0-9-]{2,80}", instance):
         raise ValueError("Use an instance directory name, not a path.")
-    folder = root / "data" / instance
+    folder = Path(os.getenv("CREDIT_DATA_DIR", str(root / "data"))) / instance
     if folder.exists():
         raise FileExistsError(
             "Choose a fresh graph instance. Existing graphs are never overwritten."
@@ -198,7 +198,7 @@ def run(pack, overlay, neo4j_home, java_home, instance):
         "WORKFLOW_NEO4J_USER": "neo4j",
         "WORKFLOW_NEO4J_PASSWORD": password,
     }.items():
-        set_key(root / ".env", key, value)
+        set_key(Path(os.getenv("CREDIT_ENV_FILE", str(root / ".env"))), key, value)
     report = {
         "nodes": counts,
         "relationships": edges,

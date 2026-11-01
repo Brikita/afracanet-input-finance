@@ -74,7 +74,7 @@ test('officer review reaches input finance through signed delivery and renders a
     page.getByRole('heading', { name: 'Recorded lender decision' }),
   ).toBeVisible()
   await expect(
-    page.getByText('Approval Â· delivered', { exact: true }),
+    page.getByText('Approval · delivered', { exact: true }),
   ).toBeVisible({ timeout: 30000 })
   const destination = await page
     .getByRole('link', { name: 'Continue to input finance' })
@@ -140,7 +140,7 @@ test('officer review reaches input finance through signed delivery and renders a
     .fill('Withdraw this illustrative authorization.')
   await page.getByRole('button', { name: 'Revoke this approval' }).click()
   await expect(
-    page.getByText('Revocation Â· delivered', { exact: true }),
+    page.getByText('Revocation · delivered', { exact: true }),
   ).toBeVisible({ timeout: 30000 })
   await inputs.reload()
   await expect(inputs.getByText('Revoked', { exact: true })).toBeVisible()

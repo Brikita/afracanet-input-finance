@@ -265,7 +265,7 @@ def run(credit_repo):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--credit-repo", type=Path, required=True)
+    parser.add_argument("--credit-repo", type=Path, default=ROOT / "modules/credit-intelligence")
     parser.add_argument("--report", type=Path)
     args = parser.parse_args()
     result = run(args.credit_repo.resolve())

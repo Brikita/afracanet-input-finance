@@ -14,7 +14,7 @@ parser.add_argument("--instance", default="graph-runtime-v1")
 args = parser.parse_args()
 if not re.fullmatch(r"[a-z][a-z0-9-]{2,80}", args.instance):
     raise SystemExit("Use an instance directory name, not a path.")
-folder = Path(__file__).resolve().parents[1] / "data" / args.instance
+folder = Path(os.getenv("CREDIT_DATA_DIR", str(Path(__file__).resolve().parents[1] / "data"))) / args.instance
 runtime = json.loads((folder / "local-runtime.json").read_text())
 try:
     with GraphDatabase.driver(

@@ -1,8 +1,9 @@
 # config.py
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(os.getenv("CREDIT_ENV_FILE", str(Path(__file__).resolve().parents[1] / ".env")))
 # Centralized Featherless Model Registry for our Agents
 MODEL_MAPPING = {
     # DeepSeek handles logical analysis, financial scoring, and final edge cases

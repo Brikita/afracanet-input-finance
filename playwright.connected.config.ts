@@ -39,7 +39,7 @@ export default defineConfig({
     {
       command:
         'node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 15174 --strictPort',
-      cwd: path.resolve('../afracanet-green-path'),
+      cwd: path.resolve('modules/credit-intelligence'),
       url: 'http://127.0.0.1:15174',
       env: {
         VITE_CREDIT_API_URL: 'http://127.0.0.1:18001',

@@ -46,7 +46,7 @@ export function EvidenceStory() {
     import.meta.env.VITE_CREDIT_WORKSPACE_URL ||
     (import.meta.env.DEV
       ? 'http://127.0.0.1:5174/'
-      : 'https://github.com/Brikita/afracanet-green-path')
+      : 'https://github.com/Brikita/afracanet-input-finance/tree/main/modules/credit-intelligence')
 
   return (
     <section

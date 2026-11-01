@@ -11,6 +11,7 @@ import json
 import os
 import secrets
 import subprocess
+import sys
 from pathlib import Path
 
 import psycopg
@@ -19,6 +20,8 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from psycopg import sql
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+from scripts.workspace_config import CREDIT, credit_data_dir, credit_env_file
 
 
 def configure(path, fields):
@@ -162,7 +165,11 @@ def setup(credit_repo):
                 )
             )
     reader_url = f"postgresql://{reader}:{info['context_reader_password']}@127.0.0.1:{info['port']}/{info['databases']['replay']['name']}"
-    key_path = credit_repo / "data/keys/local-credit.pem"
+    key_path = (
+        credit_data_dir()
+        if credit_repo.resolve() == CREDIT.resolve()
+        else credit_repo / "data"
+    ) / "keys/local-credit.pem"
     key_path.parent.mkdir(parents=True, exist_ok=True)
     if not key_path.exists():
         key = Ed25519PrivateKey.generate()
@@ -200,7 +207,7 @@ def setup(credit_repo):
         },
     )
     configure(
-        credit_repo / ".env",
+        credit_env_file(credit_repo),
         {
             "CREDIT_DATABASE_URL": url("credit", True),
             "CREDIT_SIGNING_KEY_FILE": key_path.as_posix(),
@@ -213,7 +220,7 @@ def setup(credit_repo):
             "REPLAY_DATABASE_URL": reader_url,
         },
     )
-    # Connection helper is operator-local, outside both repositories.
+    # Connection helper is operator-local, outside the source tree.
     info["credit_repo"] = str(credit_repo)
     config.write_text(json.dumps(info))
     return info
@@ -221,7 +228,9 @@ def setup(credit_repo):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--credit-repo", type=Path, required=True)
+    parser.add_argument(
+        "--credit-repo", type=Path, default=ROOT / "modules/credit-intelligence"
+    )
     args = parser.parse_args()
     setup(args.credit_repo.resolve())
     print(

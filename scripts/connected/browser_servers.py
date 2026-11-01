@@ -14,9 +14,10 @@ from dotenv import dotenv_values
 from sqlalchemy import insert
 
 ROOT = Path(__file__).resolve().parents[2]
-CREDIT = Path(os.getenv("CREDIT_REPO", ROOT.parent / "afracanet-green-path")).resolve()
+CREDIT = ROOT / "modules/credit-intelligence"
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(CREDIT))
+from scripts.workspace_config import credit_env_file
 
 
 def run():
@@ -131,7 +132,7 @@ def run():
             )
         )
         # Build each child's environment from the original process environment,
-        # before either module loaded .env. Provider credentials never cross repos.
+        # before either module loaded .env. Provider credentials remain scoped to their own service.
         safe = {
             k: v
             for k, v in baseline.items()
@@ -157,7 +158,7 @@ def run():
             "DEMO_ACCESS_CODE": "afracanet-demo",
             "CREDIT_TRUST_FILE": str(trust),
         }
-        local = dotenv_values(CREDIT / ".env")
+        local = dotenv_values(credit_env_file())
         evidence = {
             k: v
             for k, v in local.items()
@@ -167,6 +168,7 @@ def run():
             **safe,
             **evidence,
             "CREDIT_DATABASE_URL": os.environ["CREDIT_DATABASE_URL"],
+            "CREDIT_ENV_FILE": os.devnull,
             "CREDIT_SIGNING_KEY_FILE": str(private),
             "CREDIT_SIGNING_KEY_ID": "browser-key",
             "CREDIT_SIGNING_KEY_IDS": "{}",

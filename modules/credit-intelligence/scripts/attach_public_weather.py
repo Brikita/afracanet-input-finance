@@ -75,7 +75,7 @@ def load(folder):
 
 
 if __name__ == "__main__":
-    load_dotenv(Path(__file__).resolve().parents[1] / ".env")
+    load_dotenv(os.getenv("CREDIT_ENV_FILE", str(Path(__file__).resolve().parents[1] / ".env")))
     parser = argparse.ArgumentParser()
     parser.add_argument("folder", type=Path)
     print(json.dumps(load(parser.parse_args().folder.resolve())))

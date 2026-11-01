@@ -46,20 +46,22 @@ jobs:
       - name: Install backend
         run: |
           python -m venv .venv
-          .venv/bin/python -m pip install -r backend/requirements-dev.txt
+          .venv/bin/python -m pip install -r requirements-dev.txt
       - name: Check backend structure and formatting
         run: |
           .venv/bin/python -m ruff check --select F,I backend
           .venv/bin/python -m ruff format --check backend
       - name: Check transaction integrity
-        run: .venv/bin/python -m pytest -q
+        run: npm run test:backend
       - name: Install frontend
-        run: npm ci
+        run: |
+          npm ci
+          npm ci --prefix modules/credit-intelligence
       - name: Build frontend
         run: |
-          npm run check:types
+          npm run check:all
           npm run check:format
-          npm run build
+          npm run build:all
       - name: Install browser
         run: npx playwright install --with-deps chromium
       - name: Check browser journey

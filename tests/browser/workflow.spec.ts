@@ -448,6 +448,7 @@ test('lender filters cases, respects issue holds, and closes details by keyboard
     .click()
   const dialog = page.getByRole('dialog')
   const reference = await dialog.locator('.drawer-header h2').innerText()
+  await expect(dialog).toBeFocused()
   await page.keyboard.press('Escape')
   await expect(dialog).toHaveCount(0)
   await page.getByLabel('View as').selectOption('lender-demo')

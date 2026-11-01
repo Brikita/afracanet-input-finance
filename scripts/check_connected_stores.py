@@ -4,13 +4,18 @@ import argparse
 import hashlib
 import json
 import statistics
+import sys
 import time
 from pathlib import Path
 
 import psycopg
 from dotenv import dotenv_values
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from neo4j import GraphDatabase
 from sqlalchemy import create_engine, text
+
+from scripts.workspace_config import credit_env_file
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -23,7 +28,7 @@ def digest(rows):
 
 def run(credit_repo):
     inputs = dotenv_values(ROOT / ".env")
-    credit = dotenv_values(credit_repo / ".env")
+    credit = dotenv_values(credit_env_file(credit_repo))
     with (
         create_engine(inputs["DATABASE_URL"]).connect() as execution,
         create_engine(credit["CREDIT_DATABASE_URL"]).connect() as workflow,
@@ -158,7 +163,9 @@ def run(credit_repo):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--credit-repo", type=Path, required=True)
+    parser.add_argument(
+        "--credit-repo", type=Path, default=ROOT / "modules/credit-intelligence"
+    )
     parser.add_argument("--report", type=Path, required=True)
     args = parser.parse_args()
     result = run(args.credit_repo.resolve())

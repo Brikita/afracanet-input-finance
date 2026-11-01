@@ -18,7 +18,9 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 
-load_dotenv(Path(__file__).resolve().parents[1] / ".env")
+load_dotenv(
+    os.getenv("CREDIT_ENV_FILE", str(Path(__file__).resolve().parents[1] / ".env"))
+)
 from . import advisory, delivery, graph_context, identity, store, workflow
 
 

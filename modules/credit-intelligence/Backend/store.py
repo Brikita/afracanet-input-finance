@@ -18,7 +18,7 @@ from sqlalchemy import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
-load_dotenv(ROOT / ".env")
+load_dotenv(os.getenv("CREDIT_ENV_FILE", str(ROOT / ".env")))
 metadata = MetaData()
 officers = Table(
     "officers",
@@ -113,11 +113,10 @@ def make_engine(url):
     return engine
 
 
-(ROOT / "data").mkdir(exist_ok=True)
+DATA = Path(os.getenv("CREDIT_DATA_DIR", str(ROOT / "data"))).resolve()
+DATA.mkdir(parents=True, exist_ok=True)
 engine = make_engine(
-    os.getenv(
-        "CREDIT_DATABASE_URL", f"sqlite:///{ROOT / 'data' / 'credit-workflow.db'}"
-    )
+    os.getenv("CREDIT_DATABASE_URL", f"sqlite:///{DATA / 'credit-workflow.db'}")
 )
 
 
