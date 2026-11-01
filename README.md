@@ -8,6 +8,12 @@ approved catalogue items, lenders approve and pay supplier invoices, and dealers
 record collection. Each transaction connects credit, inventory, payment, and
 fulfilment in one traceable record.
 
+The public information route is `/about` (or the built `/about.html` entry).
+It explains alternative credit assessment, chama/SACCO records, connected
+evidence and graph data science, with an interactive teaching graph and a
+preserved PayPal sandbox check. See [the product-page record](docs/PRODUCT_PAGE_2026-11-01.md).
+It needs no sign-in and makes no authenticated, AI or payment API calls.
+
 AFRACANet AI has two separately maintained modules:
 [credit intelligence](https://github.com/Brikita/afracanet-green-path) and
 [input finance](https://github.com/Brikita/afracanet-input-finance). They form

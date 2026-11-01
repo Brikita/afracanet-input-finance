@@ -1,61 +1,57 @@
-# Payment-proof product page
+# AFRACANet product page
 
-Mode: Persuade. Route: /about. Approved structure: proof, seed:2906d2e2bf84f957.
-User selected the comp-led payment-proof composition on 31 October 2026.
+Mode: Persuade. Routes: /about and /about.html.
+Direction lineage: Waterline; seed:2906d2e2bf84f957.
 
-THESIS: Make the connection between evidence, lender authorization and verified
-supplier payment inspectable by judges, lenders and technology partners.
+THESIS: Explain alternative credit assessment through connected financial records,
+then show how explicit lender authorization connects to verified input finance.
 
-OWN-WORLD: Inherit Waterline: deep teal navigation, pale blue ground, white
-working surfaces, Manrope headings, DM Sans text, restrained Lucide icons.
-No raster artwork is required by this semantic record-led composition.
+OWN-WORLD: Inherit Waterline, Manrope/DM Sans and the teal/blue/green palette.
+Use semantic controls and crisp graph geometry, rather than decorative artwork.
 
-STORY: Read the proposition, inspect a genuine USD 18 sandbox payment check,
-then understand the broader two-module workflow, provenance and remaining limits.
-Continue into the working prototype through an explicit link.
+STORY: Understand the proposition, inspect one preserved sandbox payment stage,
+follow the role-based workflow, explore financial-record sources, then interact
+with a labelled graph-data-science teaching network and inspect current limits.
 
-FIRST VIEWPORT: Full-width navigation, a two-line headline at left with three
-compact benefits at right, then a broad seven-stage verification record. The
-next workflow section begins near the bottom. Preserve the approved hierarchy.
+FIRST VIEWPORT: Teal navigation, large two-line proposition, a readable paragraph
+and three concise principles. Give the payment record its own spacious section
+below. The full story unfolds through scrolling; no obligation to fit seven
+explanatory cards into one viewport.
 
-FORM: Approved proof comp .impeccable/mocks/decision/proof.png. All drawn
-content is semantic text, controls, CSS surfaces and small library icons.
-Selecting a stage reveals its evidence; no financial action runs on this page.
+FORM: User-directed, code-first refinement of the selected Waterline world.
+Select a payment stage or an evidence source. Run/step/pause/reset a small PageRank
+example; animate between shared and manually grouped community layouts. Stop
+playback offscreen/when hidden; reduced motion snaps positional changes.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the
 finish review, the verdict, DESIGN.md, and every shipping raster carrying its
-provenance. Established-system quality authority: docs/WATERLINE.md and DESIGN.md.
+provenance. No raster assets ship. Quality authority: DESIGN.md and docs/WATERLINE.md.
 
-## Factual corrections agreed in the implementation notice
+## Latest user direction — 1 November 2026
 
-Generated dates, UUIDs, invoice/supplier references and crop season are examples,
-not verified facts. Do not publish them. The real payment was first confirmed by
-manual reconciliation, then a genuine provider event was resent and its signature
-verified. One persisted event and one payment effect survived repeat delivery.
-Callback delivery is a network event, not a physical input handover.
+The user requested the full alternative-credit story: small businesses without
+collateral, credible chama/SACCO records, interconnected evidence and GDS. They
+then asked for graph illustrations and fitting motion, followed by: "we shouldn't
+just have everything closely packed" and "we can utilise scrolling to have the
+components well spaced"; information should not be squeezed or overwhelming.
 
-The seven proof stages are invoice created, invoice sent, buyer paid, payment
-verified, callback verified, ready for collection and collection not recorded.
-This provider check uses an isolated synthetic allocation fixture; it is not an
-actual lender approval. The broader signed lender workflow is separately tested.
-Do not combine these into an invented single customer transaction.
+These explicit structural changes supersede the original dense, single-viewport
+comp. The old proof image remains a historical critique reference, not the new
+spatial contract. Continue the existing world without another direction round.
 
-Provider evidence: datasets/reports/paypal-sandbox-2026-10-31.json and
-paypal-callback-2026-10-31.json. No public raw provider identifiers, tokens,
-credentials, private officer identities or payment URLs. Verified amounts and
-sanitized evidence only. No production readiness, credit calibration, escrow,
-guaranteed delivery or proven customer impact claims.
+## Evidence boundaries
 
-## Implementation checkpoint
+The PageRank teaching network is authored, computed locally and separate from
+borrower data. Its community labels are manually assigned, not Louvain results.
+The loaded development graph has not had GDS run on it and provides no calibrated
+alternative credit score. Real chama/SACCO and general small-business feeds are
+not connected. Synthetic history and public reference weather stay distinct.
 
-The user accepted the construction plan. The desktop first viewport is now
-implemented at `/about`, with a separate static-build entry at `/about.html`.
-Both routes use the same React component and make no authenticated, AI or payment
-API calls. The build, strict TypeScript/format checks and seven isolated Edge
-journeys passed. The existing transaction behavior is unchanged.
+The USD 18 actual sandbox payment was first manually reconciled. A genuine PayPal
+callback was subsequently resent, verified and deduplicated. That event is not
+physical delivery. Collection in the fixture is not recorded. The payment check
+and signed lender-workflow checks are separate fixtures, not a real customer loan.
+No raw provider identifiers, credentials, personal records or payment URLs appear.
 
-The last measured comp comparison reached 89% overall but retained control/text
-vetoes. First-viewport visual calibration is pending. Remaining page sections,
-stage-inspection interaction, motion, responsive adaptation, final review and
-documentation are not complete. The local implementation is a reviewable draft,
-not the finished public page.
+Algorithm references: official Neo4j PageRank and Louvain documentation, linked
+from the technical disclosure. No loan eligibility, guarantee or impact claim.

@@ -59,7 +59,9 @@ checks do not establish semantic accuracy.
 
 ## Remaining before presentation and submission
 
-- Finish the approved public payment-proof page, its interactions and review.
+- Public product page completed on 1 November with the revised evidence story,
+  interactive graph illustrations and spacious scroll layout. See the
+  [product-page record](PRODUCT_PAGE_2026-11-01.md).
 - Set up stable HTTPS hosting, durable stores and a permanent callback URL; test
   access from another device. Existing local tunnels are temporary.
 - Verify SMS delivery if included, and broaden provider recovery/refund scenarios.
