@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Pause, Play, RotateCcw, StepForward } from 'lucide-react'
 import './gds.css'
+import { useViewportPlayback } from './useViewportPlayback'
 
 // Authored teaching network. This is never a borrower or lending-model result.
 const nodes = [
@@ -69,13 +70,35 @@ for (let i = 0; i < iterations; i++) ranks.push(nextRanks(ranks[i]))
 export function GdsExplorer() {
   const [mode, setMode] = useState<'rank' | 'community'>('rank')
   const [step, setStep] = useState(0)
-  const [playing, setPlaying] = useState(false)
+  const [tourComplete, setTourComplete] = useState(false)
+  const [communityScene, setCommunityScene] = useState(0)
   const [grouped, setGrouped] = useState(true)
   const [layout, setLayout] = useState(0)
   const [selected, setSelected] = useState(1)
   const [reduced, setReduced] = useState(false)
   const frame = useRef<HTMLDivElement>(null)
   const layoutValue = useRef(0)
+  const playback = useViewportPlayback(
+    frame,
+    () => {
+      if (mode === 'rank') {
+        if (step < iterations) setStep((value) => value + 1)
+        else {
+          setMode('community')
+          setGrouped(true)
+          setCommunityScene(0)
+        }
+      } else if (communityScene === 0) {
+        setGrouped(false)
+        setCommunityScene(1)
+      } else {
+        setGrouped(true)
+        setTourComplete(true)
+      }
+    },
+    mode === 'community' ? 3500 : step === iterations ? 2600 : 750,
+    !tourComplete,
+  )
   useEffect(() => {
     const preference = matchMedia('(prefers-reduced-motion: reduce)')
     const update = () => setReduced(preference.matches)
@@ -104,29 +127,6 @@ export function GdsExplorer() {
     request = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(request)
   }, [mode, grouped, reduced])
-  useEffect(() => {
-    if (!playing || mode !== 'rank') return
-    if (step >= iterations) {
-      setPlaying(false)
-      return
-    }
-    const timer = setTimeout(() => setStep((value) => value + 1), 700)
-    return () => clearTimeout(timer)
-  }, [playing, step, mode])
-  useEffect(() => {
-    const stop = () => {
-      if (document.hidden) setPlaying(false)
-    }
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) setPlaying(false)
-    })
-    if (frame.current) observer.observe(frame.current)
-    document.addEventListener('visibilitychange', stop)
-    return () => {
-      observer.disconnect()
-      document.removeEventListener('visibilitychange', stop)
-    }
-  }, [])
   const points = nodes.map((node) => ({
     x: node.x + (node.cx - node.x) * layout,
     y: node.y + (node.cy - node.y) * layout,
@@ -136,18 +136,55 @@ export function GdsExplorer() {
     .sort((a, b) => b.value - a.value)
     .slice(0, 3)
   function chooseMode(value: 'rank' | 'community') {
-    setPlaying(false)
+    playback.pause()
+    setTourComplete(false)
     setMode(value)
   }
 
   return (
-    <div className="gds-explorer" ref={frame}>
+    <div className="gds-explorer">
       <div className="gds-intro">
         <h3>Watch the connections take shape.</h3>
         <p>
           Explore a teaching network before applying these ideas to a lending
           model.
         </p>
+      </div>
+      <div className="presentation-playback gds-tour-control">
+        <span>
+          {tourComplete
+            ? 'Tour complete · Explore any node or replay.'
+            : 'PageRank and community layouts play automatically in view.'}
+        </span>
+        <button
+          onClick={() => {
+            if (tourComplete) {
+              setMode('rank')
+              setStep(0)
+              setCommunityScene(0)
+              setTourComplete(false)
+              playback.resume()
+            } else playback.toggle()
+          }}
+          aria-label={
+            tourComplete
+              ? 'Replay graph tour'
+              : playback.requested
+                ? 'Pause graph tour'
+                : 'Resume graph tour'
+          }
+        >
+          {playback.requested && !tourComplete ? (
+            <Pause size={16} />
+          ) : (
+            <Play size={16} />
+          )}{' '}
+          {tourComplete
+            ? 'Replay tour'
+            : playback.requested
+              ? 'Pause tour'
+              : 'Resume tour'}
+        </button>
       </div>
       <div
         className="gds-mode-controls"
@@ -168,7 +205,11 @@ export function GdsExplorer() {
         </button>
       </div>
       <div className="gds-stage">
-        <div className="gds-canvas">
+        <div
+          className="gds-canvas"
+          ref={frame}
+          data-ui="interactive-graph-teaching-tool"
+        >
           <div className="gds-data-label">
             Teaching example · {nodes.length} authored nodes · {edges.length}{' '}
             directed links
@@ -271,21 +312,7 @@ export function GdsExplorer() {
               <>
                 <button
                   onClick={() => {
-                    if (step === iterations) setStep(0)
-                    setPlaying((value) => !value)
-                  }}
-                  aria-label={
-                    playing
-                      ? 'Pause PageRank animation'
-                      : 'Play PageRank animation'
-                  }
-                >
-                  {playing ? <Pause size={17} /> : <Play size={17} />}
-                  {playing ? 'Pause' : 'Play'}
-                </button>
-                <button
-                  onClick={() => {
-                    setPlaying(false)
+                    playback.pause()
                     setStep((value) => Math.min(iterations, value + 1))
                   }}
                   disabled={step === iterations}
@@ -295,7 +322,7 @@ export function GdsExplorer() {
                 </button>
                 <button
                   onClick={() => {
-                    setPlaying(false)
+                    playback.pause()
                     setStep(0)
                   }}
                 >
@@ -308,7 +335,12 @@ export function GdsExplorer() {
               </>
             ) : (
               <>
-                <button onClick={() => setGrouped((value) => !value)}>
+                <button
+                  onClick={() => {
+                    playback.pause()
+                    setGrouped((value) => !value)
+                  }}
+                >
                   {grouped ? 'Show shared network' : 'Separate the groups'}
                 </button>
                 <span>Community labels are authored, not computed.</span>
@@ -319,7 +351,7 @@ export function GdsExplorer() {
         <div className="gds-reading">
           <h4>
             {mode === 'rank'
-              ? 'Importance changes as links are followed.'
+              ? 'Links change importance.'
               : 'Connections can reveal groups.'}
           </h4>
           <p>

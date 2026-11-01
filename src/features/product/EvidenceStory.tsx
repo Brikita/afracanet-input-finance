@@ -1,11 +1,14 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import {
   ArrowRight,
   ExternalLink,
   FileSearch,
   Network,
   ShieldCheck,
+  Pause,
+  Play,
 } from 'lucide-react'
+import { useViewportPlayback } from './useViewportPlayback'
 import { evidenceSources } from './evidenceSources'
 import { GdsExplorer } from './GdsExplorer'
 import graph from '../../../datasets/reports/connected-v1-store-verification.json'
@@ -25,6 +28,19 @@ export function EvidenceStory() {
   const [selectedId, setSelectedId] =
     useState<(typeof evidenceSources)[number]['id']>('chama')
   const selected = evidenceSources.find((source) => source.id === selectedId)!
+  const frame = useRef<HTMLDivElement>(null)
+  const playback = useViewportPlayback(
+    frame,
+    () =>
+      setSelectedId(
+        (current) =>
+          evidenceSources[
+            (evidenceSources.findIndex((source) => source.id === current) + 1) %
+              evidenceSources.length
+          ].id,
+      ),
+    9000,
+  )
   const number = (value: number) => value.toLocaleString('en-US')
   const creditUrl =
     import.meta.env.VITE_CREDIT_WORKSPACE_URL ||
@@ -69,9 +85,26 @@ export function EvidenceStory() {
         </div>
         <span>Illustrative map · No live personal records</span>
       </div>
-      <div className="evidence-explorer">
+      <div className="presentation-playback evidence-playback">
+        <span>
+          {playback.requested
+            ? 'The evidence tour starts as the map enters view.'
+            : 'Evidence tour paused'}
+        </span>
+        <button
+          onClick={playback.toggle}
+          aria-label={
+            playback.requested ? 'Pause evidence tour' : 'Resume evidence tour'
+          }
+        >
+          {playback.requested ? <Pause size={16} /> : <Play size={16} />}{' '}
+          {playback.requested ? 'Pause tour' : 'Resume tour'}
+        </button>
+      </div>
+      <div className="evidence-explorer" data-ui="evidence-source-inspector">
         <div
           className="evidence-map"
+          ref={frame}
           aria-label="Interconnected applicant evidence sources"
         >
           <svg
@@ -106,7 +139,10 @@ export function EvidenceStory() {
               className={`evidence-source evidence-source-${index}`}
               aria-pressed={source.id === selectedId}
               aria-controls="evidence-source-detail"
-              onClick={() => setSelectedId(source.id)}
+              onClick={() => {
+                setSelectedId(source.id)
+                playback.restart()
+              }}
             >
               <source.icon size={24} aria-hidden="true" />
               <span>
@@ -122,12 +158,17 @@ export function EvidenceStory() {
           id="evidence-source-detail"
           role="region"
           aria-labelledby="source-detail-title"
-          aria-live="polite"
+          aria-live={playback.playing ? 'off' : 'polite'}
         >
           <selected.icon size={28} aria-hidden="true" />
           <h3 id="source-detail-title">{selected.title}</h3>
           <p className="evidence-contribution">{selected.contribution}</p>
-          <details key={selected.id}>
+          <details
+            key={selected.id}
+            onToggle={(event) => {
+              if (event.currentTarget.open) playback.pause()
+            }}
+          >
             <summary>
               Follow this source, its limits and prototype status
             </summary>
@@ -234,7 +275,7 @@ export function EvidenceStory() {
         <h3>
           Evidence informs.
           <br />
-          The lender authorizes.
+          Lenders decide.
         </h3>
         <ol>
           <li>
@@ -273,7 +314,7 @@ export function EvidenceStory() {
       <div className="evidence-development">
         <div>
           <h3>
-            Substantial development data.
+            Synthetic histories.
             <br />
             Clearly labelled.
           </h3>
@@ -293,9 +334,9 @@ export function EvidenceStory() {
         <div className="evidence-next-step">
           <ShieldCheck size={30} aria-hidden="true" />
           <h3>
-            Bring the records.
+            From records
             <br />
-            Keep the decision accountable.
+            to a pilot.
           </h3>
           <p>
             The next step is a partner-backed pilot: authentic records,

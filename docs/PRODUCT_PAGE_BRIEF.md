@@ -1,57 +1,21 @@
-# AFRACANet product page
+# AFRACANet public product site
 
-Mode: Persuade. Routes: /about and /about.html.
-Direction lineage: Waterline; seed:2906d2e2bf84f957.
+Mode: Persuade. Routes: /about and /about.html. User-pinned code integration.
 
-THESIS: Explain alternative credit assessment through connected financial records,
-then show how explicit lender authorization connects to verified input finance.
+THESIS: Make alternative financial histories understandable, then connect an explicit lender decision to traceable input finance.
 
-OWN-WORLD: Inherit Waterline, Manrope/DM Sans and the teal/blue/green palette.
-Use semantic controls and crisp graph geometry, rather than decorative artwork.
+OWN-WORLD: Forest green, ivory and celadon. Bricolage Grotesque display and Hanken Grotesk body, scoped to the public site. Working application retains Waterline. Taste dark-room seed 542333872: supplied Aether Flow hero overrides dealt frame-ring composition; redistributable OFL grotesques replace Erode for public-repo licensing clarity; real Kenyan photography replaces atmospheric water. No invented customer-logo proof.
 
-STORY: Understand the proposition, inspect one preserved sandbox payment stage,
-follow the role-based workflow, explore financial-record sources, then interact
-with a labelled graph-data-science teaching network and inspect current limits.
+STORY: Living-network proposition, human context, connected evidence, automatic graph explanation, working lives, lender workflow, then seven-stage preserved payment proof. Spacious scrolling; disclosures remain close to their claims.
 
-FIRST VIEWPORT: Teal navigation, large two-line proposition, a readable paragraph
-and three concise principles. Give the payment record its own spacious section
-below. The full story unfolds through scrolling; no obligation to fit seven
-explanatory cards into one viewport.
+FIRST VIEWPORT: The user supplied Aether Flow Hero from 21st.dev. Adapt its canvas network to green and AFRACANet copy, with new typography and a real prototype destination. Do not re-run a design tournament or comp approval.
 
-FORM: User-directed, code-first refinement of the selected Waterline world.
-Select a payment stage or an evidence source. Run/step/pause/reset a small PageRank
-example; animate between shared and manually grouped community layouts. Stop
-playback offscreen/when hidden; reduced motion snaps positional changes.
+FORM: Evidence and payment cycle automatically in view; selecting a stage restarts its interval and continues from that selection. Graph tour progresses from PageRank to authored community layouts. Pause/resume, offscreen and document-hidden suspension; reduced-motion defaults to manual controls. Native photographs have a subtle scroll-linked scale with a static reduced-motion fallback. No presentation action calls a financial API.
 
-FINISH: unreviewed and undocumented is unfinished; this build ends with the
-finish review, the verdict, DESIGN.md, and every shipping raster carrying its
-provenance. No raster assets ship. Quality authority: DESIGN.md and docs/WATERLINE.md.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance. Write scoped public DESIGN.md and sidecar; keep visible image credits. Production build and actual Edge checks at 1440/768/390. Preserve global working-app DESIGN.md. Historical dense comp is superseded by explicit user requests for a new hero, typography, web imagery and spacious scrolling.
 
-## Latest user direction — 1 November 2026
+## Truth boundaries
 
-The user requested the full alternative-credit story: small businesses without
-collateral, credible chama/SACCO records, interconnected evidence and GDS. They
-then asked for graph illustrations and fitting motion, followed by: "we shouldn't
-just have everything closely packed" and "we can utilise scrolling to have the
-components well spaced"; information should not be squeezed or overwhelming.
+Financial histories are synthetic. No partner chama/SACCO or general SME feed is connected. PageRank runs only on the small authored browser teaching graph; community labels are manually assigned, not Louvain output. No calibrated credit score or production readiness claim. GDS has not run on the loaded development pack.
 
-These explicit structural changes supersede the original dense, single-viewport
-comp. The old proof image remains a historical critique reference, not the new
-spatial contract. Continue the existing world without another direction round.
-
-## Evidence boundaries
-
-The PageRank teaching network is authored, computed locally and separate from
-borrower data. Its community labels are manually assigned, not Louvain results.
-The loaded development graph has not had GDS run on it and provides no calibrated
-alternative credit score. Real chama/SACCO and general small-business feeds are
-not connected. Synthetic history and public reference weather stay distinct.
-
-The USD 18 actual sandbox payment was first manually reconciled. A genuine PayPal
-callback was subsequently resent, verified and deduplicated. That event is not
-physical delivery. Collection in the fixture is not recorded. The payment check
-and signed lender-workflow checks are separate fixtures, not a real customer loan.
-No raw provider identifiers, credentials, personal records or payment URLs appear.
-
-Algorithm references: official Neo4j PageRank and Louvain documentation, linked
-from the technical disclosure. No loan eligibility, guarantee or impact claim.
+The preserved USD18 actual sandbox payment and genuine resent verified callback are separate from signed lender-workflow tests. One payment effect; physical collection not recorded. Autoplay reveals a snapshot, never creates a new transaction. Photos show contextual Kenyan subjects, never claimed customers or endorsers. Source/license attribution accompanies photographs.

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import {
   Check,
   CircleCheck,
@@ -9,7 +9,10 @@ import {
   MailCheck,
   ShieldCheck,
   Wallet,
+  Pause,
+  Play,
 } from 'lucide-react'
+import { useViewportPlayback } from './useViewportPlayback'
 import payment from '../../../datasets/reports/paypal-sandbox-2026-10-31.json'
 import callback from '../../../datasets/reports/paypal-callback-2026-10-31.json'
 import './payment-proof.css'
@@ -84,7 +87,17 @@ const explanations = [
 ]
 
 export function PaymentProof() {
-  const [selected, setSelected] = useState(4)
+  const [selected, setSelected] = useState(0)
+  const frame = useRef<HTMLElement>(null)
+  const playback = useViewportPlayback(
+    frame,
+    () => setSelected((value) => (value + 1) % stages.length),
+    10000,
+  )
+  const choose = (index: number) => {
+    setSelected(index)
+    playback.restart()
+  }
   const stage = stages[selected]
   const amount = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -98,19 +111,42 @@ export function PaymentProof() {
     timeZone: 'Africa/Nairobi',
   })
   return (
-    <section className="payment-proof-section" aria-labelledby="proof-title">
+    <section
+      ref={frame}
+      className="payment-proof-section"
+      data-ui="preserved-payment-walkthrough"
+      aria-labelledby="proof-title"
+    >
       <div className="payment-record-header">
         <div>
-          <h2 id="proof-title">Input finance payment to supplier</h2>
-          <p>Explore one preserved provider check, a stage at a time.</p>
+          <h2 id="proof-title">Input finance to supplier</h2>
+          <p>One preserved provider check, unfolding a stage at a time.</p>
           <span className="payment-provenance">
             PayPal sandbox · Synthetic allocation fixture · {checked}
           </span>
         </div>
         <div className="proof-amount">
-          <span>Verified payment</span>
           <strong>{amount}</strong>
+          <span>Verified sandbox payment</span>
         </div>
+      </div>
+      <div className="presentation-playback payment-playback">
+        <span>
+          {playback.requested
+            ? 'Automatic walkthrough · 10 seconds per stage'
+            : 'Walkthrough paused'}
+        </span>
+        <button
+          onClick={playback.toggle}
+          aria-label={
+            playback.requested
+              ? 'Pause payment walkthrough'
+              : 'Resume payment walkthrough'
+          }
+        >
+          {playback.requested ? <Pause size={16} /> : <Play size={16} />}{' '}
+          {playback.requested ? 'Pause' : 'Resume'}
+        </button>
       </div>
       <nav className="payment-stage-nav" aria-label="Sandbox payment stages">
         <ol>
@@ -119,7 +155,7 @@ export function PaymentProof() {
               <button
                 aria-pressed={selected === index}
                 aria-controls="payment-stage-evidence"
-                onClick={() => setSelected(index)}
+                onClick={() => choose(index)}
               >
                 <span
                   className={
@@ -140,7 +176,7 @@ export function PaymentProof() {
         Explore a payment stage
         <select
           value={selected}
-          onChange={(event) => setSelected(Number(event.target.value))}
+          onChange={(event) => choose(Number(event.target.value))}
         >
           {stages.map((item, index) => (
             <option key={item.title} value={index}>
@@ -153,7 +189,7 @@ export function PaymentProof() {
         className="payment-stage-evidence"
         id="payment-stage-evidence"
         role="region"
-        aria-live="polite"
+        aria-live={playback.playing ? 'off' : 'polite'}
         aria-labelledby="payment-stage-heading"
       >
         <stage.icon

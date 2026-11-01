@@ -1,9 +1,9 @@
 .payment-proof-section {
   margin: 0 4.36% 96px;
   padding: 44px;
-  background: white;
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  background: var(--public-surface);
+  border: 0;
+  border-radius: 4px;
 }
 .payment-record-header {
   display: flex;
@@ -23,7 +23,7 @@
 .payment-provenance {
   display: block;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.6;
   margin-top: 14px;
 }
@@ -37,7 +37,7 @@
 .proof-amount strong {
   display: block;
   font:
-    800 34px/1.4 Manrope,
+    800 34px/1.4 var(--public-display),
     sans-serif;
   letter-spacing: -0.025em;
   font-variant-numeric: tabular-nums;
@@ -68,31 +68,30 @@
   text-align: center;
 }
 .payment-stage-nav button:hover {
-  background: #f2f7f8;
+  background: var(--public-raised);
 }
 .payment-stage-nav button[aria-pressed='true'] {
-  background: #e9f3f6;
+  background: var(--public-raised);
 }
 .payment-number {
   display: grid;
   place-items: center;
   width: 30px;
   height: 30px;
-  border: 1px solid #91a8b1;
+  border: 1px solid #709881; /* taste-skill-ignore: numbered payment-stage control */
   border-radius: 50%;
   font-size: 13px;
-  color: #526a72;
+  color: var(--muted);
 }
 .payment-number.is-verified {
-  background: #e8f4ec;
-  border-color: #92baa0;
-  color: #216d39;
+  background: #264e36;
+  border-color: #739f7a;
+  color: #c0e6aa;
 }
 .payment-stage-evidence {
   margin-top: 30px;
   padding: 36px 28px;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr) auto;
   gap: 24px;
@@ -105,7 +104,7 @@
 }
 .payment-focus-position {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
 }
 .payment-stage-evidence h3 {
   font-size: 25px;
@@ -113,7 +112,7 @@
   margin: 7px 0 18px;
 }
 .payment-stage-evidence p {
-  color: #405e69;
+  color: var(--public-body-color);
   font-size: 16px;
   line-height: 1.7;
   max-width: 65ch;
@@ -130,7 +129,7 @@
   font-size: 13px;
 }
 .payment-verdict.verified {
-  color: #26723c;
+  color: #c0e6aa;
 }
 .payment-record-facts {
   display: grid;
@@ -139,7 +138,7 @@
   padding: 28px 0 0;
 }
 .payment-record-facts dt {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
 }
 .payment-record-facts dd {
@@ -151,7 +150,7 @@
 }
 .payment-record-note {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.7;
   margin-top: 26px;
   max-width: 85ch;
@@ -170,7 +169,7 @@
     gap: 4px;
   }
   .payment-stage-nav button {
-    font-size: 12px;
+    font-size: 13px;
   }
   .payment-stage-evidence {
     grid-template-columns: 36px 1fr;
@@ -207,10 +206,10 @@
     width: 100%;
     min-height: 48px;
     padding: 10px;
-    border: 1px solid var(--control);
+    border: 1px solid var(--control); /* taste-skill-ignore: interactive form control boundary */
     border-radius: 7px;
     color: var(--ink);
-    background: white;
+    background: var(--public-surface);
   }
   .payment-stage-evidence {
     grid-template-columns: 1fr;
