@@ -1,11 +1,13 @@
-# AFRACANet AI — Input Finance Module
+# AFRACANet AI — Unified Repository
 
-AFRACANet AI is presented as one platform covering credit intelligence and
-agricultural input finance. This repository implements the input-finance and
-PayPal execution module; afracanet-green-path implements credit intelligence.
-The repositories may remain separate modules of the same product.
-Do not duplicate underwriting or Neo4j/GDS internals here. Connect through an
-explicit, lender-authorized approval handoff. Never copy credentials between repos.
+This is the canonical AFRACANet AI repository. Credit intelligence lives in
+`modules/credit-intelligence/`; input finance and PayPal execution live in root
+`src/` and `backend/`. Graph/Neo4j/GDS internals stay inside the credit module.
+Connect the services through the explicit, lender-authorized signed handoff.
+Never merge provider credentials, officer sessions or private signing keys.
+Module `.env` files and operator-local data stay ignored. Never copy credentials
+from the historical source repository. Preserve published Git history; imported
+credit history was sanitized privately before its additive merge.
 
 ## Product boundary
 
@@ -30,7 +32,9 @@ Do not claim escrow, guaranteed delivery, eliminated default, or production read
 ## Verification
 
 - Python: .venv/Scripts/python.exe -m pytest -q (Windows)
-- Frontend: npm run build
+- Both backends and signed handoff: npm run test:backend
+- Frontends: npm run check:all and npm run build:all
+- Connected browser: npm run test:connected (requires configured local graph)
 - Browser: npm run test:ui (isolated test data, Edge on Windows; Chromium on Linux)
 - Run relevant checks when transaction behavior changes.
 - Commit titles use plain descriptions, without feat/fix/docs prefixes.

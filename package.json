@@ -18,7 +18,8 @@
     "build:all": "node scripts/platform.mjs build",
     "check:all": "node scripts/platform.mjs types",
     "test:backend": "node scripts/platform.mjs test-backend",
-    "check:startup": "node scripts/platform.mjs smoke"
+    "check:startup": "node scripts/platform.mjs smoke",
+    "credit:provision": "node scripts/platform.mjs provision"
   },
   "dependencies": {
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",

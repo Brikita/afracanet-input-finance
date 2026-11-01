@@ -1,3 +1,7 @@
+> Current platform setup: [one canonical checkout](../../../docs/MONOREPO.md).
+> The commands below run from this credit module; use `../../.venv` for the shared
+> Python environment. Historical references to a sibling checkout are superseded.
+
 # Connected credit workflow â€” 30 October 2026
 
 AFRACANet AI is one product with separate credit-intelligence and input-finance
@@ -11,8 +15,8 @@ allocation execution, input orders, verified supplier payment, and collection.
 Run the API from this repository root:
 
 ```powershell
-.venv/Scripts/python.exe -m pip install -r Backend/requirements.txt
-.venv/Scripts/python.exe -m uvicorn Backend.main:app --host 127.0.0.1 --port 8001
+../../.venv/Scripts/python.exe -m pip install -r Backend/requirements.txt
+../../.venv/Scripts/python.exe -m uvicorn Backend.main:app --host 127.0.0.1 --port 8001
 npm ci
 node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 5174 --strictPort
 ```
@@ -97,14 +101,14 @@ claimed. A large graph establishes software scale, not lending-model validity.
 ## Verification
 
 ```powershell
-.venv/Scripts/python.exe -m pytest -q Backend/tests
+../../.venv/Scripts/python.exe -m pytest -q Backend/tests
 npm run build
 npx tsc --noEmit
 ```
 
-The sibling input-finance repository also provides:
+The canonical repository root also provides:
 
-- `scripts/check_connected_workflow.py --credit-repo ../afracanet-green-path`:
+- `scripts/check_connected_workflow.py `:
   both FastAPI apps, isolated databases, actual signing/verification, a lost
   acknowledgment, retry deduplication, revocation and preserved paid collection.
   Payment in this check is explicitly simulated.

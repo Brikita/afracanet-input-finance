@@ -228,10 +228,35 @@ def dev(check=False):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "command", choices=["setup", "dev", "smoke", "build", "types", "test-backend"]
+        "command",
+        choices=[
+            "setup",
+            "dev",
+            "smoke",
+            "build",
+            "types",
+            "test-backend",
+            "provision",
+        ],
     )
+    parser.add_argument("identifiers", nargs="*")
     args = parser.parse_args()
-    if args.command == "setup":
+    if args.command != "provision" and args.identifiers:
+        parser.error("Extra arguments are only accepted by provision.")
+    if args.command == "provision":
+        if len(args.identifiers) != 2:
+            parser.error(
+                "provision requires OFFICER_ID LENDER_ID; password is requested privately."
+            )
+        env = service_environment()
+        env["CREDIT_ENV_FILE"] = str(credit_env_file())
+        env["CREDIT_DATA_DIR"] = str(credit_data_dir())
+        run(
+            [PYTHON, CREDIT / "scripts/provision_officer.py", *args.identifiers],
+            CREDIT,
+            env,
+        )
+    elif args.command == "setup":
         setup()
     elif args.command == "dev":
         dev()

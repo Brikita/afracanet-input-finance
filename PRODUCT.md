@@ -33,7 +33,9 @@ Commercial differentiation and impact remain hypotheses to validate with partner
 
 ## Operating Context
 
-The credit-intelligence and input-finance repositories remain modular. Individual
+One canonical repository contains the credit-intelligence module at
+`modules/credit-intelligence/` and input finance in root `src/` and `backend/`.
+The services remain modular with separate credential and data ownership. Individual
 local officer decisions now pass through a signed automatic handoff with durable
 delivery receipts, explicit farmer mappings, retries and revocation. Manual
 review and CSV import remain separate fallback paths. The execution app uses

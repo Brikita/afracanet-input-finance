@@ -9,8 +9,8 @@ verified input payments and recorded farmer collection.**
 
 Present one farmer journey under one AFRACANet AI brand. The credit-intelligence
 and input-finance services are modules of that product, with clear ownership of
-decisions and transaction facts. Keeping modular repositories supports this
-direction without requiring duplicated underwriting code or shared credentials.
+decisions and transaction facts. The canonical monorepo keeps both services modular without duplicated
+underwriting code or shared credentials. See [current setup](MONOREPO.md).
 
 The target buyer remains an agricultural lender. Farmers and agro-dealers use
 the same transaction journey. Business value to validate: staff time, fewer
@@ -20,13 +20,13 @@ readiness without evidence.
 
 ## Product modules
 
-| Module                 | Responsibility                                                                | Source and current boundary                                                                                                    |
-| ---------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| Credit intelligence    | Application intake, graph/context assessment, AI rationale for officer review | [afracanet-green-path](https://github.com/Brikita/afracanet-green-path); reviewed source, not a newly verified live deployment |
-| Lender decision        | Officer-authorized allocation, amount, expiry, and reference                  | Must be explicit; a model recommendation is not authorization                                                                  |
-| Input finance          | Catalogue requests, lender order approval, reservations, dealer invoice       | This repository; manual CSV allocation import already exists                                                                   |
-| PayPal execution       | Supplier invoice, lender payment, verified reconciliation                     | Adapter implemented; live sandbox verification remains outstanding                                                             |
-| Collection and support | Farmer code, dealer handover, issues, audit/export, SMS updates               | Tested demonstration; external SMS verification remains outstanding                                                            |
+| Module                 | Responsibility                                                                | Source and current boundary                                                                               |
+| ---------------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| Credit intelligence    | Application intake, graph/context assessment, AI rationale for officer review | [credit module](../modules/credit-intelligence/README.md); local prototype, not a live lending deployment |
+| Lender decision        | Officer-authorized allocation, amount, expiry, and reference                  | Must be explicit; a model recommendation is not authorization                                             |
+| Input finance          | Catalogue requests, lender order approval, reservations, dealer invoice       | This repository; manual CSV allocation import already exists                                              |
+| PayPal execution       | Supplier invoice, lender payment, verified reconciliation                     | Actual USD18 sandbox payment and signed callback verified; stable hosting remains outstanding             |
+| Collection and support | Farmer code, dealer handover, issues, audit/export, SMS updates               | Tested demonstration; external SMS verification remains outstanding                                       |
 
 ## The combined journey
 
@@ -158,7 +158,7 @@ the expansion from assessed credit to verified input-finance execution.
 Explain the existing AI foundation and newly built PayPal functionality separately.
 The [official hackathon rules](https://paypalaihackathon.devpost.com/rules) allow
 significantly updated existing projects, subject to organizer determination, and
-require PayPal to be central. Confirm rights/licensing across both repositories
+require PayPal to be central. Confirm rights/licensing across both imported modules
 and provide one reproducible setup or working demonstration.
 
 The product information page, animations, deck, and video should use this shared

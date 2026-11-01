@@ -1,9 +1,10 @@
 # AFRACANet AI â€” Credit Intelligence
 
 AFRACANet AI connects agricultural credit evidence, lender decisions, input
-finance, supplier payment and recorded collection. This repository owns credit
-context and lender decisions; [input finance](https://github.com/Brikita/afracanet-input-finance)
-owns execution. The two modules are presented as one product.
+finance, supplier payment and recorded collection. This module owns credit
+context and lender decisions; [input finance](../../README.md)
+owns execution. Both modules now live in [one canonical repository](../../README.md).
+Use `npm run setup` and `npm run dev:all` from its root.
 
 The active application provides a persistent lender queue, individually
 provisioned local officer accounts, scoped graph retrieval, optional AI evidence
@@ -31,10 +32,10 @@ payment/callback evidence belongs to input finance and uses its own credentials.
 
 See [the 31 October sprint record](docs/SPRINT_2026-10-31.md). Verified USSD intake,
 production identity, stable hosting and independent model evaluation remain work.
-No credentials are copied between repositories.
+Each service loads its own environment; no credentials are copied during consolidation.
 
 Legacy graph/telecom/LLM research remains in `Backend/app.py`, `Backend/at.py`,
 `Backend/databaseSeed.py` and `Featherless_LLM/`. The active application does not
 launch those entry points. Do not run the legacy destructive graph seeder against
-an existing database. The project remains connected to Lovable; preserve published
-Git history.
+an existing database. The historical source repository was Lovable-connected. Its published history
+was not rewritten. New work belongs in the canonical monorepo. See [NOTICE.md](NOTICE.md).

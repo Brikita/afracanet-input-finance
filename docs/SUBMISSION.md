@@ -20,7 +20,7 @@ invoicing, verified payment reconciliation, collection controls, issue resolutio
 and bilingual request-assistance/SMS adapters. The intended combined experience
 connects the application, decision, payment, and handover through shared references.
 
-**Current evidence boundary:** two repositories form one product. A lender-authorized
+**Current evidence boundary:** one repository contains both product modules. A lender-authorized
 signed service handoff, isolated connected browser journey and synthetic data
 stores are implemented. Actual Gemini request parsing and evidence summaries,
 an actual USD 18 PayPal sandbox payment and a genuine verified callback have
@@ -33,8 +33,8 @@ physical collection in the provider fixture has not been recorded.
 The credit-intelligence codebase predates this PayPal expansion. Identify its
 existing contributors and capabilities separately from work added during the
 hackathon: the input-finance module, PayPal adapter/reconciliation, collection,
-issues, and the eventual cross-module handoff. Include both source locations and
-one clear setup route. Check the AI module's ownership and open-source licensing;
+issues, and the eventual cross-module handoff. Link the single canonical repository, identify the imported credit module and
+new PayPal work, and use the root setup route. Check the AI module's ownership and open-source licensing;
 the MIT license in this repository does not automatically license the other repo.
 
 The official rules allow significantly updated existing projects and require an

@@ -43,6 +43,9 @@ jobs:
         with:
           node-version: '22'
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            modules/credit-intelligence/package-lock.json
       - name: Install backend
         run: |
           python -m venv .venv
@@ -62,6 +65,8 @@ jobs:
           npm run check:all
           npm run check:format
           npm run build:all
+      - name: Check whole-platform startup
+        run: npm run check:startup
       - name: Install browser
         run: npx playwright install --with-deps chromium
       - name: Check browser journey

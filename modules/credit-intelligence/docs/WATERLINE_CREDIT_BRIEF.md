@@ -2,7 +2,7 @@
 
 Mode: Operate. User confirmed Waterline across both modules on 31 October 2026.
 The selected input-finance design and its existing contract remain the quality
-bar: [Waterline](../../Paypal/docs/WATERLINE.md) and `DESIGN.md`.
+bar: [Waterline](../../../docs/WATERLINE.md) and `DESIGN.md`.
 
 ## Direction contract
 

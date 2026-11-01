@@ -1,3 +1,10 @@
+# Credit-intelligence module
+
+This folder is part of the canonical AFRACANet AI monorepo. Follow the root
+AGENTS.md for service boundaries and shared commands. The following preserved
+notice concerns the original Lovable-connected source repository; consolidation
+did not rewrite that published branch or retarget its external editor integration.
+
 <!-- LOVABLE:BEGIN -->
 > [!IMPORTANT]
 > This project is connected to [Lovable](https://lovable.dev). Avoid rewriting

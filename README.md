@@ -1,12 +1,12 @@
-# AFRACANet AI — Input Finance
+# AFRACANet AI
 
 **From credit intelligence to inputs in a farmer's hands.**
 
-The input-finance and PayPal module of **AFRACANet AI**, a platform for Kenyan
-agricultural credit assessment, lender decisions, and input finance. Farmers request
-approved catalogue items, lenders approve and pay supplier invoices, and dealers
-record collection. Each transaction connects credit, inventory, payment, and
-fulfilment in one traceable record.
+One repository for credit intelligence, lender decisions, agricultural input
+finance, PayPal execution and recorded collection. The credit service lives in
+[modules/credit-intelligence](modules/credit-intelligence); the input-finance
+frontend and API remain in `src/` and `backend/`. Both services retain separate
+credentials, data ownership and explicit lender-authorized handoffs.
 
 The public information route is `/about` (or the built `/about.html` entry).
 It explains alternative credit assessment, chama/SACCO records, connected
@@ -17,12 +17,21 @@ retains Waterline. See [the product-page record](docs/PRODUCT_PAGE_2026-11-01.md
 and [public design authority](src/features/product/DESIGN.md).
 It needs no sign-in and makes no authenticated, AI or payment API calls.
 
-AFRACANet AI has two separately maintained modules:
-[credit intelligence](https://github.com/Brikita/afracanet-green-path) and
-[input finance](https://github.com/Brikita/afracanet-input-finance). They form
-one product story. This module starts with lender-approved credit and has no
-underwriting, Neo4j, or GDS runtime dependency. Its implementation was developed
-independently for the execution workflow.
+## Repository layout
+
+| Area                                                    | Location                       |
+| ------------------------------------------------------- | ------------------------------ |
+| Credit frontend, API and graph ownership                | `modules/credit-intelligence/` |
+| Input-finance frontend and public product page          | `src/`                         |
+| Input-finance API and PayPal execution                  | `backend/`                     |
+| Shared synthetic/public reference datasets              | `datasets/`                    |
+| Shared setup, process supervisor and integration checks | `scripts/`                     |
+| Tests, CI, submission and platform documentation        | `tests/`, `.github/`, `docs/`  |
+
+A single clone contains both modules. Each frontend keeps its own lockfile because
+credit uses TanStack Start/Vite 8 while input finance uses Vite 6. The root shared
+Python lock covers both active FastAPI services. See [monorepo setup](docs/MONOREPO.md)
+and [migration provenance](docs/provenance/credit-import.json).
 
 **Integration status:** the credit module now persists applications and individual
 local officer decisions, then sends signed, retryable approvals and revocations.
@@ -67,47 +76,53 @@ The local demonstration works without service credentials. It includes:
 No money moves and no AI model is called in the default walkthrough.
 PayPal sandbox authentication, invoice creation, sending, and draft recovery have
 been checked with actual API calls. A USD 18 buyer sandbox payment was verified
-and reconciled exactly once. Webhook delivery remains unverified. Gemini passed 24/24 synthetic development cases on 31 October 2026;
+and reconciled exactly once. A genuine resent callback was signature-verified and deduplicated. Gemini passed 24/24 synthetic development cases on 31 October 2026;
 this is not a production accuracy claim. See the [provider check record](docs/PROVIDER_CHECKS_2026-10-31.md).
 This version is a development prototype, not a submitted entry or a live lending service.
 
-## Run locally
+## Run the whole platform locally
 
-Prerequisites: Python 3.13 and Node.js 22.
-
-From a fresh checkout, on Windows PowerShell:
+Prerequisites: Python 3.13 and Node.js 22.16+.
 
 ```powershell
 git clone https://github.com/Brikita/afracanet-input-finance.git
 cd afracanet-input-finance
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r backend/requirements.lock.txt
-npm ci
-Copy-Item .env.example .env
-.\.venv\Scripts\python.exe -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
+npm run setup
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
+if (-not (Test-Path modules/credit-intelligence/.env)) { Copy-Item modules/credit-intelligence/.env.example modules/credit-intelligence/.env }
+npm run dev:all
 ```
 
-Keep the backend terminal open. In a second terminal, from the project root:
+The supervisor starts four services and stops them together on Ctrl+C:
+
+| Surface                       | Address                     |
+| ----------------------------- | --------------------------- |
+| Public product page           | http://127.0.0.1:5173/about |
+| Input-finance workspace       | http://127.0.0.1:5173/      |
+| Credit-intelligence workspace | http://127.0.0.1:5174/      |
+| Input-finance API             | http://127.0.0.1:8000/      |
+| Credit-intelligence API       | http://127.0.0.1:8001/      |
+
+Create each environment file only if it does not already exist. Never copy one
+module's credentials into the other. The default input access code is
+`afracanet-demo`; credit officers must be provisioned individually. Graph and AI
+context remain explicitly unavailable until configured. See [the complete setup,
+existing local-state references and officer provisioning](docs/MONOREPO.md).
+On macOS/Linux use `cp` for the two example-file copies; the npm commands are the same.
 
 ```powershell
-npm run dev
+npm run check:all       # both TypeScript projects
+npm run build:all       # both frontends, sequentially
+npm run test:backend    # both backend suites and signed cross-module check
+npm run check:startup   # start/check/stop all four local services
+npm run test:ui         # isolated input/public Edge journeys
+npm run test:connected  # connected browser journey; configured local graph required
 ```
 
-Open **http://127.0.0.1:5173/**. The default demo access code is
-**afracanet-demo**. The app's access code must match DEMO_ACCESS_CODE in .env.
-
-On macOS/Linux, use python3 -m venv .venv and .venv/bin/python in place of
-the Windows Python executable. The other commands are the same; copy the
-environment example with cp .env.example .env.
-
-The backend creates an ignored local SQLite database under data/.
-Do not delete a database associated with real sandbox invoices: retain the
-order and provider references for reconciliation.
-
-### Built frontend
-
-Run npm run build, then start/restart the backend. When dist/ exists at backend
-startup, FastAPI also serves the application at http://127.0.0.1:8000/.
+`npm run dev` and `npm run build` remain input-finance-only commands. Credit-only
+commands can run with `npm --prefix modules/credit-intelligence run dev` or `build`.
+Generated databases remain ignored; never delete an invoice-associated database.
+The root API serves `dist/` after `npm run build` and an API restart.
 
 ## Demonstrate the complete journey
 
@@ -368,7 +383,9 @@ checks do not supply migrations, backups, or production operations procedures.
 
 ## License
 
-Repository code: [MIT](LICENSE). Copyright 2026 Brikita. Photographs and fonts
-retain separate licenses; see [sources and credits](docs/PRODUCT_SITE_CREDITS.md),
+Original input-finance code: [MIT](LICENSE), copyright 2026 Brikita. Imported
+credit code retains its existing rights status; no LICENSE file was present at
+import. See [its notice](modules/credit-intelligence/NOTICE.md). Photographs and
+fonts retain separate licenses; see [sources and credits](docs/PRODUCT_SITE_CREDITS.md),
 [the photographic asset manifest](docs/PRODUCT_SITE_ASSETS.json) and the font
 notices in `public/licenses/`.

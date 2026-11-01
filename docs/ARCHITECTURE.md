@@ -15,11 +15,13 @@ flowchart LR
   WH --> API
 ```
 
-This is the input-finance module of AFRACANet AI. Its companion credit-intelligence
-module lives in afracanet-green-path. The services currently share no runtime or
-credentials. A lender-authorized approval is the handoff boundary; CSV import
-already supports a manual transfer. Automatic cross-service transfer remains to
-be implemented. See [the unified platform brief](PLATFORM.md).
+This diagram describes the input-finance service inside the canonical AFRACANet
+repository. Credit intelligence lives in `modules/credit-intelligence/`; its
+FastAPI service owns lender decisions and graph context. Both use the shared
+pinned Python runtime but run as separate processes with their own credentials.
+The signed, retryable lender-authorized handoff links them; CSV import remains a
+separate manual fallback. See [monorepo setup](MONOREPO.md) and the
+[platform brief](PLATFORM.md).
 
 ## Workflow
 
