@@ -1,14 +1,8 @@
 import {
   ArrowRight,
-  Check,
-  CircleCheck,
-  Clock3,
   FileCheck2,
   FileText,
-  FileSearch,
-  GitBranch,
   Leaf,
-  MailCheck,
   Network,
   Receipt,
   ShieldCheck,
@@ -16,108 +10,44 @@ import {
   Wallet,
 } from 'lucide-react'
 import { Brand } from '../../components/Brand'
-import payment from '../../../datasets/reports/paypal-sandbox-2026-10-31.json'
-import callback from '../../../datasets/reports/paypal-callback-2026-10-31.json'
+import { EvidenceStory } from './EvidenceStory'
+import { PaymentProof } from './PaymentProof'
 import './product.css'
-
-const stages = [
-  {
-    title: 'Invoice created',
-    caption: 'Isolated fixture',
-    icon: FileText,
-    heading: 'Supplier invoice',
-    body: 'Created against illustrative input credit.',
-    verified: true,
-  },
-  {
-    title: 'Invoice sent',
-    caption: 'PayPal sandbox',
-    icon: MailCheck,
-    heading: 'Invoice issued',
-    body: 'A sandbox payment link was issued.',
-    verified: true,
-  },
-  {
-    title: 'Buyer paid',
-    caption: 'Actual sandbox payment',
-    icon: Wallet,
-    heading: 'Buyer payment',
-    body: 'USD 18.00 paid through PayPal sandbox.',
-    verified: payment.payment_verified,
-  },
-  {
-    title: 'Payment verified',
-    caption: 'Provider records checked',
-    icon: ShieldCheck,
-    heading: 'Payment confirmed',
-    body: 'Authenticated payment records matched.',
-    verified: payment.payment_verified,
-  },
-  {
-    title: 'Callback verified',
-    caption: 'Genuine event resent',
-    icon: GitBranch,
-    heading: 'One payment effect',
-    body: 'Repeated network delivery stayed deduplicated.',
-    verified: callback.signature_verified_by_paypal,
-  },
-  {
-    title: 'Ready for collection',
-    caption: 'Payment requirement met',
-    icon: Leaf,
-    heading: 'Collection permitted',
-    body: 'A separate authorized handover is still required.',
-    verified: payment.order_status === 'READY_FOR_COLLECTION',
-  },
-  {
-    title: 'Collection',
-    caption: 'No handover recorded',
-    icon: Clock3,
-    heading: 'Collection pending',
-    body: 'Payment does not establish physical collection.',
-    verified: false,
-  },
-]
 
 const flow = [
   {
     icon: FileCheck2,
-    title: 'Graph evidence',
-    body: 'Inspect connected records, provenance and missing facts.',
+    title: 'Connect the evidence',
+    body: 'Review connected financial records, source provenance and missing facts.',
   },
   {
     icon: ShieldCheck,
-    title: 'Lender authorizes credit',
-    body: 'An officer explicitly approves terms and an expiry.',
+    title: 'The lender authorizes',
+    body: 'An officer explicitly approves terms and an expiry. An AI explanation cannot do this.',
   },
   {
     icon: FileText,
-    title: 'Supplier issues invoice',
-    body: 'Approved inputs reserve credit and available stock.',
+    title: 'Reserve the inputs',
+    body: 'An approved input request reserves the available credit and supplier stock.',
   },
   {
     icon: Wallet,
-    title: 'PayPal confirms payment',
-    body: 'Actual payment records establish the paid amount.',
+    title: 'Verify the payment',
+    body: 'Match the supplier invoice to actual PayPal payment records before enabling collection.',
   },
   {
     icon: Truck,
-    title: 'Handover recorded',
-    body: 'The dealer verifies the farmer’s collection code.',
+    title: 'Record the handover',
+    body: 'The dealer verifies the farmer’s collection code and records physical collection.',
   },
   {
     icon: Receipt,
-    title: 'Traceable collection',
-    body: 'Record the actor, time and linked order history.',
+    title: 'Follow the record',
+    body: 'Keep the actors, decisions, payment and collection linked without treating them as the same event.',
   },
 ]
 
 export function ProductPage() {
-  const amount = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: payment.currency,
-    currencyDisplay: 'code',
-  }).format(payment.amount_cents / 100)
   return (
     <div className="product-page">
       <a className="product-skip" href="#product-main">
@@ -129,12 +59,11 @@ export function ProductPage() {
           href="/about"
           aria-label="AFRACANet AI product information"
         >
-          <Brand light />
+          <Brand light subtitle="Credit & input finance" />
         </a>
         <nav aria-label="Product navigation">
           <a href="#how-it-works">How it works</a>
           <a href="#evidence">Evidence</a>
-          <a href="/">Open prototype</a>
         </nav>
         <a className="product-open" href="/">
           Open prototype <ArrowRight size={17} />
@@ -142,167 +71,74 @@ export function ProductPage() {
       </header>
       <main id="product-main">
         <section className="product-intro" aria-labelledby="product-title">
-          <div className="product-proposition">
-            <h1 id="product-title">
-              A payment you can verify.
-              <br />A case you can follow.
-            </h1>
-            <p>
-              Connect credit evidence, authorized input finance, supplier
-              payment and collection in one traceable record. This is a
-              development prototype using sandbox data.
-            </p>
-          </div>
-          <div className="product-benefits">
-            <div>
-              <FileSearch size={42} />
-              <h2>
-                Verifiable
-                <br />
-                evidence
-              </h2>
-              <p>
-                See each step
-                <br />
-                with records.
-              </p>
-            </div>
-            <div>
-              <Network size={42} />
-              <h2>Clear decisions</h2>
-              <p>
-                Lender, supplier
-                <br />
-                and payments
-                <br />
-                linked.
-              </p>
-            </div>
-            <div>
-              <Leaf size={42} />
-              <h2>
-                Designed for
-                <br />
-                agriculture
-              </h2>
-              <p>
-                Inputs, payment
-                <br />
-                and collection
-                <br />
-                in context.
-              </p>
-            </div>
-          </div>
+          <h1 id="product-title">
+            A payment you can verify.
+            <br />A case you can follow.
+          </h1>
+          <p>
+            AFRACANet connects alternative credit evidence with
+            lender-authorized input finance, supplier payment and recorded
+            collection.
+          </p>
+          <ul className="product-benefits" aria-label="Platform principles">
+            <li>
+              <Network size={21} />
+              Connected financial records
+            </li>
+            <li>
+              <ShieldCheck size={21} />
+              Explicit lender decisions
+            </li>
+            <li>
+              <Leaf size={21} />
+              Traceable input finance
+            </li>
+          </ul>
+          <p className="product-demo-scope">
+            Development prototype · Synthetic financial histories · PayPal
+            sandbox
+          </p>
         </section>
-        <section className="product-proof" aria-labelledby="proof-title">
-          <div className="proof-heading">
-            <div>
-              <div className="proof-label">
-                Verification record <span>Sandbox · Demo allocation</span>
-              </div>
-              <h2 id="proof-title">Input finance payment to supplier</h2>
-              <p className="proof-reference">
-                Actual provider check · 31 October 2026
-              </p>
-            </div>
-            <dl className="proof-context">
-              <dt>Credit context</dt>
-              <dd>Isolated synthetic fixture</dd>
-              <dt>Physical collection</dt>
-              <dd>Not recorded</dd>
-            </dl>
-            <div className="proof-amount">
-              <span>Verified payment</span>
-              <strong>{amount}</strong>
-              <p>PayPal sandbox check</p>
-            </div>
-          </div>
-          <ol
-            className="proof-stages"
-            aria-label="Verified sandbox payment stages"
-          >
-            {stages.map((stage, index) => (
-              <li
-                key={stage.title}
-                className={stage.verified ? 'is-verified' : 'is-pending'}
-              >
-                <div className="proof-step-number">{index + 1}</div>
-                <h3>{stage.title}</h3>
-                <p className="proof-step-caption">{stage.caption}</p>
-                <div className="proof-step-detail">
-                  <stage.icon size={32} aria-hidden="true" />
-                  <h4>{stage.heading}</h4>
-                  <p>{stage.body}</p>
-                  <span className="proof-step-status">
-                    {stage.verified ? (
-                      <CircleCheck size={16} />
-                    ) : (
-                      <Clock3 size={16} />
-                    )}
-                    {stage.verified ? 'Verified' : 'Not recorded'}
-                  </span>
-                </div>
-              </li>
-            ))}
-          </ol>
-          <dl className="proof-metadata">
-            <div>
-              <dt>Provider</dt>
-              <dd>PayPal sandbox</dd>
-            </div>
-            <div>
-              <dt>Payment record</dt>
-              <dd>Authenticated and matched</dd>
-            </div>
-            <div>
-              <dt>Repeated delivery</dt>
-              <dd>{callback.payment_effects} payment effect</dd>
-            </div>
-            <div>
-              <dt>Amount</dt>
-              <dd>{amount}</dd>
-            </div>
-            <div>
-              <dt>Order status</dt>
-              <dd>
-                <span className="proof-ready">
-                  <Check size={14} />
-                  Ready for collection
-                </span>
-              </dd>
-            </div>
-          </dl>
-        </section>
+        <PaymentProof />
         <section
           className="product-workflow"
           id="how-it-works"
           aria-labelledby="workflow-title"
         >
-          <h2 id="workflow-title">Evidence supports the decision</h2>
+          <h2 id="workflow-title">One journey. Distinct responsibilities.</h2>
           <p>
-            A connected record shows who acts, what authorizes the action and
-            how the stages connect.
+            Understand the evidence, authorize the finance, then follow what
+            happens next.
           </p>
           <ol className="product-flow">
             {flow.map((step, index) => (
               <li key={step.title}>
                 <span className="flow-number">{index + 1}</span>
-                <step.icon size={34} aria-hidden="true" />
+                <step.icon size={28} aria-hidden="true" />
                 <h3>{step.title}</h3>
                 <p>{step.body}</p>
-                {index < flow.length - 1 && (
-                  <ArrowRight
-                    className="flow-arrow"
-                    size={20}
-                    aria-hidden="true"
-                  />
-                )}
               </li>
             ))}
           </ol>
         </section>
+        <EvidenceStory />
       </main>
+      <footer className="product-footer">
+        <Brand light subtitle="Credit & input finance" />
+        <p>
+          A development prototype for making financial histories reviewable and
+          input finance traceable.
+        </p>
+        <div>
+          <a href="https://github.com/Brikita/afracanet-green-path">
+            Credit intelligence source
+          </a>
+          <a href="https://github.com/Brikita/afracanet-input-finance">
+            Input finance source
+          </a>
+          <a href="#product-main">Back to the top</a>
+        </div>
+      </footer>
     </div>
   )
 }
