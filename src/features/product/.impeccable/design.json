@@ -1,0 +1,410 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-01T09:23:31.850904+00:00",
+  "title": "Design System: AFRACANet AI — Public Product Site",
+  "extensions": {
+    "colorMeta": {
+      "forest-ground": {
+        "role": "neutral",
+        "displayName": "Forest Ground",
+        "tonalRamp": [
+          "oklch(15% 0.0103 171.27)",
+          "oklch(25% 0.0196 171.27)",
+          "oklch(35% 0.0270 171.27)",
+          "oklch(45% 0.0317 171.27)",
+          "oklch(55% 0.0333 171.27)",
+          "oklch(65% 0.0317 171.27)",
+          "oklch(80% 0.0236 171.27)",
+          "oklch(95% 0.0103 171.27)"
+        ]
+      },
+      "ivory-ink": {
+        "role": "neutral",
+        "displayName": "Ivory Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0084 120.52)",
+          "oklch(25% 0.0160 120.52)",
+          "oklch(35% 0.0220 120.52)",
+          "oklch(45% 0.0258 120.52)",
+          "oklch(55% 0.0271 120.52)",
+          "oklch(65% 0.0258 120.52)",
+          "oklch(80% 0.0192 120.52)",
+          "oklch(95% 0.0084 120.52)"
+        ]
+      },
+      "celadon-accent": {
+        "role": "primary",
+        "displayName": "Celadon Accent",
+        "tonalRamp": [
+          "oklch(15% 0.0221 130.57)",
+          "oklch(25% 0.0421 130.57)",
+          "oklch(35% 0.0580 130.57)",
+          "oklch(45% 0.0681 130.57)",
+          "oklch(55% 0.0716 130.57)",
+          "oklch(65% 0.0681 130.57)",
+          "oklch(80% 0.0507 130.57)",
+          "oklch(95% 0.0221 130.57)"
+        ]
+      },
+      "muted-ink": {
+        "role": "neutral",
+        "displayName": "Muted Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0080 156.60)",
+          "oklch(25% 0.0151 156.60)",
+          "oklch(35% 0.0208 156.60)",
+          "oklch(45% 0.0245 156.60)",
+          "oklch(55% 0.0257 156.60)",
+          "oklch(65% 0.0245 156.60)",
+          "oklch(80% 0.0182 156.60)",
+          "oklch(95% 0.0080 156.60)"
+        ]
+      },
+      "body-ink": {
+        "role": "neutral",
+        "displayName": "Body Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0071 151.59)",
+          "oklch(25% 0.0136 151.59)",
+          "oklch(35% 0.0187 151.59)",
+          "oklch(45% 0.0220 151.59)",
+          "oklch(55% 0.0231 151.59)",
+          "oklch(65% 0.0220 151.59)",
+          "oklch(80% 0.0163 151.59)",
+          "oklch(95% 0.0071 151.59)"
+        ]
+      },
+      "forest-surface": {
+        "role": "neutral",
+        "displayName": "Forest Surface",
+        "tonalRamp": [
+          "oklch(15% 0.0141 167.06)",
+          "oklch(25% 0.0268 167.06)",
+          "oklch(35% 0.0369 167.06)",
+          "oklch(45% 0.0434 167.06)",
+          "oklch(55% 0.0456 167.06)",
+          "oklch(65% 0.0434 167.06)",
+          "oklch(80% 0.0323 167.06)",
+          "oklch(95% 0.0141 167.06)"
+        ]
+      },
+      "forest-raised": {
+        "role": "neutral",
+        "displayName": "Forest Raised",
+        "tonalRamp": [
+          "oklch(15% 0.0156 164.77)",
+          "oklch(25% 0.0298 164.77)",
+          "oklch(35% 0.0410 164.77)",
+          "oklch(45% 0.0482 164.77)",
+          "oklch(55% 0.0506 164.77)",
+          "oklch(65% 0.0482 164.77)",
+          "oklch(80% 0.0358 164.77)",
+          "oklch(95% 0.0156 164.77)"
+        ]
+      },
+      "forest-deep": {
+        "role": "neutral",
+        "displayName": "Forest Deep",
+        "tonalRamp": [
+          "oklch(15% 0.0158 166.86)",
+          "oklch(25% 0.0301 166.86)",
+          "oklch(35% 0.0414 166.86)",
+          "oklch(45% 0.0486 166.86)",
+          "oklch(55% 0.0511 166.86)",
+          "oklch(65% 0.0486 166.86)",
+          "oklch(80% 0.0362 166.86)",
+          "oklch(95% 0.0158 166.86)"
+        ]
+      },
+      "control-stroke": {
+        "role": "neutral",
+        "displayName": "Control Stroke",
+        "tonalRamp": [
+          "oklch(15% 0.0126 158.30)",
+          "oklch(25% 0.0240 158.30)",
+          "oklch(35% 0.0330 158.30)",
+          "oklch(45% 0.0388 158.30)",
+          "oklch(55% 0.0408 158.30)",
+          "oklch(65% 0.0388 158.30)",
+          "oklch(80% 0.0289 158.30)",
+          "oklch(95% 0.0126 158.30)"
+        ]
+      },
+      "soft-state": {
+        "role": "neutral",
+        "displayName": "Soft State",
+        "tonalRamp": [
+          "oklch(15% 0.0167 161.44)",
+          "oklch(25% 0.0318 161.44)",
+          "oklch(35% 0.0438 161.44)",
+          "oklch(45% 0.0515 161.44)",
+          "oklch(55% 0.0541 161.44)",
+          "oklch(65% 0.0515 161.44)",
+          "oklch(80% 0.0383 161.44)",
+          "oklch(95% 0.0167 161.44)"
+        ]
+      },
+      "focus": {
+        "role": "neutral",
+        "displayName": "Focus",
+        "tonalRamp": [
+          "oklch(15% 0.0290 131.64)",
+          "oklch(25% 0.0552 131.64)",
+          "oklch(35% 0.0760 131.64)",
+          "oklch(45% 0.0894 131.64)",
+          "oklch(55% 0.0940 131.64)",
+          "oklch(65% 0.0894 131.64)",
+          "oklch(80% 0.0665 131.64)",
+          "oklch(95% 0.0290 131.64)"
+        ]
+      },
+      "action-fill": {
+        "role": "primary",
+        "displayName": "Action Fill",
+        "tonalRamp": [
+          "oklch(15% 0.0281 128.57)",
+          "oklch(25% 0.0534 128.57)",
+          "oklch(35% 0.0735 128.57)",
+          "oklch(45% 0.0864 128.57)",
+          "oklch(55% 0.0908 128.57)",
+          "oklch(65% 0.0864 128.57)",
+          "oklch(80% 0.0642 128.57)",
+          "oklch(95% 0.0281 128.57)"
+        ]
+      },
+      "action-ink": {
+        "role": "neutral",
+        "displayName": "Action Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0106 162.79)",
+          "oklch(25% 0.0202 162.79)",
+          "oklch(35% 0.0278 162.79)",
+          "oklch(45% 0.0327 162.79)",
+          "oklch(55% 0.0344 162.79)",
+          "oklch(65% 0.0327 162.79)",
+          "oklch(80% 0.0243 162.79)",
+          "oklch(95% 0.0106 162.79)"
+        ]
+      },
+      "action-hover": {
+        "role": "primary",
+        "displayName": "Action Hover",
+        "tonalRamp": [
+          "oklch(15% 0.0217 129.74)",
+          "oklch(25% 0.0412 129.74)",
+          "oklch(35% 0.0567 129.74)",
+          "oklch(45% 0.0667 129.74)",
+          "oklch(55% 0.0701 129.74)",
+          "oklch(65% 0.0667 129.74)",
+          "oklch(80% 0.0496 129.74)",
+          "oklch(95% 0.0217 129.74)"
+        ]
+      },
+      "secondary-fill": {
+        "role": "neutral",
+        "displayName": "Secondary Fill",
+        "tonalRamp": [
+          "oklch(15% 0.0145 163.64)",
+          "oklch(25% 0.0275 163.64)",
+          "oklch(35% 0.0379 163.64)",
+          "oklch(45% 0.0445 163.64)",
+          "oklch(55% 0.0468 163.64)",
+          "oklch(65% 0.0445 163.64)",
+          "oklch(80% 0.0331 163.64)",
+          "oklch(95% 0.0145 163.64)"
+        ]
+      },
+      "secondary-ink": {
+        "role": "neutral",
+        "displayName": "Secondary Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0058 130.18)",
+          "oklch(25% 0.0110 130.18)",
+          "oklch(35% 0.0152 130.18)",
+          "oklch(45% 0.0179 130.18)",
+          "oklch(55% 0.0188 130.18)",
+          "oklch(65% 0.0179 130.18)",
+          "oklch(80% 0.0133 130.18)",
+          "oklch(95% 0.0058 130.18)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Hero display",
+        "purpose": "Aether proposition with a mobile clamp override."
+      },
+      "headline": {
+        "displayName": "Editorial headline",
+        "purpose": "Purpose/working-lives headings; other sections have observed variants."
+      },
+      "body": {
+        "displayName": "Editorial reading",
+        "purpose": "Public narrative with compact explorer variants."
+      },
+      "label": {
+        "displayName": "Provenance and context",
+        "purpose": "Nearby qualifications and captions, never decorative eyebrows."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "section-reveal",
+        "value": "600ms cubic-bezier(0.16,1,0.3,1)",
+        "purpose": "Small editorial entry; reduced-motion static alternative."
+      },
+      {
+        "name": "hero-reveal",
+        "value": "700ms cubic-bezier(0.16,1,0.3,1)",
+        "purpose": "Hero copy entry; reduced-motion static alternative."
+      },
+      {
+        "name": "graph-layout",
+        "value": "850ms quartic ease-out",
+        "purpose": "Authored layout interpolation; snaps under reduced motion."
+      },
+      {
+        "name": "graph-radius",
+        "value": "500ms cubic-bezier(0.16,1,0.3,1)",
+        "purpose": "Teaching PageRank size change; omitted under reduced motion."
+      },
+      {
+        "name": "evidence-state",
+        "value": "160ms ease-out",
+        "purpose": "Source background transition."
+      },
+      {
+        "name": "evidence-cycle",
+        "value": "9000ms",
+        "purpose": "Viewport/visibility/pause/preference-gated presentation interval."
+      },
+      {
+        "name": "payment-cycle",
+        "value": "10000ms",
+        "purpose": "Manual selection restarts the interval from that stage."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "evidence-mobile",
+        "value": "520px"
+      },
+      {
+        "name": "hero-payment-mobile",
+        "value": "600px"
+      },
+      {
+        "name": "editorial-mobile",
+        "value": "700px"
+      },
+      {
+        "name": "evidence-stack",
+        "value": "850px"
+      },
+      {
+        "name": "graph-stack",
+        "value": "1000px"
+      },
+      {
+        "name": "evidence-intro-columns",
+        "value": "1100px"
+      },
+      {
+        "name": "evidence-compact",
+        "value": "1150px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Hero primary destination",
+      "kind": "button",
+      "description": "Actual public hero destination.",
+      "html": "<a class=\"ds-primary\" href=\"#evidence\">Explore AFRACANet <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M12 5v14m-6-6 6 6 6-6\"/></svg></a>",
+      "css": ".ds-primary{display:inline-flex;align-items:center;gap:16px;min-height:54px;padding:14px 24px;border-radius:6px;background:#c0de9e;color:#10261c;text-decoration:none;font-size:15px;font-weight:600;font-family:var(--public-body,'Hanken Grotesk Variable',sans-serif);}.ds-primary:hover{background:#d2ebba}.ds-primary:focus-visible{outline:3px solid #c5e9a8;outline-offset:5px}",
+      "refersTo": "button-primary"
+    },
+    {
+      "name": "Hero secondary destination",
+      "kind": "button",
+      "description": "Actual public hero destination.",
+      "html": "<a class=\"ds-secondary\" href=\"/\">Open the prototype <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M5 12h14m-6-6 6 6-6 6\"/></svg></a>",
+      "css": ".ds-secondary{display:inline-flex;align-items:center;gap:16px;min-height:54px;padding:14px 24px;border-radius:6px;background:#163729;color:#e8efe2;text-decoration:none;font-size:15px;font-weight:600;font-family:var(--public-body,'Hanken Grotesk Variable',sans-serif);}.ds-secondary:hover{background:#163729}.ds-secondary:focus-visible{outline:3px solid #c5e9a8;outline-offset:5px}",
+      "refersTo": "button-secondary"
+    },
+    {
+      "name": "Presentation playback",
+      "kind": "button",
+      "description": "Explicit pause/resume for presentation state.",
+      "html": "<button class=\"ds-playback\" type=\"button\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M8 5v14M16 5v14\"/></svg>Pause tour</button>",
+      "css": ".ds-playback{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 16px;background:var(--public-raised,#1b4031);color:var(--product-ink,#edf3df);border:0;border-radius:4px;cursor:pointer;font-family:var(--public-body,'Hanken Grotesk Variable',sans-serif);}.ds-playback:hover{background:#30523d}.ds-playback:focus-visible{outline:3px solid #c5e9a8;outline-offset:5px}",
+      "refersTo": "button-playback"
+    },
+    {
+      "name": "Graph node selector",
+      "kind": "input",
+      "description": "Native alternative to direct graph inspection.",
+      "html": "<label class=\"ds-field\">Inspect a node<select class=\"ds-select\"><option>Chama A</option><option>Applicant A</option><option>Cooperative A</option></select></label>",
+      "css": ".ds-field{display:block;color:var(--product-ink,#edf3df);font-size:13px;font-weight:600;font-family:var(--public-body,'Hanken Grotesk Variable',sans-serif);}.ds-select{display:block;margin-top:8px;width:100%;min-height:44px;padding:9px 12px;border:1px solid var(--control,#708c7b);border-radius:7px;background:var(--public-surface,#103226);color:var(--ink,#edf3df);font-size:14px;font-family:var(--public-body,'Hanken Grotesk Variable',sans-serif);}.ds-select:focus-visible{outline:3px solid #c5e9a8;outline-offset:5px}",
+      "refersTo": "field-select"
+    },
+    {
+      "name": "Evidence source control",
+      "kind": "button",
+      "description": "Selected evidence with a separate detail region.",
+      "html": "<button class=\"ds-source\" type=\"button\" aria-pressed=\"true\"><strong>Chama contributions</strong><small>Consistency beyond a bank file</small></button>",
+      "css": ".ds-source{display:block;text-align:left;min-height:100px;padding:20px;border:0;border-radius:10px;background:var(--public-surface,#103226);color:var(--product-ink,#edf3df);cursor:pointer;transition:background-color 160ms ease-out;font-family:var(--public-body,'Hanken Grotesk Variable',sans-serif);}.ds-source strong{display:block;font-size:16px;font-weight:600;line-height:1.4}.ds-source small{display:block;margin-top:7px;font-size:13px;line-height:1.5;color:var(--muted,#b4c6ba)}.ds-source:hover,.ds-source[aria-pressed=true]{background:var(--public-raised,#1b4031)}@media(prefers-reduced-motion:reduce){.ds-source{transition:none}}.ds-source:focus-visible{outline:3px solid #c5e9a8;outline-offset:5px}",
+      "refersTo": "evidence-source"
+    },
+    {
+      "name": "Public navigation",
+      "kind": "nav",
+      "description": "Understated anchors with real destinations.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Product navigation\"><a href=\"#how-it-works\">How it works</a><a href=\"#evidence\">Evidence</a></nav>",
+      "css": ".ds-nav{display:flex;gap:32px;align-items:center;color:var(--product-ink,#edf3df);font-family:var(--public-body,'Hanken Grotesk Variable',sans-serif);}.ds-nav a{padding:12px 0;font-size:15px;color:inherit;text-decoration:none;text-underline-offset:5px}.ds-nav a:hover{text-decoration:underline}.ds-nav a:focus-visible{outline:3px solid #c5e9a8;outline-offset:5px}"
+    },
+    {
+      "name": "Flat explanatory frame",
+      "kind": "card",
+      "description": "Flat tonal container for supporting explanation.",
+      "html": "<section class=\"ds-frame\"><h4>Connections are evidence to review.</h4><p>A teaching example, not a borrower score or lender approval.</p></section>",
+      "css": ".ds-frame{padding:32px;background:var(--public-surface,#103226);color:var(--product-ink,#edf3df);border:0;border-radius:4px;font-family:var(--public-body,'Hanken Grotesk Variable',sans-serif);}.ds-frame h4{margin:0;font-family:var(--public-display,'Bricolage Grotesque Variable',sans-serif);font-size:22px;font-weight:550;line-height:1.35}.ds-frame p{margin:16px 0 0;color:var(--public-body-color,#c2d1c5);font-size:14px;line-height:1.7}",
+      "refersTo": "explorer-frame"
+    }
+  ],
+  "narrative": {
+    "northStar": "Aether Flow — connected financial life",
+    "overview": "This authority covers the public Persuade world at `/about` and `/about.html`, under the product-page wrapper, including its Aether hero and image-reveal components. Forest ground, ivory reading, celadon connections and substantial Kenyan photographs give the explanation room to unfold. The user pinned the Aether Flow code and requested new fonts, web photographs and spacious scrolling; no new Impeccable concept roll or QUALITY BAR card applies.\n\nThis is a scoped visual world, not a global token migration. The working Operate application retains [root DESIGN.md](../../../DESIGN.md), root `.impeccable/design.json` and Waterline. Public CSS locally overrides shared variable names; do not transfer those overrides to the application root. This file's frontmatter owns public primitives; [the paired sidecar](.impeccable/design.json) owns extension metadata and component previews. The [six-block brief](../../../docs/PRODUCT_PAGE_BRIEF.md) owns page strategy; [PRODUCT.md](../../../PRODUCT.md) owns product truth.",
+    "keyCharacteristics": [
+      "A quiet living network behind readable centered hero text.",
+      "Open editorial sections and large, credited contextual photographs.",
+      "Flat tonal explorers with explicit controls and nearby limits.",
+      "Automatic explanations that remain pausable and usable with reduced motion."
+    ],
+    "rules": [
+      {
+        "name": "The Scoped Forest Rule",
+        "body": "Apply these tokens within the public wrapper; working financial screens continue to use Waterline.",
+        "section": "colors"
+      },
+      {
+        "name": "The Presentation Only Rule",
+        "body": "Public controls reveal synthetic teaching data or a preserved provider snapshot; they never execute a financial action or call a financial API.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "**Do** keep public forest tokens and public fonts scoped to the two public routes.",
+      "**Do** preserve visible focus, pause/resume, native selectors and offscreen/hidden suspension.",
+      "**Do** use credited contextual photographs with their source terms and nearby captions.",
+      "**Do** keep lender authority, teaching data, verified payment and physical collection visually and verbally distinct."
+    ],
+    "donts": [
+      "**Don't** migrate the working application away from Waterline through this authority.",
+      "**Don't** replace real provenance with fictional customer logos or imply that photographs show customers.",
+      "**Don't** present authored community labels as Louvain output or browser PageRank as a calibrated borrower score.",
+      "**Don't** turn advisory findings or one-off implementation values into rules for future surfaces."
+    ]
+  }
+}

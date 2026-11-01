@@ -62,6 +62,15 @@ surfaces, and purposeful blue/green credit graphics with Lucide action icons.
 The lender view follows a credit graphic and queue beside a selected case;
 mobile layouts prioritize the work queue. See docs/WATERLINE.md.
 
+The public Persuade routes `/about` and `/about.html` have a separately scoped,
+user-pinned Aether Flow world: forest green, ivory and celadon, Bricolage Grotesque
+and Hanken Grotesk, credited contextual Kenyan photography and spacious scrolling.
+Their visual authority is [src/features/product/DESIGN.md](src/features/product/DESIGN.md)
+and its paired sidecar; [the public brief](docs/PRODUCT_PAGE_BRIEF.md) owns page
+strategy. Root DESIGN.md and root .impeccable/design.json remain the working
+Waterline Operate authority. This public scope changes no product truth or lender
+authority.
+
 ## Evidence on Hand
 
 Working execution code, signed connection checks and isolated browser journeys;

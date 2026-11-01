@@ -2,11 +2,11 @@
 
 The /about and /about.html public pages use contextual Kenyan photographs. None of the subjects is claimed as an AFRACANet customer, partner, borrower or endorser. Photographs are not synthetic. Credits and source links appear directly below each photograph; this document records the full terms. Assets retain their own licenses, separately from repository code.
 
-| Photograph | Creator | License | Source |
-| --- | --- | --- | --- |
-| Women smallholder farmers in Kenya, Machakos, 14 October 2010 | McKay Savage | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Women_smallholder_farmers_in_Kenya.jpg) |
-| Woman farmer in Kenya, Mount Kenya region, 15 October 2010 | Neil Palmer / CIAT | [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/) | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Woman_farmer_in_Kenya.jpg) |
-| Smiling African Woman at Kenyan Market | Charles Lichinga | [Pexels License](https://www.pexels.com/license/) | [Pexels](https://www.pexels.com/photo/smiling-african-woman-at-kenyan-market-33569521/) |
+| Photograph                                                    | Creator            | License                                                         | Source                                                                                              |
+| ------------------------------------------------------------- | ------------------ | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Women smallholder farmers in Kenya, Machakos, 14 October 2010 | McKay Savage       | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/)       | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Women_smallholder_farmers_in_Kenya.jpg) |
+| Woman farmer in Kenya, Mount Kenya region, 15 October 2010    | Neil Palmer / CIAT | [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/) | [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Woman_farmer_in_Kenya.jpg)              |
+| Smiling African Woman at Kenyan Market                        | Charles Lichinga   | [Pexels License](https://www.pexels.com/license/)               | [Pexels](https://www.pexels.com/photo/smiling-african-woman-at-kenyan-market-33569521/)             |
 
 The Commons farming group file is the official 1280px thumbnail. The CIAT image is the original JPEG. The market image is a published 1600px delivery variant. Origin metadata is embedded in every JPEG; source URLs, sizes and SHA-256 hashes are in PRODUCT_SITE_ASSETS.json. Images are displayed with responsive CSS crops and subtle scroll scaling. The CIAT image and any adapted photographic rendition remain CC BY-SA 2.0. No endorsement is implied.
 
@@ -22,3 +22,9 @@ Framer Motion is installed; Lucide React already existed. The repository uses so
 ## Fonts
 
 The public site uses self-hosted Bricolage Grotesque Variable for display and Hanken Grotesk Variable for reading, via @fontsource-variable packages. Their SIL Open Font License notices ship in public/licenses/. Working finance screens retain their existing Waterline typography. The public site downloads no remote font API at runtime.
+
+### Optional setup for unmodified utility-class snippets
+
+TypeScript is already configured. If a later component needs Tailwind/shadcn, the [official Tailwind Vite setup](https://tailwindcss.com/docs/installation/using-vite) starts with `npm install tailwindcss @tailwindcss/vite`, adding the Tailwind Vite plugin alongside the existing React plugin and importing Tailwind in the selected CSS entry. Preserve this app’s Vite inputs and proxy configuration.
+
+Then follow the [shadcn existing Vite project guide](https://ui.shadcn.com/docs/installation/vite): configure the TypeScript and Vite `@/*` alias to `./src/*`, run `npx shadcn@latest init` in the existing checkout and choose `src/components/ui` as the component destination. Review any generated theme/reset before adopting it; the adapted components in this change already work without this optional setup.

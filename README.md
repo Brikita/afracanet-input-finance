@@ -11,7 +11,10 @@ fulfilment in one traceable record.
 The public information route is `/about` (or the built `/about.html` entry).
 It explains alternative credit assessment, chama/SACCO records, connected
 evidence and graph data science, with an interactive teaching graph and a
-preserved PayPal sandbox check. See [the product-page record](docs/PRODUCT_PAGE_2026-11-01.md).
+preserved PayPal sandbox check. Its Aether Flow hero, public fonts and credited
+Kenyan photographs form a separate public visual world; the working application
+retains Waterline. See [the product-page record](docs/PRODUCT_PAGE_2026-11-01.md)
+and [public design authority](src/features/product/DESIGN.md).
 It needs no sign-in and makes no authenticated, AI or payment API calls.
 
 AFRACANet AI has two separately maintained modules:
@@ -365,4 +368,7 @@ checks do not supply migrations, backups, or production operations procedures.
 
 ## License
 
-[MIT](LICENSE). Copyright 2026 Brikita.
+Repository code: [MIT](LICENSE). Copyright 2026 Brikita. Photographs and fonts
+retain separate licenses; see [sources and credits](docs/PRODUCT_SITE_CREDITS.md),
+[the photographic asset manifest](docs/PRODUCT_SITE_ASSETS.json) and the font
+notices in `public/licenses/`.
