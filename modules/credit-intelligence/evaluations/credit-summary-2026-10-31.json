@@ -1,0 +1,11 @@
+{
+  "checked_at": "2026-10-31T16:00:55.370266+00:00",
+  "scope": "Actual provider and read-only synthetic/public context. Schema and citation checks only; no independent accuracy, calibrated credit score, lender decision, payment or collection.",
+  "model": "gemini-3.5-flash-lite",
+  "synthetic_cases_checked": 3,
+  "schema_citation_numeric_checks_passed": true,
+  "no_decisions_or_deliveries_created": true,
+  "initial_manual_review_found_unit_error": true,
+  "remediation": "Send formatted major-unit amounts; reject numeric claims absent from cited facts. Three provider cases repeated after the correction.",
+  "independent_accuracy_evaluation": false
+}

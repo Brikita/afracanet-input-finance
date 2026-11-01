@@ -1,0 +1,79 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+@import "@fontsource/dm-sans/400.css";
+@import "@fontsource/dm-sans/500.css";
+@import "@fontsource/dm-sans/600.css";
+@import "@fontsource/manrope/600.css";
+@import "@fontsource/manrope/700.css";
+@import "./styles/platform.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-display: "Manrope", sans-serif;
+  --font-sans: "DM Sans", sans-serif;
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: #eaf1f3;
+  --foreground: #17343c;
+  --card: #fff;
+  --card-foreground: #17343c;
+  --popover: #fff;
+  --popover-foreground: #17343c;
+  --primary: #17627a;
+  --primary-foreground: #fff;
+  --secondary: #e9f3f5;
+  --secondary-foreground: #17343c;
+  --muted: #eaf1f3;
+  --muted-foreground: #526a72;
+  --accent: #e9f3f5;
+  --accent-foreground: #123f4c;
+  --destructive: #8d3826;
+  --destructive-foreground: #fff;
+  --success: #375b22;
+  --success-foreground: #edf5e7;
+  --border: #d5e1e5;
+  --input: #afc2c9;
+  --ring: #17627a;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+}

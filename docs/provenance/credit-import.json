@@ -1,0 +1,10 @@
+{
+  "source_repository": "https://github.com/Brikita/afracanet-green-path",
+  "source_head": "07d317bff354fe45aa1a3335c43cc0ce4c57e039",
+  "sanitized_import_head": "32769589bfd81ee1266412c84cff34f0e634d320",
+  "prefix": "modules/credit-intelligence",
+  "source_commits": 97,
+  "historical_secret_findings_removed": 3,
+  "published_source_history_modified": false,
+  "current_snapshot_blob_identity_verified": true
+}
