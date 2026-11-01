@@ -18,6 +18,13 @@ handover. The lender case view is the starting surface agreed on 26 October 2026
 Connect agricultural credit intelligence to authorized input finance, verified
 supplier payment, and recorded farmer collection in one understandable journey.
 
+The broader product vision is alternative credit assessment for farmers and
+small businesses whose documented chama contributions, SACCO repayments or
+business activity may be overlooked when conventional collateral is unavailable.
+The current working prototype focuses on agricultural input finance. General
+small-business integrations, authentic partner feeds and a validated alternative
+credit-scoring model remain future work; graph connectivity alone is not a score.
+
 ## Positioning
 
 One AFRACANet product spans credit intelligence and execution. The lender owns
