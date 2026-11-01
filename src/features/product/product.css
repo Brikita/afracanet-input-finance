@@ -205,9 +205,15 @@
   padding: 0;
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 19px;
+  grid-template-rows: auto auto minmax(34px, auto) auto;
+  grid-auto-flow: column;
+  column-gap: 19px;
+  row-gap: 0;
 }
 .proof-stages > li {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 4;
   text-align: center;
   min-width: 0;
   position: relative;
