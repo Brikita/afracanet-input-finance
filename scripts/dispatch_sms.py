@@ -1,12 +1,14 @@
 """Process durable SMS jobs once. No automatic retry of uncertain sends."""
+
 import argparse
 import json
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from backend import db, notifications
+from backend import db
 from backend.config import settings
+from backend.services import notifications
 
 
 def main():
@@ -18,8 +20,15 @@ def main():
     settings.validate()
     db.initialize()
     count = notifications.dispatch_pending(limit=args.limit)
-    print(json.dumps({"processed": count, "mode": settings.sms_mode,
-        "note": "SIMULATED means no gateway call; ACCEPTED means sandbox acceptance, not handset delivery."}))
+    print(
+        json.dumps(
+            {
+                "processed": count,
+                "mode": settings.sms_mode,
+                "note": "SIMULATED means no gateway call; ACCEPTED means sandbox acceptance, not handset delivery.",
+            }
+        )
+    )
 
 
 if __name__ == "__main__":
