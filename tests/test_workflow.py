@@ -27,6 +27,7 @@ def client(tmp_path, monkeypatch):
         engine = base
     monkeypatch.setattr(db, "engine", engine)
     monkeypatch.setattr(settings, "payment_mode", "mock")
+    monkeypatch.setattr(settings, "seed_demo_data", True)
     monkeypatch.setattr(settings, "ai_mode", "demo")
     monkeypatch.setattr(settings, "sms_mode", "demo")
     monkeypatch.setattr(settings, "access_code", "afracanet-demo")

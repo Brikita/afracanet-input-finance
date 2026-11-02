@@ -19,7 +19,18 @@ const python =
       : 'python3')
 const child = spawnSync(
   python,
-  [path.join(root, 'scripts/run_platform.py'), ...process.argv.slice(2)],
+  [
+    path.join(
+      root,
+      'scripts',
+      process.argv[2] === 'judge-prepare'
+        ? 'prepare_judge.py'
+        : process.argv[2] === 'judge-start'
+          ? 'run_judge.py'
+          : 'run_platform.py',
+    ),
+    ...process.argv.slice(process.argv[2]?.startsWith('judge-') ? 3 : 2),
+  ],
   { cwd: root, stdio: 'inherit' },
 )
 if (child.error) {

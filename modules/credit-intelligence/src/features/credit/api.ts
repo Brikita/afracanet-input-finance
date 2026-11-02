@@ -62,12 +62,26 @@ export type Context = {
   neighbors: { id: string; relationship: string; labels: string[] }[];
 };
 export type Advice = {
+  evaluation_id: string;
   headline: string;
   observations: { text: string; evidence_ids: string[] }[];
   missing_evidence: string[];
   model: string;
   provider: string;
   sources: { id: string; label: string; value: unknown }[];
+};
+export type Analytics = {
+  available: boolean;
+  reason?: string;
+  id?: string;
+  created_at?: string;
+  as_of?: string;
+  gds_version?: string;
+  manifest_sha256?: string;
+  limits_explanation?: string;
+  selected?: { id: string; page_rank: number; community: number };
+  nodes?: { id: string; name: string; labels: string[]; page_rank: number; community: number }[];
+  links?: { source: string; target: string }[];
 };
 const base = import.meta.env.VITE_CREDIT_API_URL || "http://127.0.0.1:8001";
 export async function api<T>(

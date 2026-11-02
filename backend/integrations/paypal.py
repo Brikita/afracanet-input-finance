@@ -43,7 +43,8 @@ def invoice_reference(result):
                 identifier = parsed.path.removeprefix("/v2/invoicing/invoices/")
                 if (
                     parsed.scheme == "https"
-                    and parsed.netloc == "api-m.sandbox.paypal.com"
+                    and parsed.netloc
+                    in {"api-m.sandbox.paypal.com", "api.sandbox.paypal.com"}
                     and not parsed.query
                     and not parsed.fragment
                     and re.fullmatch(r"INV2-[A-Z0-9-]{4,100}", identifier)

@@ -103,8 +103,13 @@ def stop_children(children):
             child.wait()
 
 
-def dev(check=False):
-    ports = [8000, 8001, 5173, 5174]
+def dev(check=False, profile=None, providers=False, inspect_profile=False):
+    ports = [28000, 28001, 25173, 25174] if profile else [8000, 8001, 5173, 5174]
+    input_api, credit_api, input_ui, credit_ui = ports
+    if profile:
+        from prepare_judge import profile_paths
+
+        public, credit_private = profile_paths(profile)
     busy = []
     for port in ports:
         with socket.socket() as probe:
@@ -119,13 +124,56 @@ def dev(check=False):
         raise SystemExit("Run npm run setup first.")
     specs = []
     for folder, module, port, envfile in [
-        (ROOT, "backend.main:app", 8000, ROOT / ".env"),
-        (CREDIT, "Backend.main:app", 8001, credit_env_file()),
+        (
+            ROOT,
+            "backend.main:app",
+            input_api,
+            public / "inputs.env" if profile else ROOT / ".env",
+        ),
+        (
+            CREDIT,
+            "Backend.main:app",
+            credit_api,
+            credit_private / "credit.env" if profile else credit_env_file(),
+        ),
     ]:
         env = service_environment()
+        if profile:
+            from dotenv import dotenv_values
+
+            env.update(
+                {
+                    key: value
+                    for key, value in dotenv_values(envfile).items()
+                    if value is not None
+                }
+            )
+            if providers:
+                envfile = ROOT / ".env" if folder == ROOT else credit_env_file()
+                if folder == ROOT:
+                    if not env.get("PAYPAL_INVOICE_PREFIX"):
+                        import secrets
+
+                        from dotenv import set_key
+
+                        env["PAYPAL_INVOICE_PREFIX"] = (
+                            "J" + secrets.token_hex(5).upper()
+                        )
+                        set_key(
+                            public / "inputs.env",
+                            "PAYPAL_INVOICE_PREFIX",
+                            env["PAYPAL_INVOICE_PREFIX"],
+                        )
+                    env.update(
+                        PAYMENT_MODE="sandbox", AI_MODE="gemini", SMS_MODE="demo"
+                    )
         if folder == CREDIT:
             env["CREDIT_ENV_FILE"] = str(envfile)
-            env["CREDIT_DATA_DIR"] = str(credit_data_dir())
+            env["CREDIT_DATA_DIR"] = str(
+                credit_private if profile else credit_data_dir()
+            )
+        else:
+            env["INPUT_ENV_FILE"] = str(envfile)
         command = [
             PYTHON,
             "-m",
@@ -139,18 +187,23 @@ def dev(check=False):
         if envfile.exists():
             command += ["--env-file", envfile]
         specs.append((command, folder, env))
-    for folder, port in [(ROOT, 5173), (CREDIT, 5174)]:
+    for folder, port in [(ROOT, input_ui), (CREDIT, credit_ui)]:
         vite = folder / "node_modules/vite/bin/vite.js"
         if not vite.exists():
             raise SystemExit("Run npm run setup first.")
         env = service_environment()
         if folder == CREDIT:
             env.update(
-                VITE_CREDIT_API_URL="http://127.0.0.1:8001",
-                VITE_INPUT_FINANCE_URL="http://127.0.0.1:5173/",
+                VITE_CREDIT_API_URL=f"http://127.0.0.1:{credit_api}",
+                VITE_INPUT_FINANCE_URL=f"http://127.0.0.1:{input_ui}/",
             )
         else:
-            env["VITE_CREDIT_WORKSPACE_URL"] = "http://127.0.0.1:5174/"
+            env["VITE_CREDIT_WORKSPACE_URL"] = f"http://127.0.0.1:{credit_ui}/"
+            env["VITE_API_TARGET"] = f"http://127.0.0.1:{input_api}"
+        if profile:
+            env["VITE_CACHE_DIR"] = str(
+                (credit_private if folder == CREDIT else public) / "vite-cache"
+            )
         specs.append(
             (
                 [
@@ -178,15 +231,15 @@ def dev(check=False):
                 )
             )
         print(
-            "AFRACANet: public/input finance http://127.0.0.1:5173/about | credit http://127.0.0.1:5174/",
+            f"AFRACANet: public/input finance http://127.0.0.1:{input_ui}/about | credit http://127.0.0.1:{credit_ui}/",
             flush=True,
         )
         if check:
             remaining = {
-                "http://127.0.0.1:8000/api/health",
-                "http://127.0.0.1:8001/api/health",
-                "http://127.0.0.1:5173/about",
-                "http://127.0.0.1:5174/",
+                f"http://127.0.0.1:{input_api}/api/health",
+                f"http://127.0.0.1:{credit_api}/api/health",
+                f"http://127.0.0.1:{input_ui}/about",
+                f"http://127.0.0.1:{credit_ui}/",
             }
             deadline = time.monotonic() + 150
             while remaining and time.monotonic() < deadline:
@@ -207,12 +260,26 @@ def dev(check=False):
                 raise SystemExit(
                     "Platform startup did not make all four services ready."
                 )
+            if profile and inspect_profile:
+                run(
+                    [
+                        PYTHON,
+                        ROOT / "scripts/rehearse_judge.py",
+                        "inspect",
+                        "--name",
+                        profile,
+                    ],
+                    env=service_environment(),
+                )
             print(
                 "All four services returned HTTP 200; stopping smoke-check children.",
                 flush=True,
             )
             return
         while all(child.poll() is None for child in children):
+            if profile and (public / ".stop-requested").exists():
+                (public / ".stop-requested").unlink()
+                return
             time.sleep(0.5)
         raise SystemExit(
             next(

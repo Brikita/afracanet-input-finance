@@ -54,7 +54,15 @@ def service_environment():
         "INPUT_FINANCE_",
         "VITE_",
     )
-    fields = {"DATABASE_URL", "PAYMENT_MODE", "AI_MODE", "SMS_MODE", "DEMO_ACCESS_CODE"}
+    fields = {
+        "DATABASE_URL",
+        "PAYMENT_MODE",
+        "AI_MODE",
+        "SMS_MODE",
+        "DEMO_ACCESS_CODE",
+        "INPUT_ENV_FILE",
+        "SEED_DEMO_DATA",
+    }
     return {
         key: value
         for key, value in os.environ.items()

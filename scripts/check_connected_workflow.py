@@ -36,6 +36,7 @@ def run(credit_repo):
         db.engine = db.build_engine(f"sqlite:///{temp / 'inputs.db'}")
         store.engine = store.make_engine(f"sqlite:///{temp / 'credit.db'}")
         settings.payment_mode = "mock"
+        settings.seed_demo_data = True
         settings.ai_mode = "demo"
         settings.sms_mode = "demo"
         settings.access_code = "isolated-connected-check"

@@ -86,3 +86,12 @@ def test_catalogue_new_product_permissions_and_concurrent_reservation(client):
     assert all(p["id"] != "foreign-product" for p in client.get("/api/state", headers=supplier).json()["products"])
     with db.engine.connect() as conn:
         assert conn.execute(select(db.management_events).where(db.management_events.c.action == "PRODUCT_SAVED")).mappings().first()
+
+
+def test_dealer_can_maintain_imported_uppercase_product_ids(client):
+    supplier = auth(client, "supplier-demo")
+    identifier = "SYN-PRODUCT-000-seed"
+    values = {"name": "Synthetic maize seed", "category": "Seed", "unit": "2 kg pack", "price_cents": 1800, "stock": 20}
+    assert client.put(f"/api/products/{identifier}", headers=supplier, json=values).status_code == 200
+    saved = next(p for p in client.get("/api/state", headers=supplier).json()["products"] if p["id"] == identifier)
+    assert client.put(f"/api/products/{identifier}", headers=supplier, json={**values, "stock": 25, "revision": saved["revision"]}).status_code == 200

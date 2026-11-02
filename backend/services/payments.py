@@ -14,6 +14,7 @@ from ..integrations.paypal import (
     PaymentError,
     PayPal,
     cancelled_without_payment,
+    invoice_number,
     matching_invoice,
     payment_link,
     verified_payment,
@@ -23,6 +24,10 @@ from .orders import get_order, release_reservations, require_no_issues, transiti
 
 def invoice(order_id: int, user):
     require(user, "supplier")
+    # Local configuration errors cannot produce an uncertain remote outcome.
+    # Validate before reserving the INVOICING transition or making any API call.
+    if settings.payment_mode == "sandbox":
+        invoice_number(order_id)
     with db.engine.begin() as conn:
         order = get_order(conn, order_id, user, lock=True)
         if order["status"] == "AWAITING_PAYMENT":

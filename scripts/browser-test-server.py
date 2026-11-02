@@ -11,6 +11,7 @@ with tempfile.TemporaryDirectory(prefix="afracanet-ui-") as directory:
         "DATABASE_URL": "sqlite:///" + str(Path(directory) / "browser.db"),
         "PAYMENT_MODE": "mock",
         "AI_MODE": "demo",
+        "SEED_DEMO_DATA": "1",
         "DEMO_ACCESS_CODE": "afracanet-demo",
     }
     result = subprocess.run([

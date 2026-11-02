@@ -1,13 +1,15 @@
 import os
+import re
 from pathlib import Path
 
 from dotenv import load_dotenv
 
 ROOT = Path(__file__).resolve().parents[1]
-load_dotenv(ROOT / ".env")
+load_dotenv(os.getenv("INPUT_ENV_FILE", str(ROOT / ".env")))
 
 
 class Settings:
+    seed_demo_data = os.getenv("SEED_DEMO_DATA", "0") == "1"
     database_url = os.getenv(
         "DATABASE_URL", f"sqlite:///{ROOT / 'data' / 'afracanet.db'}"
     )
@@ -45,6 +47,10 @@ class Settings:
                 "Supported modes: PAYMENT_MODE=mock|sandbox, AI_MODE=demo|gemini."
             )
         if self.payment_mode == "sandbox":
+            if not re.fullmatch(r"[A-Z0-9-]{1,12}", self.paypal_invoice_prefix):
+                raise RuntimeError(
+                    "Use a PayPal invoice prefix of 1–12 uppercase letters, digits, or hyphens."
+                )
             if not all(
                 [
                     self.paypal_client_id,

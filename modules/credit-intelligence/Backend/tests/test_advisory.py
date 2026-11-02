@@ -2,11 +2,14 @@ import json
 
 import httpx
 import pytest
-from Backend.tests.test_workflow import application, auth, client
+from Backend.tests.test_workflow import application, auth
+from Backend.tests.test_workflow import client as credit_client
 from fastapi import HTTPException
 from sqlalchemy import select
 
 from Backend import advisory, graph_context, store
+
+client = credit_client
 
 EVIDENCE = {
     "farmer_id": "F-101",
@@ -15,6 +18,28 @@ EVIDENCE = {
     "relationship_types": [],
     "public_weather_context": [],
 }
+
+
+def test_missing_weather_is_not_encoded_as_zero_rainfall():
+    from copy import deepcopy
+
+    def weather(evidence):
+        return next(
+            fact["value"]
+            for fact in advisory.evidence_facts(evidence)
+            if fact["id"] == "weather"
+        )
+
+    missing = weather(EVIDENCE)
+    assert missing["available"] is False
+    assert missing["precipitation_mm"] is None
+    measured = deepcopy(EVIDENCE)
+    measured["public_weather_context"] = [{"precipitation_mm": 0}]
+    assert weather(measured)["precipitation_mm"] == 0
+    measured["public_weather_context"].append({})
+    assert weather(measured)["precipitation_mm"] is None
+
+
 VALID = {
     "headline": "Synthetic evidence needs lender review.",
     "observations": [
@@ -100,7 +125,9 @@ def test_real_case_does_not_send_data_to_the_prototype_provider(monkeypatch):
     assert error.value.status_code == 409 and not requests
 
 
-def test_minor_units_are_formatted_before_provider_and_wrong_scale_is_rejected(monkeypatch):
+def test_minor_units_are_formatted_before_provider_and_wrong_scale_is_rejected(
+    monkeypatch,
+):
     evidence = {
         **EVIDENCE,
         "repayment_history": {

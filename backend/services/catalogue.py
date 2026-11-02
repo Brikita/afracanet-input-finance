@@ -19,10 +19,10 @@ def product_save(product_id: str, body: ProductEdit, user):
     require(user, "supplier")
     import re
 
-    if not re.fullmatch(r"[a-z0-9][a-z0-9-]{0,79}", product_id):
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9-]{0,79}", product_id):
         raise HTTPException(
             422,
-            "Use a product ID with lowercase letters, numbers, and hyphens (up to 80 characters).",
+            "Use a product ID with letters, numbers, and hyphens (up to 80 characters).",
         )
     return save_product(product_id, body, user)
 

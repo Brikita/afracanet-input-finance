@@ -8,9 +8,11 @@ import {
   type Delivery,
   type Officer,
   type Advice,
+  type Analytics,
 } from "./api";
 
 import { GraphEvidence } from "./GraphEvidence";
+import { GraphAnalytics } from "./GraphAnalytics";
 
 type Props = {
   application: Application;
@@ -30,6 +32,7 @@ export function CaseReview({
 }: Props) {
   const [context, setContext] = useState<Context | null>(null);
   const [advice, setAdvice] = useState<Advice | null>(null);
+  const [analytics, setAnalytics] = useState<Analytics | null>(null);
   const [connection, setConnection] = useState("");
   const [revocationReason, setRevocationReason] = useState("");
   const [reason, setReason] = useState("");
@@ -61,6 +64,8 @@ export function CaseReview({
         decision: kind,
         reason,
         confirm_lender_authorization: confirmed,
+        ...(analytics?.available && analytics.id ? { analytics_run_id: analytics.id } : {}),
+        ...(advice?.evaluation_id ? { evaluation_id: advice.evaluation_id } : {}),
         ...(kind === "APPROVED"
           ? { limit_cents: cents, expires_at: new Date(expiry + "T23:59:59Z").toISOString() }
           : {}),
@@ -116,17 +121,35 @@ export function CaseReview({
             onClick={() =>
               void act(async () => {
                 const result = await api<Advice>(
-                  `/applications/${application.id}/recommendation`,
+                  terms?.evaluation_id
+                    ? `/applications/${application.id}/evaluations/${encodeURIComponent(terms.evaluation_id)}`
+                    : `/applications/${application.id}/recommendation`,
                   officer,
-                  {},
+                  terms?.evaluation_id ? undefined : {},
                 );
                 setAdvice(result);
               })
             }
           >
-            Request AI summary
+            {terms?.evaluation_id ? "Read recorded AI summary" : "Request AI summary"}
+          </button>
+          <button
+            disabled={busy}
+            onClick={() =>
+              void act(async () =>
+                setAnalytics(
+                  await api<Analytics>(
+                    `/applications/${application.id}/analytics${terms?.analytics_run_id ? `?run_id=${encodeURIComponent(terms.analytics_run_id)}` : ""}`,
+                    officer,
+                  ),
+                ),
+              )
+            }
+          >
+            Load computed GDS
           </button>
         </div>
+        {analytics && <GraphAnalytics key={analytics.id || "unavailable"} value={analytics} />}
         {context && (
           <GraphEvidence
             context={context}
@@ -208,6 +231,15 @@ export function CaseReview({
           <p>
             USD examples are illustrative. The receiving lender must have confirmed this farmer’s
             mapping.
+          </p>
+          <p>
+            {analytics?.available
+              ? `Reviewed graph run: ${analytics.id}.`
+              : "No computed graph run selected."}{" "}
+            {advice?.evaluation_id
+              ? `Reviewed AI summary: ${advice.evaluation_id}.`
+              : "No AI summary selected."}{" "}
+            Available references are recorded with the decision.
           </p>
           <div className="credit-form-grid">
             <label>

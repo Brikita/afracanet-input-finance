@@ -19,7 +19,9 @@
     "check:all": "node scripts/platform.mjs types",
     "test:backend": "node scripts/platform.mjs test-backend",
     "check:startup": "node scripts/platform.mjs smoke",
-    "credit:provision": "node scripts/platform.mjs provision"
+    "credit:provision": "node scripts/platform.mjs provision",
+    "judge:prepare": "node scripts/platform.mjs judge-prepare",
+    "judge:start": "node scripts/platform.mjs judge-start"
   },
   "dependencies": {
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",

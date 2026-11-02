@@ -238,6 +238,8 @@ engine = build_engine(settings.database_url)
 
 def initialize():
     metadata.create_all(engine)
+    if not settings.seed_demo_data:
+        return
     with engine.begin() as conn:
         if conn.execute(select(farmers.c.id).limit(1)).first():
             return

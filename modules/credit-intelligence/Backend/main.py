@@ -21,7 +21,7 @@ from sqlalchemy.exc import IntegrityError
 load_dotenv(
     os.getenv("CREDIT_ENV_FILE", str(Path(__file__).resolve().parents[1] / ".env"))
 )
-from . import advisory, delivery, graph_context, identity, store, workflow
+from . import advisory, analytics, delivery, graph_context, identity, store, workflow
 
 
 async def worker():
@@ -36,6 +36,7 @@ async def worker():
 @asynccontextmanager
 async def lifespan(app):
     store.initialize()
+    analytics.metadata.create_all(store.engine)
     task = (
         asyncio.create_task(worker())
         if os.getenv("CREDIT_DELIVERY_WORKER", "0") == "1"
@@ -81,6 +82,8 @@ class Decision(Strict):
     confirm_lender_authorization: Literal[True]
     limit_cents: int | None = Field(default=None, strict=True, ge=1, le=100_000_000)
     expires_at: datetime | None = None
+    analytics_run_id: str | None = Field(default=None, min_length=1, max_length=100)
+    evaluation_id: str | None = Field(default=None, min_length=1, max_length=100)
 
     @field_validator("confirm_lender_authorization", mode="before")
     @classmethod
@@ -270,20 +273,22 @@ def context(
 @app.post("/api/applications/{identifier}/recommendation")
 def recommend(identifier: str, officer=Depends(identity.actor)):
     evidence = context(identifier, officer=officer)
+    evidence["analytics"] = analytics.read(evidence["farmer_id"], officer["lender_id"])
     with store.engine.connect() as conn:
         application = workflow.scoped_application(conn, identifier, officer)
     response = advisory.summarize(evidence, application["provenance"])
+    evaluation_id = str(uuid.uuid4())
     with store.engine.begin() as conn:
         conn.execute(
             store.evaluations.insert().values(
-                id=str(uuid.uuid4()),
+                id=evaluation_id,
                 application_id=identifier,
                 officer_id=officer["id"],
                 result=json.dumps(response),
                 created_at=store.now(),
             )
         )
-    return response
+    return {**response, "evaluation_id": evaluation_id}
 
 
 @app.get("/api/applications/{identifier}/evidence/{record_id}")
@@ -293,6 +298,34 @@ def evidence_record(identifier: str, record_id: str, officer=Depends(identity.ac
     return graph_context.record(
         application["farmer_id"], officer["lender_id"], record_id
     )
+
+
+@app.get("/api/applications/{identifier}/analytics")
+def graph_analytics(
+    identifier: str, run_id: str | None = None, officer=Depends(identity.actor)
+):
+    with store.engine.connect() as conn:
+        application = workflow.scoped_application(conn, identifier, officer)
+    return analytics.read(application["farmer_id"], officer["lender_id"], run_id)
+
+
+@app.get("/api/applications/{identifier}/evaluations/{evaluation_id}")
+def saved_evaluation(
+    identifier: str, evaluation_id: str, officer=Depends(identity.actor)
+):
+    with store.engine.connect() as conn:
+        workflow.scoped_application(conn, identifier, officer)
+        result = conn.execute(
+            select(store.evaluations.c.result).where(
+                store.evaluations.c.id == evaluation_id,
+                store.evaluations.c.application_id == identifier,
+            )
+        ).scalar_one_or_none()
+    if result is None:
+        raise HTTPException(
+            404, "Recorded AI evaluation not found for this application."
+        )
+    return {**json.loads(result), "evaluation_id": evaluation_id}
 
 
 # Unauthenticated legacy financial endpoints are retired, not silently kept active.

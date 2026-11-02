@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from fastapi import HTTPException
 from sqlalchemy import insert, select, update
 
-from . import store
+from . import analytics, store
 
 
 def scoped_application(conn, identifier, officer):
@@ -103,6 +103,41 @@ def decide(identifier, body, officer):
             .first()
         )
         terms = body.model_dump(mode="json")
+        # Preserve retry compatibility with decisions recorded before optional
+        # analytics/evaluation references were introduced.
+        for field in ("analytics_run_id", "evaluation_id"):
+            if terms[field] is None:
+                terms.pop(field)
+        if body.analytics_run_id:
+            run = (
+                conn.execute(
+                    select(analytics.runs).where(
+                        analytics.runs.c.id == body.analytics_run_id,
+                        analytics.runs.c.lender_id == officer["lender_id"],
+                    )
+                )
+                .mappings()
+                .first()
+            )
+            if run is None or not any(
+                node["id"] == application["farmer_id"]
+                for node in json.loads(run["result"])["nodes"]
+            ):
+                raise HTTPException(
+                    409, "Choose a graph run for this lender and farmer."
+                )
+            terms["evidence_manifest_sha256"] = run["manifest_sha256"]
+        if body.evaluation_id:
+            evaluation = conn.execute(
+                select(store.evaluations.c.id).where(
+                    store.evaluations.c.id == body.evaluation_id,
+                    store.evaluations.c.application_id == identifier,
+                )
+            ).first()
+            if evaluation is None:
+                raise HTTPException(
+                    409, "Choose an AI evaluation recorded for this application."
+                )
         encoded = json.dumps(terms, sort_keys=True)
         if old:
             if old["terms"] != encoded:

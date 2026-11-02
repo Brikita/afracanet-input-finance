@@ -42,7 +42,7 @@ def load_execution(pack, overlay):
                             id=identifier,
                             name=properties["display_name"],
                             location=properties["reference_region"]
-                            + " Â· fictional reference region",
+                            + " · fictional reference region",
                             lender_id=tenant,
                             limit_cents=0,
                             reserved_cents=0,

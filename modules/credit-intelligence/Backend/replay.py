@@ -1,22 +1,52 @@
 """Read-only replay evidence; never imported as PayPal payment records."""
 
 import os
+import sqlite3
+from contextlib import contextmanager
+from pathlib import Path
 
 import psycopg
 from fastapi import HTTPException
 
 
+class LocalReplay:
+    """Same authored registry in a read-only SQLite file for compact installs."""
+
+    def __init__(self, connection):
+        self.connection = connection
+
+    def execute(self, query, parameters=()):
+        return self.connection.execute(
+            query.replace("replay.", "").replace("%s", "?"), parameters
+        )
+
+
+@contextmanager
+def connection():
+    local = os.getenv("REPLAY_SQLITE_FILE", "")
+    if local:
+        path = Path(local).resolve()
+        with sqlite3.connect(path.as_uri() + "?mode=ro", uri=True) as conn:
+            conn.execute("PRAGMA query_only=ON")
+            yield LocalReplay(conn)
+    else:
+        with psycopg.connect(
+            os.environ["REPLAY_DATABASE_URL"],
+            connect_timeout=5,
+            options="-c default_transaction_read_only=on",
+        ) as conn:
+            yield conn
+
+
 def farmer_history(farmer_id, lender_id):
     url = os.getenv("REPLAY_DATABASE_URL", "")
-    if not url:
+    if not url and not os.getenv("REPLAY_SQLITE_FILE"):
         return {
             "available": False,
             "reason": "Replay history connection is not configured.",
         }
     try:
-        with psycopg.connect(
-            url, connect_timeout=5, options="-c default_transaction_read_only=on"
-        ) as conn:
+        with connection() as conn:
             row = conn.execute(
                 "SELECT count(*),coalesce(sum(l.principal_minor),0),coalesce(sum(l.repaid_minor),0),coalesce(sum(l.outstanding_minor),0) FROM replay.loans l JOIN replay.entities e ON e.id=l.farmer_id WHERE e.id=%s AND e.tenant_id=%s",
                 (farmer_id, lender_id),
@@ -40,12 +70,10 @@ def farmer_history(farmer_id, lender_id):
 
 def summary(lender_id):
     url = os.getenv("REPLAY_DATABASE_URL", "")
-    if not url:
+    if not url and not os.getenv("REPLAY_SQLITE_FILE"):
         raise HTTPException(503, "Replay registry is not configured.")
     try:
-        with psycopg.connect(
-            url, connect_timeout=5, options="-c default_transaction_read_only=on"
-        ) as conn:
+        with connection() as conn:
             kinds = dict(
                 conn.execute(
                     "SELECT kind,count(*) FROM replay.entities WHERE tenant_id=%s GROUP BY kind",

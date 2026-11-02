@@ -71,3 +71,22 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Check browser journey
         run: npm run test:ui
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Fetch isolated judge graph runtime
+        shell: bash
+        run: |
+          curl --fail --location --retry 3 https://dist.neo4j.org/neo4j-community-5.26.32-unix.tar.gz -o "$RUNNER_TEMP/neo4j.tar.gz"
+          curl --fail --location --retry 3 https://dist.neo4j.org/neo4j-community-5.26.32-unix.tar.gz.sha256 -o "$RUNNER_TEMP/neo4j.sha256"
+          EXPECTED=$(cut -d ' ' -f1 "$RUNNER_TEMP/neo4j.sha256")
+          echo "$EXPECTED  $RUNNER_TEMP/neo4j.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/neo4j.tar.gz" -C "$RUNNER_TEMP"
+          curl --fail --location --retry 3 https://github.com/neo4j/graph-data-science/releases/download/2.13.4/neo4j-graph-data-science-2.13.4.jar -o "$RUNNER_TEMP/gds.jar"
+          echo "10e072f73992224f1159f246c9d6a89da5f3b3434aeffa5be42647edda13a8d8  $RUNNER_TEMP/gds.jar" | sha256sum --check
+      - name: Rehearse a clean compact judge environment with actual GDS
+        shell: bash
+        run: |
+          npm run judge:prepare
+          npm run judge:start -- --neo4j-home "$RUNNER_TEMP/neo4j-community-5.26.32" --java-home "$JAVA_HOME" --gds-jar "$RUNNER_TEMP/gds.jar" --analytics --check

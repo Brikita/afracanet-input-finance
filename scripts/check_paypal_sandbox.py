@@ -37,6 +37,7 @@ def require_success(response):
 
 def run(create=False):
     settings.payment_mode = "sandbox"
+    settings.seed_demo_data = True
     settings.sms_mode = "demo"
     settings.validate()
     with httpx.Client(timeout=25) as client:

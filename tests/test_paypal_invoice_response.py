@@ -18,7 +18,7 @@ def test_separate_stores_can_use_distinct_invoice_namespaces(monkeypatch):
     assert invoice_number(1) == "AFCDEV-000001"
 
 
-@pytest.mark.parametrize("response", [{"id": REFERENCE}, LINK, {"links": [LINK]}])
+@pytest.mark.parametrize("response", [{"id": REFERENCE}, LINK, {"links": [LINK]}, {**LINK, "href": LINK["href"].replace("api-m.sandbox", "api.sandbox")}])
 def test_create_keeps_reference_from_full_or_minimal_paypal_response(
     monkeypatch, response
 ):
