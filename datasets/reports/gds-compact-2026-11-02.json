@@ -1,0 +1,52 @@
+{
+  "as_of": "2026-10-26",
+  "authority": "descriptive_analytics_only",
+  "calibrated_credit_score": null,
+  "created_at": "2026-11-02T19:20:09.260513+00:00",
+  "gds_version": "2.13.4",
+  "limits": {
+    "algorithm_bytes": 67108864,
+    "nodes": 10000,
+    "relationships": 50000
+  },
+  "limits_explanation": "Unweighted membership connectivity and computed communities in an authored graph. Neither centrality nor community membership establishes income, default risk, lending approval or payment. No temporal filtering or outcome calibration is inferred.",
+  "manifest_sha256": "0de7bf8fcd3d11ed0ae6bb64e69a6dbec9333084ed7671bbfe08e62c7c1961b4",
+  "memory_estimates": {
+    "louvain": {
+      "bytesMax": 560992,
+      "bytesMin": 2617
+    },
+    "pageRank": {
+      "bytesMax": 784,
+      "bytesMin": 784
+    }
+  },
+  "parameters": {
+    "concurrency": 1,
+    "louvain": {
+      "community_ids": "run_specific",
+      "concurrency": 1
+    },
+    "orientation": "UNDIRECTED",
+    "pageRank": {
+      "dampingFactor": 0.85,
+      "maxIterations": 20,
+      "tolerance": 1e-6
+    },
+    "relationship": "MEMBER_OF",
+    "weights": "unweighted"
+  },
+  "projection": {
+    "graphName": "afracanet_1e22ebefb56e44d0917336bfcae03bc3",
+    "nodeCount": 11,
+    "relationshipCount": 32
+  },
+  "seconds": 3.74,
+  "source_kind": "synthetic_replay",
+  "dataset_farmers": 32,
+  "graph_nodes": 1746,
+  "graph_relationships": 3405,
+  "projected_nodes": 11,
+  "membership_links": 16,
+  "scope": "One lender partition of an isolated synthetic judge profile; not the million-node development graph."
+}

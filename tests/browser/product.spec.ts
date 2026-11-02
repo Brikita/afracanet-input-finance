@@ -18,7 +18,7 @@ test('public product information makes no authenticated, AI or payment API calls
       }),
     ).toBeVisible()
     await expect(
-      page.getByText('No handover recorded', { exact: true }),
+      page.getByText('Demonstration handover recorded', { exact: true }),
     ).toBeVisible()
     await expect(page.locator('.proof-amount strong')).toHaveText('USD 18.00')
   }
@@ -36,7 +36,9 @@ test('visitors explore evidence and graph concepts without triggering financial 
   })
   await page.goto('/about')
   await page.getByRole('button', { name: '7 Collection', exact: true }).click()
-  await expect(page.locator('.payment-verdict')).toHaveText('Not recorded')
+  await expect(page.locator('.payment-verdict')).toHaveText(
+    'Verified in the check',
+  )
   await page.getByRole('link', { name: 'Evidence', exact: true }).click()
   await page.getByRole('button', { name: /SACCO & lender records/ }).click()
   await expect(page.locator('#source-detail-title')).toHaveText(
@@ -82,7 +84,9 @@ test('mobile evidence and graph controls preserve access with reduced motion', a
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/about')
   await page.getByLabel('Explore a payment stage').selectOption('6')
-  await expect(page.locator('.payment-verdict')).toHaveText('Not recorded')
+  await expect(page.locator('.payment-verdict')).toHaveText(
+    'Verified in the check',
+  )
   await page.getByRole('button', { name: /Business cash flow/ }).click()
   await expect(page.locator('#source-detail-title')).toHaveText(
     'Business cash flow',

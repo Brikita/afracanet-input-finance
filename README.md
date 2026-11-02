@@ -62,6 +62,11 @@ execution credit at zero; fresh checkouts still use the small demo until explici
 
 ## Current status
 
+The [2 November completion sprint](docs/SPRINT_2026-11-02.md) tracks current
+work, including the 175-second narrated demo. For a separate compact connected
+environment, see [judge setup](docs/JUDGE_SETUP.md). Older dated reports retain
+the state at their checkpoint.
+
 The local demonstration works without service credentials. It includes:
 
 - Farmer, lender, and agro-dealer workspaces with two illustrative farmer accounts.
@@ -73,6 +78,9 @@ The local demonstration works without service credentials. It includes:
 - Gemini structured request interpretation adapter.
 
 **Default payments are simulated and the default parser is deterministic.**
+Fictional starter people/credit/products require `SEED_DEMO_DATA=1`, explicitly
+enabled by `.env.example` for the small walkthrough. Leave it off for empty or
+loaded environments; compact judge profiles always disable starter seeding.
 No money moves and no AI model is called in the default walkthrough.
 PayPal sandbox authentication, invoice creation, sending, and draft recovery have
 been checked with actual API calls. A USD 18 buyer sandbox payment was verified
@@ -383,9 +391,9 @@ checks do not supply migrations, backups, or production operations procedures.
 
 ## License
 
-Original input-finance code: [MIT](LICENSE), copyright 2026 Brikita. Imported
-credit code retains its existing rights status; no LICENSE file was present at
-import. See [its notice](modules/credit-intelligence/NOTICE.md). Photographs and
+Original input-finance code: [MIT](LICENSE), copyright 2026 Brikita. Credit code
+is also released under [MIT](modules/credit-intelligence/LICENSE), following the
+owner's permissions confirmation on 2 November 2026; see [its notice](modules/credit-intelligence/NOTICE.md). Photographs and
 fonts retain separate licenses; see [sources and credits](docs/PRODUCT_SITE_CREDITS.md),
 [the photographic asset manifest](docs/PRODUCT_SITE_ASSETS.json) and the font
 notices in `public/licenses/`.

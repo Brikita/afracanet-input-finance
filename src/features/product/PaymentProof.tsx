@@ -13,17 +13,16 @@ import {
   Play,
 } from 'lucide-react'
 import { useViewportPlayback } from './useViewportPlayback'
-import payment from '../../../datasets/reports/paypal-sandbox-2026-10-31.json'
-import callback from '../../../datasets/reports/paypal-callback-2026-10-31.json'
+import payment from '../../../datasets/reports/connected-sandbox-2026-11-02.json'
 import './payment-proof.css'
 
 const stages = [
   {
     title: 'Invoice created',
-    caption: 'Isolated fixture',
+    caption: 'Linked synthetic case',
     icon: FileText,
     heading: 'Supplier invoice',
-    body: 'Created against illustrative input credit.',
+    body: 'Linked to an explicitly authorized synthetic allocation.',
     verified: true,
   },
   {
@@ -40,7 +39,7 @@ const stages = [
     icon: Wallet,
     heading: 'Buyer payment',
     body: 'USD 18.00 paid through PayPal sandbox.',
-    verified: payment.payment_verified,
+    verified: payment.provider_payment_verified,
   },
   {
     title: 'Payment verified',
@@ -48,42 +47,44 @@ const stages = [
     icon: ShieldCheck,
     heading: 'Payment confirmed',
     body: 'Authenticated payment records matched.',
-    verified: payment.payment_verified,
+    verified: payment.provider_payment_verified,
   },
   {
-    title: 'Callback verified',
-    caption: 'Genuine event resent',
+    title: 'Reconciliation repeated',
+    caption: 'Actual provider checks',
     icon: GitBranch,
     heading: 'One payment effect',
-    body: 'Repeated network delivery stayed deduplicated.',
-    verified: callback.signature_verified_by_paypal,
+    body: 'Repeated payment checks left balances unchanged.',
+    verified: payment.repeat_reconciliation_and_collection_unchanged,
   },
   {
     title: 'Ready for collection',
     caption: 'Payment requirement met',
     icon: Leaf,
     heading: 'Collection permitted',
-    body: 'A separate authorized handover is still required.',
-    verified: payment.order_status === 'READY_FOR_COLLECTION',
+    body: 'The collection code required a separate dealer action.',
+    verified: ['READY_FOR_COLLECTION', 'COLLECTED'].includes(
+      payment.order_status,
+    ),
   },
   {
     title: 'Collection',
-    caption: 'No handover recorded',
-    icon: Clock3,
-    heading: 'Collection pending',
-    body: 'Payment does not establish physical collection.',
-    verified: false,
+    caption: 'Demonstration recorded',
+    icon: CircleCheck,
+    heading: 'Demonstration handover',
+    body: 'A code-based demonstration handover was recorded.',
+    verified: payment.collection_events === 1,
   },
 ]
 
 const explanations = [
-  'The invoice belongs to a preserved provider-check fixture. Its allocation is illustrative; it is not evidence of a real lender approving a customer loan.',
-  'The sandbox invoicing workflow issued a payment link. This is separate from proving email or SMS delivery to a person.',
+  'This invoice belongs to one linked synthetic rehearsal: retrieved graph evidence, actual Gemini, explicit officer authorization and a verified signed allocation. It is not a real customer loan.',
+  'The existing sandbox draft was correlated and recovered before being sent. No duplicate invoice was created. Issuing a payment link is separate from proving email or SMS delivery to a person.',
   'A buyer completed the sandbox payment. No real money moved, and a payment in this fixture cannot pay another order.',
   'The server retrieved authenticated PayPal records and matched the invoice, amount, currency and payment evidence. An invoice status alone does not pass this check.',
-  'The payment was first reconciled manually. PayPal then resent its genuine event; the server verified the signature. Repeated callback delivery retained one payment effect. Network delivery is separate from physical handover.',
+  'Authenticated reconciliation was repeated and retained one payment effect. No incoming callback was verified for this scenario; the genuine callback check from 31 October is separate evidence.',
   'The recorded order met its payment requirement. A dealer must still verify the farmer’s collection code and record the handover through an authorized action.',
-  'There is no physical collection record in this fixture. The page deliberately leaves this stage unverified; a paid invoice does not prove that inputs reached the farmer.',
+  'The dealer recorded a synthetic demonstration handover using the farmer’s collection code. Repeating that action retained one collection event. This does not establish physical delivery of real goods.',
 ]
 
 export function PaymentProof() {
@@ -120,9 +121,10 @@ export function PaymentProof() {
       <div className="payment-record-header">
         <div>
           <h2 id="proof-title">Input finance to supplier</h2>
-          <p>One preserved provider check, unfolding a stage at a time.</p>
+          <p>One connected sandbox rehearsal, unfolding a stage at a time.</p>
           <span className="payment-provenance">
-            PayPal sandbox · Synthetic allocation fixture · {checked}
+            PayPal sandbox · Explicit synthetic officer authorization ·{' '}
+            {checked}
           </span>
         </div>
         <div className="proof-amount">
@@ -216,25 +218,26 @@ export function PaymentProof() {
       </div>
       <dl className="payment-record-facts">
         <div>
-          <dt>Repeated delivery</dt>
-          <dd>{callback.payment_effects} payment effect</dd>
+          <dt>Repeated reconciliation</dt>
+          <dd>{payment.payment_confirmed_events} payment effect</dd>
         </div>
         <div>
           <dt>Recorded order status</dt>
           <dd>
             <Check size={15} />
-            Ready for collection
+            Demonstration handover recorded
           </dd>
         </div>
         <div>
-          <dt>Physical collection</dt>
-          <dd>No handover recorded</dd>
+          <dt>Physical delivery</dt>
+          <dd>Not established</dd>
         </div>
       </dl>
       <p className="payment-record-note">
-        A snapshot of a sandbox check, separate from the signed lender-workflow
-        tests.{' '}
-        <a href="https://github.com/Brikita/afracanet-input-finance/blob/main/docs/PROVIDER_CHECKS_2026-10-31.md">
+        A connected synthetic rehearsal with actual PayPal sandbox payment and a
+        recorded demonstration handover. The earlier callback fixture is
+        separate.{' '}
+        <a href="https://github.com/Brikita/afracanet-input-finance/blob/main/docs/SPRINT_2026-11-02.md">
           Inspect the recorded evidence
         </a>
         .

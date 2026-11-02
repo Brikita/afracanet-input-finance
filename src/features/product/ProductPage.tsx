@@ -26,7 +26,7 @@ const flow = [
   },
   {
     title: 'Record the handover',
-    body: 'The dealer verifies the farmer’s collection code and records physical collection.',
+    body: 'The dealer verifies the farmer’s collection code and records the handover event.',
   },
   {
     title: 'Follow the record',

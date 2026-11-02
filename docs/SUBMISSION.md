@@ -2,7 +2,7 @@
 
 Status: **not submitted. PayPal sandbox payment, genuine callback and initial
 Gemini checks passed; hosting, video and submission packaging remain.**
-See [the current sprint evidence](SPRINT_RESULTS_2026-10-31.md).
+See [the current completion sprint](SPRINT_2026-11-02.md) and [compact judge setup](JUDGE_SETUP.md).
 
 ## Unified project description draft
 
@@ -26,16 +26,15 @@ stores are implemented. Actual Gemini request parsing and evidence summaries,
 an actual USD 18 PayPal sandbox payment and a genuine verified callback have
 separate check records. Do not present these separate fixtures as one real
 customer transaction. Collection is tested with labelled simulated payments;
-physical collection in the provider fixture has not been recorded.
+the 31 October fixture has no collection. On 2 November, a separate continuous synthetic scenario completed actual GDS/Gemini, signed approval, a new USD 18 PayPal sandbox payment and a recorded demonstration handover. It does not establish physical delivery of real goods. See [the linked verification](../datasets/reports/connected-sandbox-2026-11-02.json).
 
 ## Existing work and new contributions
 
 The credit-intelligence codebase predates this PayPal expansion. Identify its
 existing contributors and capabilities separately from work added during the
 hackathon: the input-finance module, PayPal adapter/reconciliation, collection,
-issues, and the eventual cross-module handoff. Link the single canonical repository, identify the imported credit module and
-new PayPal work, and use the root setup route. Check the AI module's ownership and open-source licensing;
-the MIT license in this repository does not automatically license the other repo.
+issues, and the implemented signed cross-module handoff. Link the single canonical repository, identify the imported credit module and
+new PayPal work, and use the root setup route. The owner confirmed ownership and contributor permissions on 2 November 2026; both modules now include MIT licenses, with prior authorship and third-party notices retained.
 
 The official rules allow significantly updated existing projects and require an
 explanation of updates made during the submission period; the organizers decide
@@ -51,22 +50,29 @@ whether a change is significant. PayPal must be central to the project. See
 - Usability: report actual user feedback; distinguish hypotheses from evidence.
 - Impact: report measured workflow outcomes, not assumed reductions in defaults.
 
-## Demonstration sequence (approximately 2:40)
+## Demonstration sequence (175 seconds / 2:55, with AI voiceover and captions)
 
-- 0:00â€“0:15: One farmer journey, from access to credit to inputs.
-- 0:15â€“0:40: AI assessment in the officer portal and explicit lender decision.
-- 0:40â€“0:55: Show the allocation reaching input finance, labelling any manual import.
-- 0:55â€“1:15: Farmer request and clarification; confirm quote and reserve credit/stock.
-- 1:15â€“1:55: Dealer invoice; lender pays in PayPal sandbox; reconcile actual payment.
-- 1:55â€“2:20: Farmer collection code; dealer handover; show linked records and an issue hold.
-- 2:20â€“2:40: Customer evidence, commercial hypothesis, pilot ask, and new PayPal contribution.
+- 0:00–0:15: Farmer problem and audience.
+- 0:15–0:45: Actual graph evidence, computed descriptive analytics and cited advisory AI.
+- 0:45–1:05: Explicit lender decision and signed delivery receipt.
+- 1:05–1:25: Farmer request, clarification, quote confirmation and reservation.
+- 1:25–2:05: Supplier invoice, manual PayPal sandbox buyer payment and verified reconciliation.
+- 2:05–2:30: Collection code, recorded demonstration handover and linked timeline.
+- 2:30–2:55: Contribution, architecture, evidence limits and pilot ask.
+
+The total includes opening/closing graphics. Preserve one scenario's references;
+label recovery/time jumps and any separate fixtures. See the sprint plan for the
+recording gate. No audio or final video is claimed until generated and reviewed.
 
 ## Checklist
 
 - [x] Input-finance source repository and MIT license.
-- [ ] Prior-work/new-work disclosure and complete source licensing for both modules.
+- [x] Both modules licensed under MIT with owner confirmation and retained notices.
+- [ ] Final prior-work/new-work disclosure and submission description reviewed.
 - [x] Lender-authorized approval handoff demonstrated across both modules.
-- [ ] One reproducible combined setup and shared-reference demonstration.
+- [x] Shared setup/start/check commands and compact profile generation.
+- [x] One continuous linked provider-backed scenario with recorded demonstration collection.
+- [ ] Complete clean-environment judge rehearsal.
 - [x] Complete local setup instructions and runnable simulated workflow.
 - [x] Explicit distinction between demonstration and external integrations.
 - [x] Real PayPal sandbox payment and genuine signed callback verified in an isolated fixture.
@@ -77,6 +83,5 @@ whether a change is significant. PayPal must be central to the project. See
 - [ ] Final tools/model disclosure and project description.
 - [ ] Devpost submission completed and verified.
 
-Early eligibility-review target: 5 November 2026 (confirm current organizer details
-before submission). Do not report completion until
+Early eligibility-review target: 5 November 2026, per the organizer email supplied on 2 November. The email gives no cutoff time. Do not report completion until
 Devpost confirms the submitted entry and all required links are accessible.
