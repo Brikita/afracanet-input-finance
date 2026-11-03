@@ -1,7 +1,7 @@
 # Submission preparation
 
-Status: **not submitted. PayPal sandbox payment, genuine callback and initial
-Gemini checks passed; hosting, video and submission packaging remain.**
+Status: **not submitted. Core release checks passed. Narration and the 175-second
+source timeline exist; video validation/export, public upload and submission remain.**
 See [the current completion sprint](SPRINT_2026-11-02.md) and [compact judge setup](JUDGE_SETUP.md).
 
 ## Unified project description draft
@@ -62,7 +62,7 @@ whether a change is significant. PayPal must be central to the project. See
 
 The total includes opening/closing graphics. Preserve one scenario's references;
 label recovery/time jumps and any separate fixtures. See the sprint plan for the
-recording gate. No audio or final video is claimed until generated and reviewed.
+recording gate. Narration has been generated; the final MP4 is not yet exported or reviewed.
 
 ## Checklist
 
@@ -72,16 +72,19 @@ recording gate. No audio or final video is claimed until generated and reviewed.
 - [x] Lender-authorized approval handoff demonstrated across both modules.
 - [x] Shared setup/start/check commands and compact profile generation.
 - [x] One continuous linked provider-backed scenario with recorded demonstration collection.
-- [ ] Complete clean-environment judge rehearsal.
+- [x] Clean Linux compact judge rehearsal, including actual GDS, passed in CI at f6b5447.
 - [x] Complete local setup instructions and runnable simulated workflow.
 - [x] Explicit distinction between demonstration and external integrations.
 - [x] Real PayPal sandbox payment and genuine signed callback verified in an isolated fixture.
 - [x] Actual Gemini behavior and initial development-set/schema-citation results.
-- [ ] Judge instructions tested from a clean checkout.
-- [ ] Hosted demo or verified complete local-run route.
+- [x] Automated setup/run route tested from a clean checkout; see CI run 41518097793.
+- [x] Verified local-run route supplied; hosted functional demo remains optional work.
 - [ ] Public YouTube demonstration under three minutes.
 - [ ] Final tools/model disclosure and project description.
 - [ ] Devpost submission completed and verified.
+
+The [3 November release plan](RELEASE_2026-11-03.md) sets today's finish line.
+[Devpost-ready copy](DEVPOST_COPY.md) is prepared for final review and link completion.
 
 Early eligibility-review target: 5 November 2026, per the organizer email supplied on 2 November. The email gives no cutoff time. Do not report completion until
 Devpost confirms the submitted entry and all required links are accessible.
