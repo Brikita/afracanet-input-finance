@@ -1,7 +1,7 @@
 # Submission preparation
 
-Status: **not submitted. Core release checks passed. Narration and the 175-second
-source timeline exist; video validation/export, public upload and submission remain.**
+Status: **not submitted. Core release checks passed. The narrated 175-second MP4
+is exported and technically verified; public upload and submission remain.**
 See [the current completion sprint](SPRINT_2026-11-02.md) and [compact judge setup](JUDGE_SETUP.md).
 
 ## Unified project description draft
@@ -62,7 +62,10 @@ whether a change is significant. PayPal must be central to the project. See
 
 The total includes opening/closing graphics. Preserve one scenario's references;
 label recovery/time jumps and any separate fixtures. See the sprint plan for the
-recording gate. Narration has been generated; the final MP4 is not yet exported or reviewed.
+recording gate. The owner approved rendering on 3 November. The final MP4 measures
+175.000 seconds at 1920×1080/30 fps; full decoding, seven scene audio samples and
+the payment narration range passed verification. The decoded contact sheet was
+inspected. See [export verification](../datasets/reports/video-export-2026-11-03.json).
 
 ## Checklist
 

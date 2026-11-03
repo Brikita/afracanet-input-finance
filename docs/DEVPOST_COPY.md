@@ -147,7 +147,8 @@ photographs and fonts retain their own notices/terms.
 - Development assistance: OpenAI Codex assisted implementation, refactoring,
   testing and documentation. Gemini assisted product functions as described above.
   Narration was generated using Rekam Basic's Michael voice through its official
-  no-account interface. The final narrated video export is still pending.
+  no-account interface. The final narrated MP4 was exported and technically
+  verified at 175.000 seconds, 1920×1080 and 30 fps.
 - Data: fictional generated histories; separately attributed Open-Meteo/ERA5
   historical reference weather. No live partner chama/SACCO/merchant feed.
 
@@ -159,7 +160,7 @@ Working-build instructions: https://github.com/Brikita/afracanet-input-finance/b
 
 Verified release CI: https://github.com/Brikita/afracanet-input-finance/actions/runs/41518097793
 
-Public video: **pending final 175-second export and verified public YouTube upload**.
+Public video: **175-second MP4 exported locally; public YouTube upload and playback verification pending**.
 
 Hosted functional demo: **not yet supplied**. Use the complete local-run route;
 loopback addresses are available only on the machine running the services.
