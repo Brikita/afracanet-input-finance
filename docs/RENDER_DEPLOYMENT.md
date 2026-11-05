@@ -1,8 +1,9 @@
 # Render deployment preparation - 5 November 2026
 
-Status: application containers prepared; credit Node and static builds verified
-locally. Synthetic service bootstrap/restart checks pass. Linux image checks are
-defined separately; check their actual result before deployment.
+Status: local frontend/type/backend checks passed. All four Linux container
+builds, production entry points, the static credit build, actual GDS version and
+private graph import/retry passed in [container checks](https://github.com/Brikita/afracanet-input-finance/actions/runs/41998840097).
+Synthetic service bootstrap/restart checks pass locally. Cloud acceptance remains.
 No Render resources have been created and no sponsor usage is claimed yet.
 The owner selected sponsor credits and requires the actual cost confirmed before
 creating paid services. Do not click Deploy/Create paid resources from this plan.
@@ -28,8 +29,8 @@ build now removes that extra $7 runtime. The revised candidate is $40/month
 ($7 input, $7 credit API, $25 graph, $1 disks), before tax/usage overages. Published
 rates were read in Render's live pricing page on 5 November; this is an estimate,
 not an account-specific approved quote or a requirement to buy this architecture.
-The owner questioned the ongoing cost. Do not create paid resources until the
-owner has reviewed the final cheaper setup and its actual account quote.
+Do not create paid resources until the operator has reviewed the final setup and
+its actual account quote, including ongoing costs after credits are exhausted.
 
 Render does not supply a native managed Neo4j database. A separately operated
 private container (including a compatible GDS plugin) or an external graph
@@ -52,7 +53,8 @@ sets `AFRACANET_DEPLOY_TARGET=node`; normal builds retain the original target.
 The runtime entry is `.output/server/index.mjs`. Both Python images bind to
 `0.0.0.0:$PORT`. The root image builds the existing public/payment-proof assets.
 `.dockerignore` excludes local environments, keys, stores and generated media.
-Docker is unavailable in the current shell: container builds are not yet tested.
+Docker is unavailable in the current shell; clean Linux container builds and
+runtime smoke checks were verified by the linked GitHub Actions run.
 
 The lower-cost credit web alternative uses a Render Static Site, with the credit
 module as root directory. Build: `npm ci && AFRACANET_DEPLOY_TARGET=static npm run build`.
@@ -80,21 +82,24 @@ inside the credit API service. It imports one verified fixture transactionally,
 preserves a matching completed import, and rejects unrelated graphs. Verify GDS
 and evidence queries afterward. Do not publish graph HTTP/Bolt on the internet.
 
-## Remaining implementation before resource creation
+## Deployment sequence and remaining work
 
-1. Verify all three clean Linux container builds; smoke-test API health and web
-   entry routes. Check the public `/about` link and `/about.html` route behavior
-   under the production static server.
-2. Verify the prepared private Neo4j image with pinned compatible GDS, including
-   memory settings and internal Bolt connectivity. Keep Bolt off the public web.
-3. Verify the prepared bootstrap on Linux and configure its separate persistent
-   disks. Generate the signing key only in credit storage. Transfer only public
-   verification/trust policy through the explicit operator step.
+1. Completed: clean Linux image builds, API health/web routes, both `/about` and
+   `/about.html`, GDS 2.13.4, private Bolt connectivity and graph import retry.
+   The application suite also passed on the preparation commit.
+2. Review the actual compute/disk quotes and credit conditions before creating
+   paid resources. All graph ports must remain private. No resource is approved
+   merely because its draft form has a selected compute tier.
+3. Configure the two separate persistent disks. Bootstrap generates the signing
+   key only in credit storage. Transfer only public verification/trust policy
+   through the explicit operator step. Confirm persistence on Render itself.
 4. Provision individual officer accounts through the operator process. Keep
    test-access instructions scoped; no public operator endpoint or shared officer
    session. Require a generated strong input-demo access code in hosted mode.
-5. Define the complete Blueprint only after bootstrap and service boundaries
-   have been tested. Do not deploy empty services and label them a connected demo.
+5. Finish manual service configuration using these images and the static build,
+   or author a complete Blueprint as an optional alternative. Set actual URLs,
+   allowed hosts/CORS, service-specific provider secrets and the hosted callback.
+   A running health endpoint alone is not a verified connected demo.
 
 ## Configuration and data ownership
 
@@ -115,9 +120,10 @@ and evidence queries afterward. Do not publish graph HTTP/Bolt on the internet.
 ## Billing gate
 
 Claim the sponsor offer through the official resource page and verify the credit
-balance/conditions in the owner account. Confirmed in the signed-in billing page:
-$50 credit applied, expiry 1 November 2027, $0 accrued charges on 5 November 2026.
-No card was on file. No paid resources were created by this work.
+balance, expiry and conditions in the owner account. The official sponsor page
+advertises a one-time $50 offer; it is not free recurring hosting or a spending
+cap. Keep account-specific billing and payment-method details out of this public
+repository. No paid resources have been created by this work.
 
 Before deployment show the owner the actual four-service compute quote, disk
 cost, expected credit duration, bandwidth/build/Workflow allowances and what can
