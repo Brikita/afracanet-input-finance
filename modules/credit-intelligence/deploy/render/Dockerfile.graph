@@ -1,0 +1,12 @@
+FROM neo4j:5.26.32-community
+USER root
+RUN curl --fail --silent --show-error --location --retry 3 https://github.com/neo4j/graph-data-science/releases/download/2.13.4/neo4j-graph-data-science-2.13.4.jar -o /var/lib/neo4j/plugins/gds.jar \
+    && echo '10e072f73992224f1159f246c9d6a89da5f3b3434aeffa5be42647edda13a8d8  /var/lib/neo4j/plugins/gds.jar' | sha256sum --check
+ENV NEO4J_server_memory_heap_initial__size=256m \
+    NEO4J_server_memory_heap_max__size=512m \
+    NEO4J_server_memory_pagecache_size=128m \
+    NEO4J_dbms_security_procedures_unrestricted=gds.* \
+    NEO4J_dbms_security_procedures_allowlist=gds.* \
+    NEO4J_dbms_usage__report_enabled=false
+# Keep the official entrypoint: it configures authentication and data ownership.
+# Run as a PRIVATE Render service, mount /data, and never publish Bolt publicly.

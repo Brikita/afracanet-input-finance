@@ -4,7 +4,6 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
-from fastapi.staticfiles import StaticFiles
 from sqlalchemy.exc import IntegrityError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
@@ -23,6 +22,7 @@ from .api import (
     workspace,
 )
 from .config import ROOT, settings
+from .frontend import mount_frontend
 from .integrations.paypal import PaymentError
 
 
@@ -66,5 +66,4 @@ async def payment_error(request, exc):
     return JSONResponse(status_code=502, content={"detail": str(exc)})
 
 
-if (ROOT / "dist").exists():
-    app.mount("/", StaticFiles(directory=ROOT / "dist", html=True), name="frontend")
+mount_frontend(app, ROOT / "dist")

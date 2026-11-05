@@ -1,0 +1,23 @@
+FROM node:22.16.0-bookworm-slim AS frontend
+WORKDIR /build
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY tsconfig*.json vite.config.ts index.html about.html ./
+COPY src ./src
+COPY public ./public
+COPY datasets/reports ./datasets/reports
+ARG VITE_CREDIT_WORKSPACE_URL
+ENV VITE_CREDIT_WORKSPACE_URL=$VITE_CREDIT_WORKSPACE_URL
+RUN npm run build
+
+FROM python:3.13-slim-bookworm
+WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+COPY requirements.lock.txt ./
+RUN pip install --no-cache-dir -r requirements.lock.txt
+COPY backend ./backend
+COPY scripts ./scripts
+COPY deploy/render ./deploy/render
+RUN python deploy/render/compact_fixture.py /app/fixture
+COPY --from=frontend /build/dist ./dist
+CMD ["python", "deploy/render/bootstrap.py", "inputs", "--serve"]

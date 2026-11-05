@@ -1,0 +1,75 @@
+name: Render container checks
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'deploy/render/**'
+      - '.dockerignore'
+      - '.github/workflows/render-images.yml'
+      - 'backend/frontend.py'
+      - 'modules/credit-intelligence/vite.config.ts'
+      - 'modules/credit-intelligence/scripts/seed_hosted_graph.py'
+      - 'modules/credit-intelligence/deploy/render/**'
+permissions:
+  contents: read
+jobs:
+  images:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.16.0'
+      - name: Build input service
+        run: docker build -t afracanet-inputs -f deploy/render/Dockerfile.inputs --build-arg VITE_CREDIT_WORKSPACE_URL=https://credit-web.example.invalid .
+      - name: Build credit API
+        run: docker build -t afracanet-credit-api -f deploy/render/Dockerfile.credit-api .
+      - name: Build credit Node frontend
+        run: docker build -t afracanet-credit-web -f deploy/render/Dockerfile.credit-web --build-arg VITE_CREDIT_API_URL=https://credit-api.example.invalid --build-arg VITE_INPUT_FINANCE_URL=https://inputs.example.invalid .
+      - name: Build private graph with pinned GDS
+        run: docker build -t afracanet-graph -f modules/credit-intelligence/deploy/render/Dockerfile.graph .
+      - name: Build the free static credit frontend alternative
+        env:
+          AFRACANET_DEPLOY_TARGET: static
+          VITE_CREDIT_API_URL: https://credit-api.example.invalid
+          VITE_INPUT_FINANCE_URL: https://inputs.example.invalid
+        run: |
+          npm ci --prefix modules/credit-intelligence
+          npm run build --prefix modules/credit-intelligence
+          test -s modules/credit-intelligence/dist/client/_shell.html
+      - name: Check production entry points with isolated synthetic stores
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker network create afracanet-ci
+          docker run -d --name graph --network afracanet-ci -e NEO4J_AUTH=neo4j/ci-only-graph-password afracanet-graph
+          docker run -d --name inputs -p 127.0.0.1:18000:10000 -e PORT=10000 -e PAYMENT_MODE=mock -e AI_MODE=demo -e SEED_DEMO_DATA=0 -e DEMO_ACCESS_CODE=ci-isolated-not-a-hosted-code afracanet-inputs
+          docker run -d --name credit-api --network afracanet-ci -p 127.0.0.1:18001:10000 -e PORT=10000 -e WORKFLOW_NEO4J_URI=bolt://graph:7687 -e WORKFLOW_NEO4J_USER=neo4j -e WORKFLOW_NEO4J_PASSWORD=ci-only-graph-password afracanet-credit-api
+          docker run -d --name credit-web -p 127.0.0.1:18002:10000 -e PORT=10000 afracanet-credit-web
+          for url in http://127.0.0.1:18000/api/health http://127.0.0.1:18000/ http://127.0.0.1:18000/about http://127.0.0.1:18000/about.html http://127.0.0.1:18001/api/health http://127.0.0.1:18002/; do
+            curl --fail --retry 20 --retry-all-errors --retry-delay 2 "$url" --output /dev/null
+          done
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:18000/api/unknown-endpoint)" = 404
+      - name: Verify private graph initialization and retry
+        shell: bash
+        run: |
+          set -euo pipefail
+          ready=0
+          for attempt in $(seq 1 45); do
+            if docker exec credit-api python -c "import os; from neo4j import GraphDatabase; d=GraphDatabase.driver(os.environ['WORKFLOW_NEO4J_URI'],auth=(os.environ['WORKFLOW_NEO4J_USER'],os.environ['WORKFLOW_NEO4J_PASSWORD'])); d.verify_connectivity(); d.close()"; then
+              ready=1
+              break
+            fi
+            sleep 2
+          done
+          test "$ready" = 1
+          docker exec credit-api python modules/credit-intelligence/scripts/seed_hosted_graph.py /app/fixture
+          docker exec credit-api python modules/credit-intelligence/scripts/seed_hosted_graph.py /app/fixture
+          docker exec credit-api python -c "import os; from neo4j import GraphDatabase; d=GraphDatabase.driver(os.environ['WORKFLOW_NEO4J_URI'],auth=(os.environ['WORKFLOW_NEO4J_USER'],os.environ['WORKFLOW_NEO4J_PASSWORD'])); s=d.session(); assert s.run('RETURN gds.version() AS version').single()['version']=='2.13.4'; assert s.run('MATCH (n:Farmer) RETURN count(n) AS count').single()['count']==32; s.close(); d.close()"
+      - name: Container logs
+        if: always()
+        run: |
+          for service in inputs credit-api credit-web graph; do
+            docker logs "$service" 2>&1 || true
+          done

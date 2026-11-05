@@ -6,9 +6,21 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
+const deploymentTarget = process.env.AFRACANET_DEPLOY_TARGET;
+
 export default defineConfig({
-  vite: { cacheDir: process.env.VITE_CACHE_DIR || "node_modules/.vite", server: { watch: { ignored: ["**/data/**", "**/.venv/**", "**/.git/**"] } } },
+  // Static hosting needs only TanStack's generated public application shell.
+  ...(deploymentTarget === "static"
+    ? { nitro: false }
+    : deploymentTarget === "node"
+      ? { nitro: { preset: "node-server" } }
+      : {}),
+  vite: {
+    cacheDir: process.env.VITE_CACHE_DIR || "node_modules/.vite",
+    server: { watch: { ignored: ["**/data/**", "**/.venv/**", "**/.git/**"] } },
+  },
   tanstackStart: {
+    ...(deploymentTarget === "static" ? { spa: { enabled: true } } : {}),
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },

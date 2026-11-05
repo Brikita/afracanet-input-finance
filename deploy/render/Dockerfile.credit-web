@@ -1,0 +1,16 @@
+FROM node:22.16.0-bookworm-slim AS build
+WORKDIR /app
+COPY modules/credit-intelligence/package.json modules/credit-intelligence/package-lock.json ./
+RUN npm ci
+COPY modules/credit-intelligence/src ./src
+COPY modules/credit-intelligence/tsconfig.json modules/credit-intelligence/vite.config.ts ./
+ARG VITE_CREDIT_API_URL
+ARG VITE_INPUT_FINANCE_URL
+ENV VITE_CREDIT_API_URL=$VITE_CREDIT_API_URL VITE_INPUT_FINANCE_URL=$VITE_INPUT_FINANCE_URL AFRACANET_DEPLOY_TARGET=node
+RUN npm run build
+
+FROM node:22.16.0-bookworm-slim
+WORKDIR /app
+ENV HOST=0.0.0.0 NODE_ENV=production
+COPY --from=build /app/.output ./.output
+CMD ["node", ".output/server/index.mjs"]

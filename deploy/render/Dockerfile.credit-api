@@ -1,0 +1,11 @@
+FROM python:3.13-slim-bookworm
+WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+COPY requirements.lock.txt ./
+RUN pip install --no-cache-dir -r requirements.lock.txt
+COPY modules/credit-intelligence/Backend ./modules/credit-intelligence/Backend
+COPY modules/credit-intelligence/scripts ./modules/credit-intelligence/scripts
+COPY scripts ./scripts
+COPY deploy/render ./deploy/render
+RUN python deploy/render/compact_fixture.py /app/fixture
+CMD ["python", "deploy/render/bootstrap.py", "credit", "--serve"]
