@@ -72,10 +72,9 @@ for the fresh order.
 
 ## Hosting dependency
 
-The owner approved the temporary $40/month base configuration and a total hosting
-budget of $50 sponsor credit plus up to $10 extra. Keep test access available
-through the published judging end, 15 December 2026 at 19:00 Africa/Nairobi.
-Render currently requires the owner to add a card before paid service creation.
-No card details belong in this repository or chat. After the owner completes
-that account step, finish service configuration and hosted acceptance before
+The temporary configuration is documented in RENDER_DEPLOYMENT.md. Keep test
+access available through the published judging end, 15 December 2026 at 19:00
+Africa/Nairobi. Confirm billing prerequisites in the operator's Render account;
+keep account-specific payment details and private budget approvals out of the
+public repository. Finish service configuration and hosted acceptance before
 presenting the hosted URL as a working end-to-end demo.
