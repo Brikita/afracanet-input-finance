@@ -188,6 +188,10 @@ export function ProductPage() {
           <a href="https://github.com/Brikita/afracanet-input-finance">
             Input finance source
           </a>
+          <a href="https://github.com/Brikita/afracanet-input-finance/blob/main/docs/PROJECT_EVIDENCE.md">
+            Project evidence
+          </a>
+          <a href="/evidence.json">Structured evidence</a>
           <a href="#product-main">Back to the top</a>
         </div>
       </footer>

@@ -8,6 +8,11 @@ finance, PayPal execution and recorded collection. The credit service lives in
 frontend and API remain in `src/` and `backend/`. Both services retain separate
 credentials, data ownership and explicit lender-authorized handoffs.
 
+For a concise assessment of implemented capabilities and their limits, read the
+public [project evidence brief](docs/PROJECT_EVIDENCE.md). The same factual
+overview is available as [structured evidence](public/evidence.json); the public
+product page links to both.
+
 The public information route is `/about` (or the built `/about.html` entry).
 It explains alternative credit assessment, chama/SACCO records, connected
 evidence and graph data science, with an interactive teaching graph and a

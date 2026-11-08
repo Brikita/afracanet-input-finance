@@ -1,0 +1,32 @@
+{
+  "project": "AFRACANet AI",
+  "maturity": "prototype",
+  "repository": "https://github.com/Brikita/afracanet-input-finance",
+  "license": "MIT",
+  "evidence_brief": "https://github.com/Brikita/afracanet-input-finance/blob/main/docs/PROJECT_EVIDENCE.md",
+  "purpose": "Connect alternative financial evidence to explicit lender authorization, agricultural input ordering, verified supplier payment and recorded collection.",
+  "implemented_characteristics": [
+    "Lender-scoped, source-linked synthetic financial histories",
+    "Actual descriptive Neo4j GDS PageRank and Louvain results with run provenance",
+    "Evidence-cited AI advisory summaries distinct from lender decisions",
+    "Explicit officer authorization and signed approval/revocation handoff",
+    "Atomic credit and inventory reservations",
+    "Actual PayPal sandbox invoice and payment-record verification",
+    "Duplicate protection, reconciliation, recovery and separate collection events"
+  ],
+  "verification_sources": {
+    "application_checks": "https://github.com/Brikita/afracanet-input-finance/actions/workflows/checks.yml",
+    "container_checks": "https://github.com/Brikita/afracanet-input-finance/actions/workflows/render-images.yml",
+    "dated_connected_rehearsal": "https://github.com/Brikita/afracanet-input-finance/blob/main/datasets/reports/connected-sandbox-2026-11-02.json",
+    "reproduction": "https://github.com/Brikita/afracanet-input-finance/blob/main/docs/JUDGE_SETUP.md"
+  },
+  "limitations": [
+    "Fictional people and synthetic financial histories",
+    "No validated repayment prediction or calibrated credit score",
+    "AI is advisory and cannot authorize lending",
+    "Sandbox payments involve no real money",
+    "Recorded collection does not prove physical goods delivery",
+    "Prototype is not production-ready",
+    "Dated test evidence does not establish later hosted/provider results"
+  ]
+}
