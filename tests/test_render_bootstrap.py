@@ -87,3 +87,28 @@ def test_incomplete_bootstrap_does_not_reset_a_store(fixture_pack, tmp_path):
     )
     assert result.returncode != 0
     assert database.read_bytes() == b"preserve this operator state"
+
+
+def test_render_hostname_is_allowed_without_allowing_other_hosts(tmp_path):
+    program = """
+from deploy.render.bootstrap import configure_input_host
+configure_input_host()
+from backend.main import app
+from fastapi.testclient import TestClient
+with TestClient(app) as client:
+    assert client.get('/api/health', headers={'host':'inputs.example.invalid'}).status_code == 200
+    assert client.get('/api/health', headers={'host':'untrusted.example.invalid'}).status_code == 400
+"""
+    result = subprocess.run(
+        [sys.executable, "-c", program],
+        cwd=ROOT,
+        env={
+            **service_environment(),
+            "PYTHON_DOTENV_DISABLED": "1",
+            "RENDER_EXTERNAL_HOSTNAME": "inputs.example.invalid",
+            "DATABASE_URL": "sqlite:///" + (tmp_path / "health.sqlite").as_posix(),
+        },
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, result.stderr

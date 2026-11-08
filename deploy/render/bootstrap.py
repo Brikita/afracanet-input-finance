@@ -19,10 +19,18 @@ ROOT = Path(__file__).resolve().parents[2]
 CREDIT = ROOT / "modules/credit-intelligence"
 
 
+def configure_input_host():
+    hostname = os.getenv("RENDER_EXTERNAL_HOSTNAME", "").strip()
+    if hostname and "ALLOWED_HOSTS" not in os.environ:
+        os.environ["ALLOWED_HOSTS"] = ",".join(("127.0.0.1", "localhost", hostname))
+
+
 def prepare(service, fixture, data):
     os.environ["PYTHON_DOTENV_DISABLED"] = "1"
     os.environ["INPUT_ENV_FILE"] = os.devnull
     os.environ["CREDIT_ENV_FILE"] = os.devnull
+    if service == "inputs":
+        configure_input_host()
     sys.path.insert(0, str(ROOT))
     pack, overlay = fixture / "pack", fixture / "overlay"
     manifest = json.loads((pack / "manifest.json").read_text())
