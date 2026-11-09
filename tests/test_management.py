@@ -17,16 +17,37 @@ def approval_csv(*rows):
 def test_public_demo_choices_use_only_explicit_operator_allowlist(client, monkeypatch):
     lender = auth(client, "lender-demo")
     content = approval_csv(("farmer-new", "Private imported profile", 12000))
-    assert client.post("/api/approvals/import", headers=lender, json={
-        "csv_text": content, "preview": False,
-    }).status_code == 200
+    assert (
+        client.post(
+            "/api/approvals/import",
+            headers=lender,
+            json={
+                "csv_text": content,
+                "preview": False,
+            },
+        ).status_code
+        == 200
+    )
     with db.engine.begin() as conn:
-        conn.execute(update(db.farmers).where(db.farmers.c.id == "farmer-amina").values(name="Current demo name"))
-    monkeypatch.setattr(settings, "demo_starter_personas", ["farmer-amina", "missing-profile"])
+        conn.execute(
+            update(db.farmers)
+            .where(db.farmers.c.id == "farmer-amina")
+            .values(name="Current demo name")
+        )
+    monkeypatch.setattr(
+        settings, "demo_starter_personas", ["farmer-amina", "missing-profile"]
+    )
     choices = client.get("/api/personas").json()
-    assert choices == [{"id": "farmer-amina", "role": "farmer", "name": "Current demo name"}]
+    assert choices == [
+        {"id": "farmer-amina", "role": "farmer", "name": "Current demo name"}
+    ]
     # Publishing a demonstration identity never authenticates it or grants credit.
-    assert client.post("/api/session", json={"persona": "farmer-amina", "access_code": "wrong"}).status_code == 401
+    assert (
+        client.post(
+            "/api/session", json={"persona": "farmer-amina", "access_code": "wrong"}
+        ).status_code
+        == 401
+    )
     assert client.get("/api/participants").status_code == 401
 
 

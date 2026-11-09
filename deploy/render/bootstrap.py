@@ -31,9 +31,10 @@ def prepare(service, fixture, data):
     os.environ["CREDIT_ENV_FILE"] = os.devnull
     if service == "inputs":
         configure_input_host()
-        os.environ.setdefault("DEMO_STARTER_PERSONAS", json.dumps([
-            "SYN-LENDER-000", "farmer-synth-000001", "SYN-DEALER-000"
-        ]))
+        os.environ.setdefault(
+            "DEMO_STARTER_PERSONAS",
+            json.dumps(["SYN-LENDER-000", "farmer-synth-000001", "SYN-DEALER-000"]),
+        )
     sys.path.insert(0, str(ROOT))
     pack, overlay = fixture / "pack", fixture / "overlay"
     manifest = json.loads((pack / "manifest.json").read_text())

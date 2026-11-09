@@ -188,7 +188,9 @@ export function FarmerRequest({
       </section>
       <section className="panel order-summary">
         <h2>Your input order</h2>
-        <p className="muted">Availability is checked against the supplier catalogue.</p>
+        <p className="muted">
+          Availability is checked against the supplier catalogue.
+        </p>
         {cartLines.length === 0 ? (
           <div className="cart-empty">
             <ShoppingBasket size={36} />

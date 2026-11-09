@@ -49,11 +49,15 @@ def test_preserved_import_adds_missing_analytics_provenance_only():
 
 
 def test_retry_preserves_matching_analytics_provenance():
-    tx = PreservedGraph(metadata=[{
-        "fingerprint": "a" * 64,
-        "as_of": "2026-10-26",
-        "source_kind": "synthetic_replay",
-    }])
+    tx = PreservedGraph(
+        metadata=[
+            {
+                "fingerprint": "a" * 64,
+                "as_of": "2026-10-26",
+                "source_kind": "synthetic_replay",
+            }
+        ]
+    )
     assert seed.import_transaction(tx, "a" * 64, {}, {}, "2026-10-26")["preserved"]
     assert not any("CREATE" in q for q, _ in tx.queries)
 
@@ -65,11 +69,26 @@ def test_conflicting_import_is_not_given_new_provenance():
     assert not any("JudgeDataset" in q for q, _ in tx.queries)
 
 
-@pytest.mark.parametrize("metadata", [
-    [{"fingerprint": "b" * 64, "as_of": "2026-10-26", "source_kind": "synthetic_replay"}],
-    [{"fingerprint": "a" * 64, "as_of": "2026-10-25", "source_kind": "synthetic_replay"}],
-    [{"fingerprint": "a" * 64, "as_of": "2026-10-26", "source_kind": "real"}],
-])
+@pytest.mark.parametrize(
+    "metadata",
+    [
+        [
+            {
+                "fingerprint": "b" * 64,
+                "as_of": "2026-10-26",
+                "source_kind": "synthetic_replay",
+            }
+        ],
+        [
+            {
+                "fingerprint": "a" * 64,
+                "as_of": "2026-10-25",
+                "source_kind": "synthetic_replay",
+            }
+        ],
+        [{"fingerprint": "a" * 64, "as_of": "2026-10-26", "source_kind": "real"}],
+    ],
+)
 def test_conflicting_analytics_metadata_is_never_overwritten(metadata):
     tx = PreservedGraph(metadata=metadata)
     with pytest.raises(ValueError, match="provenance differs"):

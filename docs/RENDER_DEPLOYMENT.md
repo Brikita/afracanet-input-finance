@@ -1,36 +1,57 @@
-# Render deployment preparation - 5 November 2026
+# Render deployment — 9 November 2026
 
-Status: local frontend/type/backend checks passed. All four Linux container
-builds, production entry points, the static credit build, actual GDS version and
-private graph import/retry passed in [container checks](https://github.com/Brikita/afracanet-input-finance/actions/runs/41998840097).
-Synthetic service bootstrap/restart checks pass locally. Cloud acceptance remains.
-No Render resources have been created and no sponsor usage is claimed yet.
-The owner selected sponsor credits and requires the actual cost confirmed before
-creating paid services. Do not click Deploy/Create paid resources from this plan.
+The input application, public product page, credit API and credit static frontend
+are deployed. Public routes and exact-origin CORS have been checked. This is a
+working deployment under acceptance testing, not a claim of production readiness
+or a completed hosted payment rehearsal.
 
-## Intended hosted product
+- [Product page](https://afracanet-inputs.onrender.com/about)
+- [Input finance](https://afracanet-inputs.onrender.com/)
+- [Credit review](https://afracanet-credit.onrender.com/)
+- [Credit API health](https://afracanet-credit-api.onrender.com/api/health)
+- [Public evidence brief](PROJECT_EVIDENCE.md)
 
-| Resource          | Purpose                                                        | Candidate sizing, to validate         |
+The private graph contains 1,746 entities and 3,405 relationships from the
+verified 32-farmer synthetic fixture. Hosted PageRank/Louvain runs completed for
+all four lender partitions with GDS 2.13.4. Each scoped membership projection has
+11 nodes. These are descriptive analytics, not calibrated credit scores.
+
+The hosted input API uses PayPal sandbox and Gemini. Its PayPal paid-invoice
+callback is registered. Registration does not establish receipt of a genuine
+hosted payment event: the new invoice/payment/collection rehearsal remains to be
+verified. The credit module has its own Gemini key. No provider credentials,
+private signing key or officer session is shared between the two services.
+
+The initial preparation and container verification are historical checkpoints;
+[container checks](https://github.com/Brikita/afracanet-input-finance/actions)
+now also exercise a computed GDS result after import and retry.
+
+## Hosted resources
+
+| Resource          | Purpose                                                        | Deployed sizing                       |
 | ----------------- | -------------------------------------------------------------- | ------------------------------------- |
 | Input web/API     | Built React/public page and FastAPI execution API, same origin | 512 MB initially; 1 GB durable disk   |
 | Credit web        | TanStack SPA shell on a free static site                       | No dedicated runtime                  |
 | Credit API        | FastAPI officer/evidence/decision service                      | 512 MB initially; 1 GB durable disk   |
 | Private Neo4j/GDS | Compact, isolated synthetic evidence graph                     | 2 GB RAM initially; 2 GB durable disk |
 
-These are candidates, not measured cloud memory requirements. Use one region,
+The runtime services use Oregon; the static frontend is distributed globally.
+Memory sizing remains subject to runtime observation. Use
 one instance per workflow API, and no autoscaling for the initial demonstration.
 With persistent SQLite stores, do not scale to multiple independent replicas.
 Render's current Blueprint identifiers include `0.5c-512mb` and `1c-2g`;
 verify the account's quote rather than using older plan names blindly.
 
-The first estimate used a paid Node server for credit web: $7 + $7 + $7 + $25
-compute and four total GB of disks at $0.25/GB = $47/month. A successful static
-build now removes that extra $7 runtime. The revised candidate is $40/month
-($7 input, $7 credit API, $25 graph, $1 disks), before tax/usage overages. Published
-rates were read in Render's live pricing page on 5 November; this is an estimate,
-not an account-specific approved quote or a requirement to buy this architecture.
-Do not create paid resources until the operator has reviewed the final setup and
-its actual account quote, including ongoing costs after credits are exhausted.
+The selected configuration has a $40/month base: $7 input, $7 credit API,
+$25 private graph and $1 total disks, before applicable tax or usage overages.
+The free static frontend avoids the additional $7 Node runtime in the earlier
+estimate. These are temporary demonstration resources; review actual charges
+and memory use before extending or changing the deployment.
+
+The private graph's auto-deploy included paths are
+`modules/credit-intelligence/deploy/render/**` and `.dockerignore`. Changes to
+the frontend or documentation therefore do not restart the database. Importer
+code lives in the credit API image; running it remains an explicit operator step.
 
 Render does not supply a native managed Neo4j database. A separately operated
 private container (including a compatible GDS plugin) or an external graph
@@ -82,24 +103,24 @@ inside the credit API service. It imports one verified fixture transactionally,
 preserves a matching completed import, and rejects unrelated graphs. Verify GDS
 and evidence queries afterward. Do not publish graph HTTP/Bolt on the internet.
 
-## Deployment sequence and remaining work
+## Deployment and acceptance status
 
-1. Completed: clean Linux image builds, API health/web routes, both `/about` and
-   `/about.html`, GDS 2.13.4, private Bolt connectivity and graph import retry.
-   The application suite also passed on the preparation commit.
-2. Review the actual compute/disk quotes and credit conditions before creating
-   paid resources. All graph ports must remain private. No resource is approved
-   merely because its draft form has a selected compute tier.
-3. Configure the two separate persistent disks. Bootstrap generates the signing
-   key only in credit storage. Transfer only public verification/trust policy
-   through the explicit operator step. Confirm persistence on Render itself.
-4. Provision individual officer accounts through the operator process. Keep
-   test-access instructions scoped; no public operator endpoint or shared officer
-   session. Require a generated strong input-demo access code in hosted mode.
-5. Finish manual service configuration using these images and the static build,
-   or author a complete Blueprint as an optional alternative. Set actual URLs,
-   allowed hosts/CORS, service-specific provider secrets and the hosted callback.
-   A running health endpoint alone is not a verified connected demo.
+1. Deployed: the two APIs, free static frontend and private graph, with the
+   persistent disks listed above. Public graph ports are not exposed.
+2. Separate provider settings, public-key trust and the hosted callback are
+   configured. The signing key remains on the credit disk.
+3. Fresh service bootstrap, import retry and actual hosted GDS computations have
+   been checked. After a further restart, verify saved decisions, analytics and
+   transaction state through their authenticated APIs.
+4. The input sign-in choices come from the public demonstration allowlist, not
+   hardcoded local identities. `DEMO_STARTER_PERSONAS` accepts a JSON list of
+   explicitly public fictional IDs. Hosted bootstrap selects its first synthetic
+   lender, farmer and dealer; other imported profiles remain behind sign-in.
+5. Remaining acceptance: the actual hosted Gemini summaries/interpretation,
+   explicit decision and signed receipt, new sandbox invoice/payment, genuine
+   webhook delivery, reconciliation duplicates and recorded collection.
+6. Capture actual browser operation, finish the revised 175-second video and
+   update Devpost with verified access instructions and Render usage.
 
 ## Configuration and data ownership
 
@@ -117,19 +138,20 @@ and evidence queries afterward. Do not publish graph HTTP/Bolt on the internet.
   Never reset invoice-associated data during redeploy. Do not auto-seed credit
   or import replay payments as provider evidence.
 
-## Billing gate
+## Hosting cost and lifetime
 
 Claim the sponsor offer through the official resource page and verify the credit
 balance, expiry and conditions in the owner account. The official sponsor page
 advertises a one-time $50 offer; it is not free recurring hosting or a spending
 cap. Keep account-specific billing and payment-method details out of this public
-repository. No paid resources have been created by this work.
+repository. The listed resources were created on 8 November after account-specific review and authorization.
 
-Before deployment show the owner the actual four-service compute quote, disk
-cost, expected credit duration, bandwidth/build/Workflow allowances and what can
-bill after credits are exhausted. Credits are not a spending cap. Create paid
-resources only after the owner confirms that concrete quote. Recheck actual RAM
-use after launch before recommending a smaller plan.
+Account-specific quotes and paid creation were reviewed before deployment. The
+base service configuration is $40/month before applicable tax or usage overages.
+Credits are not a spending cap. Keep access available through judging, ending
+15 December 2026 at 19:00 Africa/Nairobi, and reassess the resources and charges
+with the owner. No automatic shutdown is configured. Keep account balances,
+card details and private budget approvals out of this repository.
 
 Free Render web services have ephemeral local storage and cannot attach durable
 disks. Free Postgres expires after 30 days. Avoid an arrangement where a restart

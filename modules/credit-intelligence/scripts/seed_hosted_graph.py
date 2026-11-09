@@ -78,18 +78,28 @@ def seed(fixture):
         session.run(
             "CREATE INDEX entity_tenant IF NOT EXISTS FOR (n:Entity) ON (n.tenant_id)"
         ).consume()
-        return session.execute_write(import_transaction, fingerprint, nodes, edges, as_of)
+        return session.execute_write(
+            import_transaction, fingerprint, nodes, edges, as_of
+        )
 
 
 def record_dataset(tx, fingerprint, as_of):
     """Give the analytics runner the same verified provenance as the importer."""
-    existing = list(tx.run(
-        "MATCH (d:JudgeDataset) RETURN d.fingerprint AS fingerprint,d.as_of AS as_of,d.source_kind AS source_kind"
-    ))
-    expected = {"fingerprint": fingerprint, "as_of": as_of, "source_kind": "synthetic_replay"}
+    existing = list(
+        tx.run(
+            "MATCH (d:JudgeDataset) RETURN d.fingerprint AS fingerprint,d.as_of AS as_of,d.source_kind AS source_kind"
+        )
+    )
+    expected = {
+        "fingerprint": fingerprint,
+        "as_of": as_of,
+        "source_kind": "synthetic_replay",
+    }
     if existing:
         if len(existing) != 1 or dict(existing[0]) != expected:
-            raise ValueError("Graph analytics provenance differs; explicit migration required.")
+            raise ValueError(
+                "Graph analytics provenance differs; explicit migration required."
+            )
         return
     tx.run(
         "CREATE (:JudgeDataset {fingerprint:$fingerprint,as_of:$as_of,source_kind:'synthetic_replay'})",
