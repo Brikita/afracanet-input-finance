@@ -23,6 +23,7 @@ export function App() {
     accessCode,
     setAccessCode,
     persona,
+    entryPoints,
     setPersona,
     error,
     setError,
@@ -53,6 +54,7 @@ export function App() {
     return (
       <SignIn
         persona={persona}
+        entryPoints={entryPoints}
         setPersona={setPersona}
         accessCode={accessCode}
         setAccessCode={setAccessCode}
@@ -75,6 +77,16 @@ export function App() {
   const role = session.role
   const current = state.orders.find((order) => order.id === selected)
   const onOpen = (order: Order) => setSelected(order.id)
+  const visitFarmer = () => {
+    const farmer =
+      state.farmers.find(
+        (f) =>
+          (f.limit_cents ?? 0) > (f.reserved_cents ?? 0) + (f.spent_cents ?? 0),
+      ) ?? state.farmers[0]
+    if (farmer) return signIn(farmer.id)
+    setError('No farmer is available in this workspace.')
+    return Promise.resolve()
+  }
   return (
     <FarmerDraftProvider key={session.token}>
       <div className="app-shell">
@@ -106,7 +118,7 @@ export function App() {
                 onOpen={onOpen}
                 onAction={action}
                 onAllocations={() => setTab('people')}
-                onFarmer={() => void signIn('farmer-amina')}
+                onFarmer={() => void visitFarmer()}
               />
             )}
             {tab === 'overview' && role !== 'lender' && (
@@ -133,7 +145,7 @@ export function App() {
                 <OrderQueue
                   state={state}
                   onOpen={onOpen}
-                  onFarmer={() => signIn('farmer-amina')}
+                  onFarmer={visitFarmer}
                 />
               )}
             {tab === 'people' && (

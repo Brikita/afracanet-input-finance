@@ -8,8 +8,7 @@ import pytest
 
 spec = importlib.util.spec_from_file_location(
     "seed_hosted_graph",
-    Path(__file__).resolve().parents[1]
-    / "modules/credit-intelligence/scripts/seed_hosted_graph.py",
+    Path(__file__).resolve().parents[2] / "scripts/seed_hosted_graph.py",
 )
 seed = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(seed)

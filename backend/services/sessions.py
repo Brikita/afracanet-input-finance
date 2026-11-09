@@ -103,8 +103,12 @@ def logout(user):
 
 
 def personas():
-    # Public demo choices are limited to seeded examples; imported people need a session.
+    # Imported people remain private unless explicitly selected by the demo operator.
+    identifiers = settings.demo_starter_personas
+    if identifiers is None:
+        identifiers = PERSONAS
     return [
         {"id": key, "role": value[0], "name": value[1]}
-        for key, value in PERSONAS.items()
+        for key in identifiers
+        if (value := participant(key)) is not None
     ]

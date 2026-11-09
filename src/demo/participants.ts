@@ -1,33 +1,26 @@
-import { Package, Tractor, Users, Wallet } from 'lucide-react'
+import { Package, Tractor, Wallet } from 'lucide-react'
+import type { Role } from '../domain/models'
 
-/** Explicit local walkthrough identities, not operational organization records. */
-export const participants = [
+export type DemoParticipant = { id: string; name: string; role: Role }
+
+/** Presentation copy only. Identities and organization names come from the API. */
+export const participantRoles = [
   {
-    id: 'lender-demo',
-    name: 'Demo Agricultural SACCO',
+    role: 'lender',
     label: 'Lender workspace',
     detail: 'Approve, pay, and reconcile',
     icon: Wallet,
   },
   {
-    id: 'farmer-amina',
-    name: 'Amina Wanjiku',
+    role: 'farmer',
     label: 'Farmer experience',
     detail: 'Request and collect inputs',
     icon: Tractor,
   },
   {
-    id: 'supplier-demo',
-    name: 'Demo Green Valley Agrovet',
+    role: 'supplier',
     label: 'Agro-dealer workspace',
     detail: 'Invoice and fulfil orders',
     icon: Package,
   },
-  {
-    id: 'farmer-kiptoo',
-    name: 'David Kiptoo',
-    label: 'Second farmer',
-    detail: 'Explore a different credit limit',
-    icon: Users,
-  },
-]
+] as const

@@ -60,6 +60,7 @@ def service_environment():
         "AI_MODE",
         "SMS_MODE",
         "DEMO_ACCESS_CODE",
+        "DEMO_STARTER_PERSONAS",
         "INPUT_ENV_FILE",
         "SEED_DEMO_DATA",
     }

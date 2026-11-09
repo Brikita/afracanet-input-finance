@@ -1,3 +1,4 @@
+import json
 import os
 import re
 from pathlib import Path
@@ -17,6 +18,8 @@ class Settings:
     payment_mode = os.getenv("PAYMENT_MODE", "mock")
     ai_mode = os.getenv("AI_MODE", "demo")
     access_code = os.getenv("DEMO_ACCESS_CODE", "afracanet-demo")
+    # Explicit public demonstration identities only, never the participant registry.
+    demo_starter_personas = json.loads(os.getenv("DEMO_STARTER_PERSONAS", 'null'))
     paypal_client_id = os.getenv("PAYPAL_CLIENT_ID", "")
     paypal_secret = os.getenv("PAYPAL_CLIENT_SECRET", "")
     paypal_merchant = os.getenv("PAYPAL_MERCHANT_EMAIL", "")
@@ -33,6 +36,12 @@ class Settings:
     )
 
     def validate(self):
+        if self.demo_starter_personas is not None and (
+            not isinstance(self.demo_starter_personas, list)
+            or not 1 <= len(self.demo_starter_personas) <= 12
+            or not all(isinstance(p, str) and p for p in self.demo_starter_personas)
+        ):
+            raise RuntimeError("DEMO_STARTER_PERSONAS must list 1–12 public demo identifiers.")
         if self.sms_mode not in {"demo", "sandbox"}:
             raise RuntimeError(
                 "Supported SMS modes: demo|sandbox. Real handset delivery is not enabled."

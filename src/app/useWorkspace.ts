@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { Session, State } from '../domain/models'
 import { api } from '../lib/api'
-import { participants } from '../demo/participants'
+import type { DemoParticipant } from '../demo/participants'
 
 export function useWorkspace() {
   const [session, setSession] = useState<Session | null>(() => {
@@ -14,7 +14,8 @@ export function useWorkspace() {
   const [accessCode, setAccessCode] = useState('afracanet-demo')
   const activeToken = useRef(session?.token ?? null)
   const [state, setState] = useState<State | null>(null)
-  const [persona, setPersona] = useState('lender-demo')
+  const [persona, setPersona] = useState('')
+  const [entryPoints, setEntryPoints] = useState<DemoParticipant[]>([])
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
   const [busy, setBusy] = useState(false)
@@ -25,8 +26,25 @@ export function useWorkspace() {
   )
   const [selected, setSelected] = useState<number | null>(null)
 
-  const [choices, setChoices] =
-    useState<{ id: string; name: string }[]>(participants)
+  const [choices, setChoices] = useState<{ id: string; name: string }[]>([])
+
+  useEffect(() => {
+    let active = true
+    void api<DemoParticipant[]>('/personas')
+      .then((next) => {
+        if (!active) return
+        setEntryPoints(next)
+        setPersona(
+          next.find((p) => p.role === 'lender')?.id ?? next[0]?.id ?? '',
+        )
+      })
+      .catch((err: Error) => {
+        if (active) setError(err.message)
+      })
+    return () => {
+      active = false
+    }
+  }, [])
 
   const refresh = useCallback(async () => {
     if (!session) return
@@ -154,6 +172,7 @@ export function useWorkspace() {
     accessCode,
     setAccessCode,
     persona,
+    entryPoints,
     setPersona,
     error,
     setError,

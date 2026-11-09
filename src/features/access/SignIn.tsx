@@ -1,10 +1,11 @@
 import type { ReactNode } from 'react'
 import { Brand } from '../../components/Brand'
-import { participants } from '../../demo/participants'
+import { participantRoles, type DemoParticipant } from '../../demo/participants'
 import { ArrowRight, Check, CircleHelp, ShieldCheck } from 'lucide-react'
 
 type Props = {
   persona: string
+  entryPoints: DemoParticipant[]
   setPersona: (value: string) => void
   accessCode: string
   setAccessCode: (value: string) => void
@@ -14,6 +15,7 @@ type Props = {
 }
 export function SignIn({
   persona,
+  entryPoints,
   setPersona,
   accessCode,
   setAccessCode,
@@ -54,24 +56,31 @@ export function SignIn({
             journey.
           </p>
           <div className="participant-options">
-            {participants.slice(0, 3).map((p) => (
-              <button
-                key={p.id}
-                className={
-                  'participant-option ' + (persona === p.id ? 'chosen' : '')
-                }
-                onClick={() => setPersona(p.id)}
-              >
-                <p.icon size={21} />
-                <span>
-                  <strong>{p.label}</strong>
-                  <small>{p.detail}</small>
-                </span>
-                <span className="radio-dot">
-                  {persona === p.id && <Check size={12} />}
-                </span>
-              </button>
-            ))}
+            {participantRoles.flatMap((p) => {
+              const entry = entryPoints.find((item) => item.role === p.role)
+              return entry
+                ? [
+                    <button
+                      key={entry.id}
+                      className={
+                        'participant-option ' +
+                        (persona === entry.id ? 'chosen' : '')
+                      }
+                      onClick={() => setPersona(entry.id)}
+                    >
+                      <p.icon size={21} />
+                      <span>
+                        <strong>{p.label}</strong>
+                        <small>{p.detail}</small>
+                        <small>{entry.name}</small>
+                      </span>
+                      <span className="radio-dot">
+                        {persona === entry.id && <Check size={12} />}
+                      </span>
+                    </button>,
+                  ]
+                : []
+            })}
           </div>
           <label className="input-label" htmlFor="access-code">
             Demo access code
@@ -85,7 +94,7 @@ export function SignIn({
           {banner}
           <button
             className="button primary full"
-            disabled={busy}
+            disabled={busy || !persona}
             onClick={() => void signIn(persona)}
           >
             {busy ? 'Opening workspace…' : 'Open workspace'}
