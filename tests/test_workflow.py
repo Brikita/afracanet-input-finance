@@ -65,6 +65,22 @@ def prepared(client):
     return order_id, farmer, lender, supplier
 
 
+def test_order_cannot_reserve_items_from_another_selected_supplier(client):
+    farmer = auth(client, "farmer-amina")
+    body = {"client_request_id": "supplier-bound-request", "supplier_id": "another-dealer", "items": [{"product_id": "dap-50", "quantity": 1}]}
+    assert client.post("/api/orders", headers=farmer, json=body).status_code == 422
+    state = client.get("/api/state", headers=farmer).json()
+    assert state["orders"] == [] and state["farmers"][0]["reserved_cents"] == 0
+    assert next(p for p in state["products"] if p["id"] == "dap-50")["reserved"] == 0
+    body["supplier_id"] = "supplier-demo"
+    accepted = client.post("/api/orders", headers=farmer, json=body)
+    assert accepted.status_code == 201
+    body["supplier_id"] = "another-dealer"
+    assert client.post("/api/orders", headers=farmer, json=body).status_code == 409
+    state = client.get("/api/state", headers=farmer).json()
+    assert len(state["orders"]) == 1 and state["farmers"][0]["reserved_cents"] == 4500
+
+
 def test_complete_workflow_keeps_payment_and_collection_separate(client):
     order_id, farmer, lender, supplier = prepared(client)
     assert client.post(f"/api/orders/{order_id}/demo-pay", headers=lender).status_code == 200

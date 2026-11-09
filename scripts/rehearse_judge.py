@@ -200,7 +200,8 @@ def run(name, action):
                 "/assistant",
                 farmer_token,
                 {
-                    "text": f"I need exactly 1 pack of {product['name']} ({product['unit']}), product ID {product['id']}."
+                    "text": f"I need exactly 1 pack of {product['name']} ({product['unit']}), product ID {product['id']}.",
+                    "supplier_id": product["supplier_id"],
                 },
             )
             if interpretation.get("clarification") or interpretation.get("items") != [
@@ -217,6 +218,7 @@ def run(name, action):
                 farmer_token,
                 {
                     "client_request_id": "judge-" + name,
+                    "supplier_id": product["supplier_id"],
                     "items": interpretation["items"],
                 },
                 expected=(200, 201),

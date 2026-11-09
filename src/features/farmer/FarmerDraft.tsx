@@ -4,6 +4,7 @@ function useDraftState() {
   const [text, setText] = useState('')
   const [clarification, setClarification] = useState('')
   const [cart, setCart] = useState<Record<string, number>>({})
+  const [supplierId, setSupplierId] = useState('')
   const [requestId, setRequestId] = useState(() => crypto.randomUUID())
   return {
     text,
@@ -12,6 +13,8 @@ function useDraftState() {
     setClarification,
     cart,
     setCart,
+    supplierId,
+    setSupplierId,
     requestId,
     setRequestId,
   }

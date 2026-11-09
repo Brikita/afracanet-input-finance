@@ -28,6 +28,8 @@ export type Farmer = {
 }
 export type Product = {
   id: string
+  supplier_id: string
+  supplier_name: string
   name: string
   unit: string
   price_cents: number
@@ -45,6 +47,7 @@ export type Line = {
 }
 export type Order = {
   id: number
+  supplier_id: string
   reference: string
   farmer_id: string
   items: Line[]

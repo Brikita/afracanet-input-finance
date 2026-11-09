@@ -68,6 +68,35 @@ def test_evaluation_requires_correct_quantities_and_real_clarifications():
     assert not score({"clarification": True}, {"items": [], "clarification": " "})
 
 
+def test_supplier_selection_bounds_model_catalogue_and_rejects_another_dealers_item(client, monkeypatch):
+    from sqlalchemy import insert
+    from backend import db
+
+    with db.engine.begin() as conn:
+        conn.execute(insert(db.products).values(id="other-dap", supplier_id="other-dealer", name="DAP fertilizer", category="Fertilizer", unit="50 kg bag", price_cents=4500, stock=20))
+    farmer = auth(client, "farmer-amina")
+    captured = model_response(monkeypatch, {"items": [{"product_id": "other-dap", "quantity": 1}], "clarification": None})
+    response = client.post("/api/assistant", headers=farmer, json={"text": "one 50 kg bag of DAP", "supplier_id": "supplier-demo"})
+    assert response.status_code == 502
+    assert "other-dap" not in json.dumps(captured)
+    state = client.get("/api/state", headers=farmer).json()
+    assert state["orders"] == [] and state["farmers"][0]["reserved_cents"] == 0
+
+
+def test_multiple_dealers_require_selection_before_contacting_model(client, monkeypatch):
+    from sqlalchemy import insert
+    from backend import db
+
+    with db.engine.begin() as conn:
+        conn.execute(insert(db.products).values(id="other-dap", supplier_id="other-dealer", name="DAP fertilizer", category="Fertilizer", unit="50 kg bag", price_cents=4500, stock=20))
+    def forbidden(*args):
+        raise AssertionError("An unselected catalogue must not be sent to the provider")
+    monkeypatch.setattr(assistant, "interpret", forbidden)
+    farmer = auth(client, "farmer-amina")
+    assert client.post("/api/assistant", headers=farmer, json={"text": "one 50 kg bag of DAP"}).status_code == 422
+    assert client.post("/api/assistant", headers=farmer, json={"text": "one 50 kg bag of DAP", "supplier_id": "missing"}).status_code == 404
+
+
 def test_gemini_evaluation_refuses_to_mislabel_demo_results(monkeypatch):
     monkeypatch.setattr(settings, "gemini_key", "")
     suite = json.loads((Path(__file__).resolve().parents[1] / "evaluations/assistant-cases.json").read_text())

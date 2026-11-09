@@ -42,12 +42,24 @@ export function FarmerRequest({
     setCart,
     requestId,
     setRequestId,
+    supplierId,
+    setSupplierId,
   } = useFarmerDraft()
+  const suppliers = [
+    ...new Map(
+      state.products.map((p) => [p.supplier_id, p.supplier_name]),
+    ).entries(),
+  ]
+  const selectedSupplier = supplierId || suppliers[0]?.[0] || ''
+  const catalogue = state.products.filter(
+    (p) => p.supplier_id === selectedSupplier,
+  )
+  const supplierName = suppliers.find(([id]) => id === selectedSupplier)?.[1]
   const available = state.farmers.reduce(
     (sum, f) => sum + availableCredit(f),
     0,
   )
-  const cartLines = state.products.filter((p) => (cart[p.id] ?? 0) > 0)
+  const cartLines = catalogue.filter((p) => (cart[p.id] ?? 0) > 0)
   const cartTotal = cartLines.reduce(
     (sum, p) => sum + p.price_cents * cart[p.id],
     0,
@@ -60,7 +72,7 @@ export function FarmerRequest({
       const result = await request<{
         items: Line[]
         clarification: string | null
-      }>('/assistant', { text })
+      }>('/assistant', { text, supplier_id: selectedSupplier })
       if (result.clarification) setClarification(result.clarification)
       else {
         setCart(
@@ -87,9 +99,11 @@ export function FarmerRequest({
     try {
       const order = await request<Order>('/orders', {
         client_request_id: requestId,
-        items: Object.entries(cart)
-          .filter(([, q]) => q > 0)
-          .map(([product_id, quantity]) => ({ product_id, quantity })),
+        supplier_id: selectedSupplier,
+        items: cartLines.map((p) => ({
+          product_id: p.id,
+          quantity: cart[p.id],
+        })),
       })
       setCart({})
       setText('')
@@ -117,6 +131,29 @@ export function FarmerRequest({
         <p className="muted">
           Write in English or Swahili, or choose directly from the catalogue.
         </p>
+        <label className="input-label" htmlFor="request-supplier">
+          Choose your supplier
+        </label>
+        <select
+          id="request-supplier"
+          value={selectedSupplier}
+          disabled={busy}
+          onChange={(e) => {
+            setSupplierId(e.target.value)
+            setCart({})
+            setClarification('')
+            setRequestId(crypto.randomUUID())
+            onNotice(
+              'Supplier changed. Review the catalogue and add your inputs again.',
+            )
+          }}
+        >
+          {suppliers.map(([id, name]) => (
+            <option key={id} value={id}>
+              {name}
+            </option>
+          ))}
+        </select>
         <label className="sr-only" htmlFor="request-text">
           Describe your input request
         </label>
@@ -135,7 +172,7 @@ export function FarmerRequest({
           </small>
           <button
             className="button secondary"
-            disabled={busy || !text.trim()}
+            disabled={busy || !text.trim() || !selectedSupplier}
             onClick={() => void interpret()}
           >
             <Sparkles size={15} />
@@ -155,7 +192,7 @@ export function FarmerRequest({
           </div>
         )}
         <div className="catalogue">
-          {state.products.map((p) => (
+          {catalogue.map((p) => (
             <div className="product-row" key={p.id}>
               <span className="product-icon">
                 {p.category === 'Seed' ? (
@@ -189,7 +226,7 @@ export function FarmerRequest({
       <section className="panel order-summary">
         <h2>Your input order</h2>
         <p className="muted">
-          Availability is checked against the supplier catalogue.
+          Supplier: {supplierName || 'Choose a supplier to begin.'}
         </p>
         {cartLines.length === 0 ? (
           <div className="cart-empty">

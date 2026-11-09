@@ -30,7 +30,14 @@ def product_save(product_id: str, body: ProductEdit, user):
 def interpret_request(body: AssistantRequest, user):
     require(user, "farmer")
     with db.engine.connect() as conn:
-        catalogue = [dict(row) for row in conn.execute(select(db.products)).mappings()]
+        query = select(db.products)
+        if body.supplier_id is not None:
+            query = query.where(db.products.c.supplier_id == body.supplier_id)
+        catalogue = [dict(row) for row in conn.execute(query).mappings()]
+    if not catalogue:
+        raise HTTPException(404, "The selected supplier has no catalogue items.")
+    if len({p["supplier_id"] for p in catalogue}) != 1:
+        raise HTTPException(422, "Choose a supplier before interpreting your request.")
     try:
         return assistant.interpret(body.text, catalogue)
     except (httpx.HTTPError, ValueError, KeyError, IndexError) as exc:

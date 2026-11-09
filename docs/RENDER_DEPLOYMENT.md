@@ -22,6 +22,12 @@ hosted payment event: the new invoice/payment/collection rehearsal remains to be
 verified. The credit module has its own Gemini key. No provider credentials,
 private signing key or officer session is shared between the two services.
 
+Hosted credit review has now exercised actual Gemini advice, explicit officer
+authorization, one acknowledged signed handoff and the corresponding $180
+illustrative input allocation. Input requests select one supplier before AI
+interpretation; the server bounds the model catalogue and order items to that
+selection. No hosted order or payment is claimed by these credit checks.
+
 The initial preparation and container verification are historical checkpoints;
 [container checks](https://github.com/Brikita/afracanet-input-finance/actions)
 now also exercise a computed GDS result after import and retry.
@@ -116,8 +122,9 @@ and evidence queries afterward. Do not publish graph HTTP/Bolt on the internet.
    hardcoded local identities. `DEMO_STARTER_PERSONAS` accepts a JSON list of
    explicitly public fictional IDs. Hosted bootstrap selects its first synthetic
    lender, farmer and dealer; other imported profiles remain behind sign-in.
-5. Remaining acceptance: the actual hosted Gemini summaries/interpretation,
-   explicit decision and signed receipt, new sandbox invoice/payment, genuine
+5. Verified: hosted evidence, GDS, Gemini advice, explicit decision, signed
+   receipt and received allocation. Remaining acceptance: input interpretation
+   within the selected supplier catalogue, new sandbox invoice/payment, genuine
    webhook delivery, reconciliation duplicates and recorded collection.
 6. Capture actual browser operation, finish the revised 175-second video and
    update Devpost with verified access instructions and Render usage.

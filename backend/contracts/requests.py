@@ -18,10 +18,12 @@ class ItemRequest(BaseModel):
 class OrderRequest(BaseModel):
     client_request_id: str = Field(min_length=8, max_length=100)
     items: list[ItemRequest] = Field(min_length=1, max_length=10)
+    supplier_id: str | None = Field(default=None, min_length=1, max_length=100)
 
 
 class AssistantRequest(BaseModel):
     text: str = Field(min_length=1, max_length=2000)
+    supplier_id: str | None = Field(default=None, min_length=1, max_length=100)
 
 
 class CollectionRequest(BaseModel):

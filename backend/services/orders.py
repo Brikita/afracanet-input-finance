@@ -111,6 +111,13 @@ def create_order(body: OrderRequest, user):
             .first()
         )
         if existing:
+            if (
+                body.supplier_id is not None
+                and body.supplier_id != existing["supplier_id"]
+            ):
+                raise HTTPException(
+                    409, "This request reference belongs to a different supplier."
+                )
             original = {
                 item["product_id"]: item["quantity"] for item in existing["items"]
             }
@@ -156,6 +163,10 @@ def create_order(body: OrderRequest, user):
             suppliers.add(product["supplier_id"])
         if len(suppliers) != 1:
             raise HTTPException(422, "Each order must use one approved supplier.")
+        if body.supplier_id is not None and suppliers != {body.supplier_id}:
+            raise HTTPException(
+                422, "The items do not belong to the selected supplier."
+            )
         amount = sum(item["quantity"] * item["price_cents"] for item in items)
         # A conditional UPDATE reserves funds atomically on both SQLite and PostgreSQL.
         reserved = conn.execute(

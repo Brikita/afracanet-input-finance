@@ -61,6 +61,11 @@ export function OrderDetails({
         </button>
       </div>
       <Status status={current.status} />
+      <p className="fine-print">
+        Supplier:{' '}
+        {state.products.find((p) => p.supplier_id === current.supplier_id)
+          ?.supplier_name ?? current.supplier_id}
+      </p>
       <div className="drawer-amount">
         {money(current.amount_cents)}
         <small>

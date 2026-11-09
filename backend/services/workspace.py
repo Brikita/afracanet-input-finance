@@ -83,6 +83,10 @@ def state(user):
         by_order = {}
         for issue in issue_rows:
             by_order.setdefault(issue["order_id"], []).append(dict(issue))
+    supplier_names = {
+        sid: (participant(sid) or ("supplier", sid))[1]
+        for sid in {row["supplier_id"] for row in catalogue}
+    }
     return {
         "user": {
             "role": user["role"],
@@ -91,7 +95,12 @@ def state(user):
         },
         "farmers": [dict(row) for row in people],
         "products": [
-            {**dict(row), "revision": product_revision(row)} for row in catalogue
+            {
+                **dict(row),
+                "revision": product_revision(row),
+                "supplier_name": supplier_names[row["supplier_id"]],
+            }
+            for row in catalogue
         ],
         "orders": [
             serialize_order(row, user, by_order.get(row["id"], []))
