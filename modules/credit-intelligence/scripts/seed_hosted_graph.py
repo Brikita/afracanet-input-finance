@@ -12,6 +12,7 @@ import os
 import re
 import sys
 from collections import defaultdict
+from datetime import date
 from pathlib import Path
 
 from neo4j import GraphDatabase
@@ -44,6 +45,7 @@ def seed(fixture):
     ):
         raise ValueError("Only the compact synthetic fixture is accepted.")
     fingerprint = hashlib.sha256((pack / "manifest.json").read_bytes()).hexdigest()
+    as_of = date.fromisoformat(manifest["as_of"]).isoformat()
     nodes, edges = defaultdict(list), defaultdict(list)
     for path in (pack / "graph-nodes.csv", overlay / "workflow-nodes.csv"):
         for kind, rows in grouped(path, "kind:LABEL").items():
@@ -76,10 +78,27 @@ def seed(fixture):
         session.run(
             "CREATE INDEX entity_tenant IF NOT EXISTS FOR (n:Entity) ON (n.tenant_id)"
         ).consume()
-        return session.execute_write(import_transaction, fingerprint, nodes, edges)
+        return session.execute_write(import_transaction, fingerprint, nodes, edges, as_of)
 
 
-def import_transaction(tx, fingerprint, nodes, edges):
+def record_dataset(tx, fingerprint, as_of):
+    """Give the analytics runner the same verified provenance as the importer."""
+    existing = list(tx.run(
+        "MATCH (d:JudgeDataset) RETURN d.fingerprint AS fingerprint,d.as_of AS as_of,d.source_kind AS source_kind"
+    ))
+    expected = {"fingerprint": fingerprint, "as_of": as_of, "source_kind": "synthetic_replay"}
+    if existing:
+        if len(existing) != 1 or dict(existing[0]) != expected:
+            raise ValueError("Graph analytics provenance differs; explicit migration required.")
+        return
+    tx.run(
+        "CREATE (:JudgeDataset {fingerprint:$fingerprint,as_of:$as_of,source_kind:'synthetic_replay'})",
+        fingerprint=fingerprint,
+        as_of=as_of,
+    ).consume()
+
+
+def import_transaction(tx, fingerprint, nodes, edges, as_of):
     # The unique singleton also serializes two simultaneous initialization attempts.
     tx.run("MERGE (m:HostedFixture {id:'compact-v1'}) SET m.locked=true").consume()
     marker = tx.run(
@@ -90,6 +109,10 @@ def import_transaction(tx, fingerprint, nodes, edges):
             raise ValueError(
                 "Graph belongs to another fixture; explicit migration required."
             )
+        # Older hosted imports have the verified singleton but lack the analytics
+        # marker. Add only that metadata; never reload or rewrite their entities.
+        record_dataset(tx, fingerprint, as_of)
+        tx.run("MATCH (m:HostedFixture {id:'compact-v1'}) REMOVE m.locked").consume()
         return {"preserved": True, "manifest_sha256": fingerprint}
     count = tx.run(
         "MATCH (n) WHERE NOT n:HostedFixture RETURN count(n) AS count"
@@ -138,6 +161,7 @@ def import_transaction(tx, fingerprint, nodes, edges):
         "MATCH (m:HostedFixture {id:'compact-v1'}) SET m.fingerprint=$fingerprint REMOVE m.locked",
         fingerprint=fingerprint,
     ).consume()
+    record_dataset(tx, fingerprint, as_of)
     return {
         "nodes": total_nodes,
         "relationships": total_edges,

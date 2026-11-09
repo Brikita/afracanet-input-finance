@@ -99,11 +99,15 @@ with TestClient(app) as client:
     assert client.get('/api/health', headers={'host':'inputs.example.invalid'}).status_code == 200
     assert client.get('/api/health', headers={'host':'untrusted.example.invalid'}).status_code == 400
 """
+    environment = service_environment()
+    # The suite deliberately configures ALLOWED_HOSTS for its own TestClient.
+    # This scenario exercises Render's default when no explicit override exists.
+    environment.pop("ALLOWED_HOSTS", None)
     result = subprocess.run(
         [sys.executable, "-c", program],
         cwd=ROOT,
         env={
-            **service_environment(),
+            **environment,
             "PYTHON_DOTENV_DISABLED": "1",
             "RENDER_EXTERNAL_HOSTNAME": "inputs.example.invalid",
             "DATABASE_URL": "sqlite:///" + (tmp_path / "health.sqlite").as_posix(),

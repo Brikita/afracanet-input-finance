@@ -67,6 +67,8 @@ jobs:
           docker exec credit-api python modules/credit-intelligence/scripts/seed_hosted_graph.py /app/fixture
           docker exec credit-api python modules/credit-intelligence/scripts/seed_hosted_graph.py /app/fixture
           docker exec credit-api python -c "import os; from neo4j import GraphDatabase; d=GraphDatabase.driver(os.environ['WORKFLOW_NEO4J_URI'],auth=(os.environ['WORKFLOW_NEO4J_USER'],os.environ['WORKFLOW_NEO4J_PASSWORD'])); s=d.session(); assert s.run('RETURN gds.version() AS version').single()['version']=='2.13.4'; assert s.run('MATCH (n:Farmer) RETURN count(n) AS count').single()['count']==32; s.close(); d.close()"
+          docker exec -e PYTHON_DOTENV_DISABLED=1 -e CREDIT_DATABASE_URL=sqlite:////var/data/afracanet/workflow.sqlite credit-api python modules/credit-intelligence/scripts/run_graph_analytics.py --env-file /dev/null --lender SYN-LENDER-000
+          docker exec -w /app/modules/credit-intelligence -e PYTHON_DOTENV_DISABLED=1 -e CREDIT_DATABASE_URL=sqlite:////var/data/afracanet/workflow.sqlite credit-api python -c "from Backend.analytics import read; r=read('farmer-synth-000001','SYN-LENDER-000'); assert r['available'] and r['gds_version']=='2.13.4'; assert r['authority']=='descriptive_analytics_only'; assert r['calibrated_credit_score'] is None"
       - name: Container logs
         if: always()
         run: |
