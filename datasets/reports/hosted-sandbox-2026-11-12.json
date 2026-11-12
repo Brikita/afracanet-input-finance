@@ -1,0 +1,48 @@
+{
+  "record_type": "dated hosted rehearsal and video verification",
+  "rehearsal_checked_at_utc": "2026-11-11T20:40:34.306845+00:00",
+  "application_id": "WORKFLOW-farmer-synth-000001",
+  "farmer_id": "farmer-synth-000001",
+  "lender_id": "SYN-LENDER-000",
+  "supplier_id": "SYN-DEALER-000",
+  "order_reference": "AFC-000002",
+  "amount_cents": 1800,
+  "currency": "USD",
+  "payment_mode": "PayPal sandbox",
+  "observed_final_status": "COLLECTED",
+  "payment_event_source_observed": "paypal-webhook",
+  "repeat_reconciliation_http": 200,
+  "repeat_collection_http": 200,
+  "event_counts_after_repeat_checks": {
+    "REQUESTED": 1,
+    "APPROVED": 1,
+    "INVOICED": 1,
+    "PAYMENT_CONFIRMED": 1,
+    "COLLECTED": 1
+  },
+  "credit_evidence": "Actual scoped GDS results and the recorded Gemini advisory pinned to an existing officer decision were inspected; this was not a newly recorded credit decision or independent AI evaluation.",
+  "fresh_operations": "Actual Gemini catalogue request, order confirmation, lender order approval, supplier invoicing, owner-completed sandbox payment and recorded collection.",
+  "video_url": "https://www.youtube.com/watch?v=YEZz_objHR0",
+  "local_master": {
+    "duration_seconds": 480.0,
+    "resolution": [1920, 1080],
+    "fps": 30,
+    "frames": 14400,
+    "sha256": "609439df602e61cf53e58609d78e8d94548fafd13a6ef594088f793ce6439fe5",
+    "full_decode": "passed",
+    "sampled_visual_review": "15 final encoded frames inspected",
+    "audio_mean_dbfs": -19.3,
+    "audio_peak_dbfs": -1.9,
+    "caption_timing": "Text-weight estimates within measured narration clips; not word-level alignment."
+  },
+  "complete_pitch_ends_seconds": 170,
+  "physical_goods_delivery_observed": false,
+  "limits": [
+    "Fictional participants and authored histories; sandbox test funds.",
+    "Graph analytics are descriptive, not calibrated credit scores.",
+    "AI advice is separate from lender authorization.",
+    "Recorded collection does not establish physical delivery or product quality.",
+    "Duplicate checks were separate authenticated checks after the recorded UI actions.",
+    "No claim of independent model accuracy, production readiness or organizer acceptance."
+  ]
+}

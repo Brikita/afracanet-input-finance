@@ -21,6 +21,14 @@ no other project has similar features or that a particular score is warranted.
 
 ## Verification and reproduction
 
+For the deployed prototype, start with the [hosted walkthrough](HOSTED_WALKTHROUGH.md)
+and [expanded browser recording](https://www.youtube.com/watch?v=YEZz_objHR0).
+The [11 November hosted rehearsal, verified 12 November](../datasets/reports/hosted-sandbox-2026-11-12.json)
+follows AFC-000002 through a fresh Gemini request, PayPal sandbox invoicing,
+webhook-sourced payment confirmation and recorded collection. Repeated
+authenticated reconciliation and collection retained one event per stage.
+The first 2:50 of the recording contains the complete pitch and working evidence.
+
 - [Unified repository and MIT license](../LICENSE).
 - [Compact judge setup](JUDGE_SETUP.md): 32 fictional farmers, four lender scopes,
   isolated stores and the required graph runtime.

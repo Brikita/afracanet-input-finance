@@ -1,5 +1,32 @@
 # AFRACANet AI — functioning-product footage revision
 
+## Delivered revision, 12 November 2026
+
+The owner approved an expanded eight-minute film for both YouTube and submission,
+superseding the earlier 175-second cut below. Its local master is 480.000 seconds,
+1920×1080/30 fps with 14,400 frames, H.264 video and AAC narration. Full decoding,
+15 sampled final frames and audio level/sample checks passed. Narration uses
+pitch-preserving faster pacing; captions are estimated within measured voice clips.
+
+The [new upload](https://www.youtube.com/watch?v=YEZz_objHR0) displays as 8:01 on
+YouTube/Devpost. The first **2:50** gives a complete pitch with functioning-product
+footage; the rest is a detailed walkthrough. The form warns that only the first
+three minutes will be reviewed. The expanded choice is not organizer acceptance
+or a duration waiver.
+
+The recording inspects existing credit authorization and recorded advisory
+evidence, then follows fresh order **AFC-000002** through actual Gemini request
+interpretation, lender order approval, PayPal sandbox invoice/payment and recorded
+collection. Buyer login/checkout setup was omitted while recording was paused.
+Repeat reconciliation and collection were separate authenticated checks.
+See [hosted instructions](HOSTED_WALKTHROUGH.md) and the
+[dated evidence record](../datasets/reports/hosted-sandbox-2026-11-12.json).
+
+## Historical 175-second revision plan
+
+The original plan and constraints below describe the prior cut and are retained
+for provenance. The delivered revision above supersedes its length and case.
+
 ## Why this revision is needed
 
 The 8 November organizer message flags the required demo video and quotes the

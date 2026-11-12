@@ -1,5 +1,39 @@
 # Submission preparation
 
+## Current package, 12 November 2026
+
+The [Devpost entry](https://devpost.com/software/afracanet-ai) is already submitted.
+The current update aligns its video, public links and private testing instructions
+with the hosted browser rehearsal. Saving the revised fields and verifying the
+public entry remain distinct from organizer acceptance.
+
+- Video: https://www.youtube.com/watch?v=YEZz_objHR0. The local master is 480.000
+  seconds at 1920×1080/30 fps; YouTube/Devpost display 8:01. The owner explicitly
+  selected the expanded upload for submission. The form says only the first
+  three minutes will be reviewed; the complete pitch and working evidence end
+  at **2:50**. This is not a claim of a duration waiver or organizer approval.
+- Public story: [DEVPOST_STORY.md](DEVPOST_STORY.md).
+- Hosted inspection: [HOSTED_WALKTHROUGH.md](HOSTED_WALKTHROUGH.md).
+- Recorded case: `farmer-synth-000001`, lender `SYN-LENDER-000`, order **AFC-000002**.
+- Existing paid/collected records can be reviewed without another sandbox purchase.
+- Local reproduction remains available through [JUDGE_SETUP.md](JUDGE_SETUP.md);
+  its default deterministic parser/simulated payment mode is distinct from the
+  hosted Gemini/PayPal sandbox configuration.
+- [Dated hosted evidence](../datasets/reports/hosted-sandbox-2026-11-12.json)
+  records the observed payment, collection, duplicate checks and export verification.
+- Demo officer credentials and the input access code belong in the private
+  testing field. Provider keys, sessions and signing secrets remain operator-local.
+
+The 8 November reviewer asked for footage of the functioning project. The new
+film contains actual browser operation. Confirm the saved YouTube embed and
+public links after the final form update; do not equate this with re-review.
+
+## Historical preparation snapshot, 3 November 2026
+
+The following plan/checklist describes the earlier release and film. Its
+pre-submission and 175-second-video statements are retained as historical context
+and are superseded by the current package above.
+
 Status: **not submitted. Core release checks passed. The narrated 175-second MP4
 is exported and technically verified; public upload and submission remain.**
 See [the current completion sprint](SPRINT_2026-11-02.md) and [compact judge setup](JUDGE_SETUP.md).

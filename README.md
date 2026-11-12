@@ -67,10 +67,25 @@ execution credit at zero; fresh checkouts still use the small demo until explici
 
 ## Current status
 
-The [2 November completion sprint](docs/SPRINT_2026-11-02.md) tracks current
-work, including the 175-second narrated demo. For a separate compact connected
-environment, see [judge setup](docs/JUDGE_SETUP.md). Older dated reports retain
-the state at their checkpoint.
+The [Devpost entry](https://devpost.com/software/afracanet-ai) is published.
+The [hosted product page](https://afracanet-inputs.onrender.com/about),
+[credit workspace](https://afracanet-credit.onrender.com/) and
+[input-finance workspace](https://afracanet-inputs.onrender.com/) are deployed.
+The hosted rehearsal follows **AFC-000002** through actual Gemini catalogue
+interpretation, lender order approval, PayPal sandbox invoicing, a verified
+USD 18 payment with a webhook-sourced event, and recorded demonstration
+collection. Repeated reconciliation and collection retained one event per stage.
+The [expanded demonstration](https://www.youtube.com/watch?v=YEZz_objHR0) places
+the complete pitch and working evidence in the first 2:50, followed by a detailed
+walkthrough. Its local master is 480 seconds at 1080p/30 fps. Follow the
+[hosted walkthrough](docs/HOSTED_WALKTHROUGH.md) and
+[deployment status](docs/RENDER_DEPLOYMENT.md). Access is supplied separately.
+
+For the recorded case and evidence limits, see the
+[hosted rehearsal record](datasets/reports/hosted-sandbox-2026-11-12.json).
+For a separate compact connected environment, see [judge setup](docs/JUDGE_SETUP.md).
+The [2 November sprint](docs/SPRINT_2026-11-02.md), earlier 175-second film and
+other dated reports retain the state at their historical checkpoints.
 
 The local demonstration works without service credentials. It includes:
 
@@ -91,7 +106,8 @@ PayPal sandbox authentication, invoice creation, sending, and draft recovery hav
 been checked with actual API calls. A USD 18 buyer sandbox payment was verified
 and reconciled exactly once. A genuine resent callback was signature-verified and deduplicated. Gemini passed 24/24 synthetic development cases on 31 October 2026;
 this is not a production accuracy claim. See the [provider check record](docs/PROVIDER_CHECKS_2026-10-31.md).
-This version is a development prototype, not a submitted entry or a live lending service.
+These provider results describe dated local rehearsals. This remains a
+development prototype, not a live lending service.
 
 ## Run the whole platform locally
 

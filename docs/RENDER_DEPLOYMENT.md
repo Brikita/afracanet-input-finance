@@ -166,6 +166,17 @@ loses the order store while a PayPal invoice remains active.
 
 ## Hosted acceptance
 
+### Recorded rehearsal update, 12 November 2026
+
+The [hosted walkthrough](HOSTED_WALKTHROUGH.md) now identifies **AFC-000002**,
+the new USD 18 sandbox order shown in the
+[browser demonstration](https://www.youtube.com/watch?v=YEZz_objHR0).
+The rehearsal observed PayPal-webhook payment confirmation and a subsequent
+recorded collection. Separate repeat reconciliation/collection checks retained
+one event per stage. See the [dated report](../datasets/reports/hosted-sandbox-2026-11-12.json).
+This records the observed journey, not completion of every acceptance item
+below or production readiness. AFC-000001 remains the older unpaid order.
+
 All public HTTPS routes must work in an unauthenticated browser; transaction
 actions must remain authenticated. Exercise the signed authorization, scoped
 evidence, actual Gemini interpretation and new sandbox invoice/payment workflow

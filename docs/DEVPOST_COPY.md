@@ -1,5 +1,21 @@
 # AFRACANet AI — submission copy
 
+## Current copy, 12 November 2026
+
+Use [DEVPOST_STORY.md](DEVPOST_STORY.md) for the current public project story and
+[HOSTED_WALKTHROUGH.md](HOSTED_WALKTHROUGH.md) for hosted judge instructions.
+The expanded video is https://www.youtube.com/watch?v=YEZz_objHR0; the complete
+pitch and working evidence end at 2:50, followed by the detailed walkthrough.
+The hosted paid/collected order is **AFC-000002**, not AFC-000001.
+Supply scoped demonstration access only in the private Devpost testing field.
+Never copy provider credentials, officer sessions or signing keys into that field.
+
+## Historical draft, 3 November 2026
+
+The draft below records the earlier local release and 175-second film. Its
+upload, hosting and video-specific statements are historical and are superseded
+by the current copy linked above; it is retained for provenance.
+
 Draft for the final submission. Video and testing-access fields remain to be
 completed with verified links/access details. Do not submit placeholder values.
 

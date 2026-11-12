@@ -1,5 +1,8 @@
 # Compact judge environment
 
+For the deployed prototype, follow the [hosted walkthrough](HOSTED_WALKTHROUGH.md).
+The instructions below create a separate local environment.
+
 This profile runs the actual AFRACANet services against **32 fictional farmers**,
 12 months of authored histories, four lender scopes and a separate Neo4j graph.
 It creates zero active credit, orders or payments. A new officer decision is
